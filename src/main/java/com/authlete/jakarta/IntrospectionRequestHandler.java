@@ -37,7 +37,7 @@ import com.authlete.common.types.JWSAlg;
  * <p>
  * In an implementation of introspection endpoint, call {@link
  * #handle(MultivaluedMap) handle()} method and use the response
- * as the response from the endpoint to the client application.
+ * as the response from the endpoint to the resource server.
  * {@code handle()} method calls Authlete's {@code
  * /api/auth/introspection/standard} API, receives a response
  * from the API, and dispatches processing according to the
@@ -72,7 +72,6 @@ public class IntrospectionRequestHandler extends BaseHandler
         private String sharedKeyForSign;
         private String sharedKeyForEncryption;
         private String publicKeyForEncryption;
-        private String introspectionSignatureKeyId;
 
 
         /**
@@ -558,7 +557,7 @@ public class IntrospectionRequestHandler extends BaseHandler
         // this service implementation should take.
         Action action = response.getAction();
 
-        // The content of the response to the client application.
+        // The content of the response to the resource server.
         String content = response.getResponseContent();
 
         // Dispatch according to the action.
