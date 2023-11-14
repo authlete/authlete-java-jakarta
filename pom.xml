@@ -26,13 +26,6 @@
         </developer>
     </developers>
 
-    <scm>
-        <connection>scm:git:git@github.com:authlete/authlete-java-jakarta.git</connection>
-        <developerConnection>scm:git:git@github.com:authlete/authlete-java-jakarta.git</developerConnection>
-        <url>git@github.com:authlete/authlete-java-jakarta.git</url>
-        <tag>HEAD</tag>
-    </scm>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <authlete-java-common.version>3.82</authlete-java-common.version>
@@ -42,7 +35,16 @@
         <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
         <jakarta.xml.version>4.0.1</jakarta.xml.version>
+        <git.connection>scm:git:git@github.com:authlete/authlete-java-jakarta.git</git.connection>
+        <git.url>git@github.com:authlete/authlete-java-jakarta.git</git.url>
     </properties>
+
+    <scm>
+        <connection>${git.connection}</connection>
+        <developerConnection>${git.connection}</developerConnection>
+        <url>${git.url}</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <dependencies>
         <dependency>
