@@ -4,7 +4,7 @@
 
     <groupId>com.authlete</groupId>
     <artifactId>authlete-java-jakarta</artifactId>
-    <version>2.67-SNAPSHOT</version>
+    <version>2.68-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Authlete library for JAX-RS (Java)</description>
@@ -26,13 +26,6 @@
         </developer>
     </developers>
 
-    <scm>
-        <connection>scm:git:git@github.com:authlete/authlete-java-jakarta.git</connection>
-        <developerConnection>scm:git:git@github.com:authlete/authlete-java-jakarta.git</developerConnection>
-        <url>git@github.com:authlete/authlete-java-jakarta.git</url>
-        <tag>HEAD</tag>
-    </scm>
-
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <authlete-java-common.version>3.82</authlete-java-common.version>
@@ -42,7 +35,16 @@
         <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
         <jakarta.xml.version>4.0.1</jakarta.xml.version>
+        <git.connection>scm:git:git@github.com:authlete/authlete-java-jakarta.git</git.connection>
+        <git.url>git@github.com:authlete/authlete-java-jakarta.git</git.url>
     </properties>
+
+    <scm>
+        <connection>${git.connection}</connection>
+        <developerConnection>${git.connection}</developerConnection>
+        <url>${git.url}</url>
+        <tag>HEAD</tag>
+    </scm>
 
     <dependencies>
         <dependency>
@@ -287,7 +289,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-gpg-plugin</artifactId>
-                <version>1.5</version>
+                <version>3.1.0</version>
                 <executions>
                     <execution>
                         <id>sign-artifacts</id>
@@ -297,9 +299,11 @@
                         </goals>
                         <configuration>
                             <keyname>E834481D</keyname>
+                            <passphrase>${env.GPG_PASSPHRASE}</passphrase>
                             <gpgArguments>
                                 <arg>--pinentry-mode</arg>
                                 <arg>loopback</arg>
+                                <arg>--no-tty</arg>
                             </gpgArguments>
                         </configuration>
                     </execution>
