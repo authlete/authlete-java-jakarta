@@ -1,6 +1,28 @@
 CHANGES
 =======
 
+2.72 (2024-05-14)
+-----------------
+
+- `AuthleteApiImplV3` implementations
+    * Implemented `tokenCreateBatch(TokenCreateRequest[] request, boolean dryRun)` method.
+    * Implemented `getTokenCreateBatchStatus(String requestId)` method.
+
+
+2.71 (2024-05-07)
+-----------------
+
+- `AuthleteApi` implementations
+    * Changed the `getTokenList()` method.
+    * Changed the `getTokenList(String clientIdentifier, String subject)` method.
+    * Changed the `getTokenList(int start, int end)` method.
+    * Changed the `getTokenList(String clientIdentifier, String subject, int start, int end)` method.
+    * Implemented the `getTokenList(TokenStatus)` method.
+    * Implemented the `getTokenList(int start, int end, TokenStatus tokenStatus)` method.
+    * Implemented the `getTokenList(String clientIdentifier, String subject, TokenStatus tokenStatus)` method.
+    * Implemented the `getTokenList(String clientIdentifier, String subject, int start, int end, TokenStatus tokenStatus)` method.
+
+
 2.70 (2023-12-17)
 -----------------
 
