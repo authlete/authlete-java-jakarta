@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2022 Authlete, Inc.
+ * Copyright (C) 2015-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,6 +27,7 @@ import java.util.TreeSet;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 import com.authlete.common.assurance.VerifiedClaims;
 import com.authlete.common.assurance.constraint.VerifiedClaimsConstraint;
 import com.authlete.common.assurance.constraint.VerifiedClaimsContainerConstraint;
@@ -479,7 +480,9 @@ public class AuthorizationDecisionHandler extends BaseHandler
 
 
     /**
-     * Handle an end-user's decision on an authorization request.
+     * Handle an end-user's decision on an authorization request. This method is
+     * an alias of {@link #handle(String, String[], String[], Options, Options)
+     * handle}{@code (ticket, claimNames, claimLocales, null, null)}.
      *
      * @param ticket
      *         A ticket that was issued by Authlete's {@code /api/auth/authorization} API.
@@ -501,18 +504,57 @@ public class AuthorizationDecisionHandler extends BaseHandler
      */
     public Response handle(String ticket, String[] claimNames, String[] claimLocales) throws WebApplicationException
     {
+        return handle(ticket, claimNames, claimLocales, null, null);
+    }
+
+
+    /**
+     * Handle an end-user's decision on an authorization request. This method is
+     * an alias of the {@link #handle(Params, Options, Options)} method.
+     *
+     * @param ticket
+     *         A ticket that was issued by Authlete's {@code /api/auth/authorization} API.
+     *
+     * @param claimNames
+     *         Names of requested claims. Use the value of the {@code claims}
+     *         parameter in a response from Authlete's {@code /api/auth/authorization} API.
+     *
+     * @param claimLocales
+     *         Requested claim locales. Use the value of the {@code claimsLocales}
+     *         parameter in a response from Authlete's {@code /api/auth/authorization} API.
+     *
+     * @param authzIssueOpts
+     *         Request options for the {@code /api/auth/authorization/issue} API.
+     *
+     * @param authzFailOpts
+     *         Request options for the {@code /api/auth/authorization/fail} API.
+     *
+     * @return
+     *         A response to the client application. Basically, the response
+     *         will trigger redirection to the client's redirection endpoint.
+     *
+     * @throws WebApplicationException
+     *         An error occurred.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            String ticket, String[] claimNames, String[] claimLocales, Options authzIssueOpts,
+            Options authzFailOpts) throws WebApplicationException
+    {
         Params params = new Params()
                 .setTicket(ticket)
                 .setClaimNames(claimNames)
                 .setClaimLocales(claimLocales)
                 ;
 
-        return handle(params);
+        return handle(params, authzIssueOpts, authzFailOpts);
     }
 
 
     /**
-     * Handle an end-user's decision on an authorization request.
+     * Handle an end-user's decision on an authorization request. This method is
+     * an alias of {@link #handle(Params, Options, Options) handle}{@code (params, null, null)}.
      *
      * @param params
      *         Parameters necessary to handle the decision.
@@ -528,10 +570,38 @@ public class AuthorizationDecisionHandler extends BaseHandler
      */
     public Response handle(Params params) throws WebApplicationException
     {
+        return handle(params, null, null);
+    }
+
+
+    /**
+     * Handle an end-user's decision on an authorization request.
+     *
+     * @param params
+     *         Parameters necessary to handle the decision.
+     *
+     * @param authzIssueOpts
+     *         Request options for the {@code /api/auth/authorization/issue} API.
+     *
+     * @param authzFailOpts
+     *         Request options for the {@code /api/auth/authorization/fail} API.
+     *
+     * @return
+     *         A response to the client application. Basically, the response
+     *         will trigger redirection to the client's redirection endpoint.
+     *
+     * @throws WebApplicationException
+     *         An error occurred.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            Params params, Options authzIssueOpts, Options authzFailOpts) throws WebApplicationException
+    {
         try
         {
             // Process the end-user's decision.
-            return process(params);
+            return process(params, authzIssueOpts, authzFailOpts);
         }
         catch (WebApplicationException e)
         {
@@ -548,13 +618,13 @@ public class AuthorizationDecisionHandler extends BaseHandler
     /**
      * Process the end-user's decision.
      */
-    private Response process(Params params)
+    private Response process(Params params, Options authzIssueOpts, Options authzFailOpts)
     {
         // If the end-user did not grant authorization to the client application.
         if (mSpi.isClientAuthorized() == false)
         {
             // The end-user denied the authorization request.
-            return fail(params.getTicket(), Reason.DENIED);
+            return fail(params.getTicket(), Reason.DENIED, authzFailOpts);
         }
 
         // The subject (= unique identifier) of the end-user.
@@ -564,7 +634,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
         if (subject == null || subject.length() == 0)
         {
             // The end-user is not authenticated.
-            return fail(params.getTicket(), Reason.NOT_AUTHENTICATED);
+            return fail(params.getTicket(), Reason.NOT_AUTHENTICATED, authzFailOpts);
         }
 
         // the potentially pairwise subject of the end user
@@ -619,7 +689,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
 
         // Authorize the authorization request.
         return authorize(params.getTicket(), subject, authTime, acr, claims,
-                properties, scopes, sub, claimsForTx, verifiedClaimsForTx);
+                properties, scopes, sub, claimsForTx, verifiedClaimsForTx, authzIssueOpts);
     }
 
 
@@ -1010,6 +1080,9 @@ public class AuthorizationDecisionHandler extends BaseHandler
      *         Authlete computes values of transformed claims under
      *         {@code verified_claims/claims}.
      *
+     * @param options
+     *         Request options.
+     *
      * @return
      *         A response that should be returned to the client application.
      */
@@ -1017,7 +1090,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
             String ticket, String subject, long authTime, String acr,
             Map<String, Object> claims, Property[] properties, String[] scopes,
             String sub, Map<String, Object> claimsForTx,
-            List<Map<String, Object>> verifiedClaimsForTx)
+            List<Map<String, Object>> verifiedClaimsForTx, Options options)
     {
         try
         {
@@ -1027,7 +1100,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
             // the generated response, though.
             return getApiCaller().authorizationIssue(
                     ticket, subject, authTime, acr, claims, properties,
-                    scopes, sub, claimsForTx, verifiedClaimsForTx);
+                    scopes, sub, claimsForTx, verifiedClaimsForTx, options);
         }
         catch (WebApplicationException e)
         {
@@ -1049,16 +1122,19 @@ public class AuthorizationDecisionHandler extends BaseHandler
      * @param reason
      *         A reason of the failure of the authorization request.
      *
+     * @param options
+     *         Request options.
+     *
      * @return
      *         A response that should be returned to the client application.
      */
-    private Response fail(String ticket, Reason reason)
+    private Response fail(String ticket, Reason reason, Options options)
     {
         try
         {
             // Generate an error response to indicate that
             // the authorization request failed.
-            return getApiCaller().authorizationFail(ticket, reason).getResponse();
+            return getApiCaller().authorizationFail(ticket, reason, options).getResponse();
         }
         catch (WebApplicationException e)
         {

@@ -20,6 +20,7 @@ package com.authlete.jakarta;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 import com.authlete.common.dto.CredentialJwtIssuerMetadataRequest;
 import com.authlete.common.dto.CredentialJwtIssuerMetadataResponse;
 import com.authlete.common.dto.CredentialJwtIssuerMetadataResponse.Action;
@@ -54,7 +55,9 @@ public class CredentialJwtIssuerMetadataRequestHandler extends BaseHandler
 
 
     /**
-     * Handle a request to the JWT issuer metadata endpoint.
+     * Handle a request to the JWT issuer metadata endpoint. This method
+     * is an alias of {@link #handle(CredentialJwtIssuerMetadataRequest, Options)
+     * handle}{@code (request, null)}.
      *
      * @param request
      *         A JWT issuer metadata request.
@@ -67,9 +70,31 @@ public class CredentialJwtIssuerMetadataRequestHandler extends BaseHandler
      */
     public Response handle(CredentialJwtIssuerMetadataRequest request) throws WebApplicationException
     {
+        return handle(request, null);
+    }
+
+
+    /**
+     * Handle a request to the JWT issuer metadata endpoint.
+     *
+     * @param request
+     *         A JWT issuer metadata request.
+     *
+     * @param options
+     *         Request options for the {@code /api/vci/jwtissuer} API.
+     *
+     * @return
+     *         A response that should be returned from the JWT issuer
+     *         metadata endpoint.
+     *
+     * @throws WebApplicationException
+     */
+    public Response handle(
+            CredentialJwtIssuerMetadataRequest request, Options options) throws WebApplicationException
+    {
         // Call Authlete's /vci/jwtissuer API.
         CredentialJwtIssuerMetadataResponse response =
-                getApiCaller().callCredentialJwtIssuerMetadata(request);
+                getApiCaller().callCredentialJwtIssuerMetadata(request, options);
 
         // 'action' in the response denotes the next action which
         // the implementation of the endpoint should take.

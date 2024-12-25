@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017-2023 Authlete, Inc.
+ * Copyright (C) 2017-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -23,6 +23,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 import com.authlete.common.dto.StandardIntrospectionResponse;
 import com.authlete.common.dto.StandardIntrospectionResponse.Action;
 import com.authlete.common.types.JWEAlg;
@@ -468,9 +469,8 @@ public class IntrospectionRequestHandler extends BaseHandler
 
     /**
      * Handle an introspection request (<a href="https://tools.ietf.org/html/rfc7662"
-     * >RFC 7662</a>).
-     *
-     * This method is an alias of the {@link #handle(Params)} method.
+     * >RFC 7662</a>). This method is an alias of {@link #handle(MultivaluedMap, Options)
+     * handle}{@code (parameters, null)}.
      *
      * @param parameters
      *         Request parameters of an introspection request.
@@ -482,19 +482,48 @@ public class IntrospectionRequestHandler extends BaseHandler
      * @throws WebApplicationException
      *         An error occurred.
      */
-    public Response handle(MultivaluedMap<String, String> parameters) throws WebApplicationException
+    public Response handle(
+            MultivaluedMap<String, String> parameters) throws WebApplicationException
     {
-        Params params = new Params()
-                .setParameters(parameters)
-                ;
-
-        return handle(params);
+        return handle(parameters, null);
     }
 
 
     /**
      * Handle an introspection request (<a href="https://tools.ietf.org/html/rfc7662"
-     * >RFC 7662</a>).
+     * >RFC 7662</a>). This method is an alias of the {@link #handle(Params, Options)}
+     * method.
+     *
+     * @param parameters
+     *         Request parameters of an introspection request.
+     *
+     * @param options
+     *         Request options for the {@code /api/auth/introspection/standard} API.
+     *
+     * @return
+     *         A response that should be returned from the endpoint to
+     *         the resource server.
+     *
+     * @throws WebApplicationException
+     *         An error occurred.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            MultivaluedMap<String, String> parameters, Options options) throws WebApplicationException
+    {
+        Params params = new Params()
+                .setParameters(parameters)
+                ;
+
+        return handle(params, options);
+    }
+
+
+    /**
+     * Handle an introspection request (<a href="https://tools.ietf.org/html/rfc7662"
+     * >RFC 7662</a>). This method is an alias of {@link #handle(Params, Options)
+     * handle}{@code (params, null)}.
      *
      * @param params
      *         Parameters needed to handle the introspection request.
@@ -511,6 +540,32 @@ public class IntrospectionRequestHandler extends BaseHandler
      */
     public Response handle(Params params) throws WebApplicationException
     {
+        return handle(params, null);
+    }
+
+
+    /**
+     * Handle an introspection request (<a href="https://tools.ietf.org/html/rfc7662"
+     * >RFC 7662</a>).
+     *
+     * @param params
+     *         Parameters needed to handle the introspection request.
+     *         Must not be {@code null}.
+     *
+     * @param options
+     *         Request options for the {@code /api/auth/introspection/standard} API.
+     *
+     * @return
+     *         A response that should be returned from the endpoint to
+     *         the resource server.
+     *
+     * @throws WebApplicationException
+     *         An error occurred.
+     *
+     * @since 2.82
+     */
+    public Response handle(Params params, Options options) throws WebApplicationException
+    {
         try
         {
             // Process the given parameters.
@@ -524,7 +579,8 @@ public class IntrospectionRequestHandler extends BaseHandler
                 params.getIntrospectionEncryptionEnc(),
                 params.getSharedKeyForSign(),
                 params.getSharedKeyForEncryption(),
-                params.getPublicKeyForEncryption()
+                params.getPublicKeyForEncryption(),
+                options
             );
         }
         catch (WebApplicationException e)
@@ -545,13 +601,13 @@ public class IntrospectionRequestHandler extends BaseHandler
     private Response process(
             MultivaluedMap<String, String> parameters, boolean withHiddenProperties, String httpAcceptHeader,
             URI rsUri, JWSAlg introspectionSignAlg, JWEAlg introspectionEncAlg, JWEEnc introspectionEncEnc,
-            String sharedKeyForSign, String sharedKeyForEncryption, String publicKeyForEncryption)
+            String sharedKeyForSign, String sharedKeyForEncryption, String publicKeyForEncryption, Options options)
     {
         // Call Authlete's /api/auth/introspection/standard API.
         StandardIntrospectionResponse response = getApiCaller().callStandardIntrospection(
                 parameters, withHiddenProperties, httpAcceptHeader, rsUri, introspectionSignAlg,
                 introspectionEncAlg, introspectionEncEnc, sharedKeyForSign, sharedKeyForEncryption,
-                publicKeyForEncryption);
+                publicKeyForEncryption, options);
 
         // 'action' in the response denotes the next action which
         // this service implementation should take.

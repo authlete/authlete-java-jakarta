@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015-2016 Authlete, Inc.
+ * Copyright (C) 2015-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 import com.authlete.common.dto.RevocationResponse;
 import com.authlete.common.dto.RevocationResponse.Action;
 import com.authlete.common.web.BasicCredentials;
@@ -64,7 +65,8 @@ public class RevocationRequestHandler extends BaseHandler
 
     /**
      * Handle a token revocation request (<a href="https://tools.ietf.org/html/rfc7009"
-     * >RFC 7009</a>).
+     * >RFC 7009</a>). This method is an alias of {@link #handle(MultivaluedMap, String, Options)
+     * handle}{@code (parameters, authorization, null)}.
      *
      * @param parameters
      *         Request parameters of a token revocation request.
@@ -83,7 +85,42 @@ public class RevocationRequestHandler extends BaseHandler
      * @throws WebApplicationException
      *         An error occurred.
      */
-    public Response handle(MultivaluedMap<String, String> parameters, String authorization) throws WebApplicationException
+    public Response handle(
+            MultivaluedMap<String, String> parameters, String authorization) throws WebApplicationException
+    {
+        return handle(parameters, authorization, null);
+    }
+
+
+    /**
+     * Handle a token revocation request (<a href="https://tools.ietf.org/html/rfc7009"
+     * >RFC 7009</a>).
+     *
+     * @param parameters
+     *         Request parameters of a token revocation request.
+     *
+     * @param authorization
+     *         The value of {@code Authorization} header in the token revocation
+     *         request. A client application may embed its pair of client ID and
+     *         client secret in a token revocation request using <a href=
+     *         "https://tools.ietf.org/html/rfc2617#section-2">Basic
+     *         Authentication</a>.
+     *
+     * @param options
+     *         Request options for the {@code /api/auth/revocation} API.
+     *
+     * @return
+     *         A response that should be returned from the endpoint to the
+     *         client application.
+     *
+     * @throws WebApplicationException
+     *         An error occurred.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            MultivaluedMap<String, String> parameters, String authorization,
+            Options options) throws WebApplicationException
     {
         // Convert the value of Authorization header (credentials of
         // the client application), if any, into BasicCredentials.
@@ -97,7 +134,7 @@ public class RevocationRequestHandler extends BaseHandler
         try
         {
             // Process the given parameters.
-            return process(parameters, clientId, clientSecret);
+            return process(parameters, clientId, clientSecret, options);
         }
         catch (WebApplicationException e)
         {
@@ -114,10 +151,12 @@ public class RevocationRequestHandler extends BaseHandler
     /**
      * Process the parameters of the revocation request.
      */
-    private Response process(MultivaluedMap<String, String> parameters, String clientId, String clientSecret)
+    private Response process(
+            MultivaluedMap<String, String> parameters, String clientId, String clientSecret, Options options)
     {
         // Call Authlete's /api/auth/revocation API.
-        RevocationResponse response = getApiCaller().callRevocation(parameters, clientId, clientSecret);
+        RevocationResponse response = getApiCaller()
+                .callRevocation(parameters, clientId, clientSecret, options);
 
         // 'action' in the response denotes the next action which
         // this service implementation should take.

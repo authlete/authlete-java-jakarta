@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2020 Authlete, Inc.
+ * Copyright (C) 2016-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package com.authlete.jakarta;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 
 
 /**
@@ -52,6 +53,22 @@ import com.authlete.common.api.AuthleteApi;
 public class BaseJwksEndpoint extends BaseEndpoint
 {
     /**
+     * Handle a request for a JWK Set document. This method is an alias of {@link
+     * #handle(AuthleteApi, Options) handle}{@code (api, null)}.
+     *
+     * @param api
+     *         An implementation of {@link AuthleteApi}.
+     *
+     * @return
+     *         A response that should be returned to the client application.
+     */
+    public Response handle(AuthleteApi api)
+    {
+        return handle(api, null);
+    }
+
+
+    /**
      * Handle a request for a JWK Set document.
      *
      * <p>
@@ -63,8 +80,8 @@ public class BaseJwksEndpoint extends BaseEndpoint
      *
      * <p>
      * When {@code JwksRequestHandler.handle()} method raises a {@link
-     * WebApplicationException}, this method calls {@link #onError(WebApplicationException)
-     * onError()} method with the exception. The default implementation of {@code onError()}
+     * WebApplicationException}, this method calls {@link #onError(WebApplicationException) onError()}
+     * method with the exception. The default implementation of {@code onError()}
      * does nothing. You
      * can override the method as necessary. After calling {@code onError()} method,
      * this method calls {@code getResponse()} method of the exception and uses the
@@ -74,10 +91,15 @@ public class BaseJwksEndpoint extends BaseEndpoint
      * @param api
      *         An implementation of {@link AuthleteApi}.
      *
+     * @param options
+     *         Request options for the {@code /api/service/jwks/get} API.
+     *
      * @return
      *         A response that should be returned to the client application.
+     *
+     * @since 2.82
      */
-    public Response handle(AuthleteApi api)
+    public Response handle(AuthleteApi api, Options options)
     {
         try
         {
@@ -85,7 +107,7 @@ public class BaseJwksEndpoint extends BaseEndpoint
             JwksRequestHandler handler = new JwksRequestHandler(api);
 
             // Delegate the task to the handler.
-            return handler.handle();
+            return handler.handle(options);
         }
         catch (WebApplicationException e)
         {

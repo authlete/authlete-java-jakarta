@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Authlete, Inc.
+ * Copyright (C) 2019-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -22,6 +22,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 import com.authlete.common.dto.DeviceAuthorizationResponse;
 import com.authlete.common.dto.DeviceAuthorizationResponse.Action;
 import com.authlete.common.web.BasicCredentials;
@@ -66,7 +67,8 @@ public class DeviceAuthorizationRequestHandler extends BaseHandler
 
     /**
      * Handler for device authorization requests in OAuth 2.0 Device Authorization
-     * Grant (Device Flow).
+     * Grant (Device Flow). This method is an alias of {@link #handle(MultivaluedMap, String, String[], Options)
+     * handle}{@code (parameters, authorization, clientCertificatePath, null)}.
      *
      * @param parameters
      *         Request parameters of a device authorization request.
@@ -94,6 +96,45 @@ public class DeviceAuthorizationRequestHandler extends BaseHandler
             MultivaluedMap<String, String> parameters, String authorization,
             String[] clientCertificatePath) throws WebApplicationException
     {
+        return handle(parameters, authorization, clientCertificatePath, null);
+    }
+
+
+    /**
+     * Handler for device authorization requests in OAuth 2.0 Device Authorization
+     * Grant (Device Flow).
+     *
+     * @param parameters
+     *         Request parameters of a device authorization request.
+     *
+     * @param authorization
+     *         The value of {@code Authorization} header in the device authorization
+     *         request. A client application may embed its pair of client ID and
+     *         client secret in a device authorization request using <a href=
+     *         "https://tools.ietf.org/html/rfc2617#section-2">Basic
+     *         Authentication</a>.
+     *
+     * @param clientCertificatePath
+     *         The path of the client's certificate, each in PEM format. The first
+     *         item in the array is the client's certificate itself. May be {@code null}
+     *         if the client did not send a certificate or path.
+     *
+     * @param options
+     *         Request options for the {@code /api/device/authorization} API.
+     *
+     * @return
+     *         A response that should be returned from the endpoint to the
+     *         client application.
+     *
+     * @throws WebApplicationException
+     *         An error occurred.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            MultivaluedMap<String, String> parameters, String authorization,
+            String[] clientCertificatePath, Options options) throws WebApplicationException
+    {
         // Convert the value of Authorization header (credentials of
         // the client application), if any, into BasicCredentials.
         BasicCredentials credentials = BasicCredentials.parse(authorization);
@@ -106,7 +147,7 @@ public class DeviceAuthorizationRequestHandler extends BaseHandler
         try
         {
             // Process the given parameters.
-            return process(parameters, clientId, clientSecret, clientCertificatePath);
+            return process(parameters, clientId, clientSecret, clientCertificatePath, options);
         }
         catch (WebApplicationException e)
         {
@@ -125,7 +166,7 @@ public class DeviceAuthorizationRequestHandler extends BaseHandler
      */
     private Response process(
             MultivaluedMap<String, String> parameters, String clientId,
-            String clientSecret, String[] clientCertificatePath)
+            String clientSecret, String[] clientCertificatePath, Options options)
     {
         // TODO: Duplicate code.
         String clientCertificate = null;
@@ -144,7 +185,7 @@ public class DeviceAuthorizationRequestHandler extends BaseHandler
 
         // Call Authlete's /api/device/authorization API.
         DeviceAuthorizationResponse response = getApiCaller().callDeviceAuthorization(
-                parameters, clientId, clientSecret, clientCertificate, clientCertificatePath);
+                parameters, clientId, clientSecret, clientCertificate, clientCertificatePath, options);
 
         // 'action' in the response denotes the next action which
         // this service implementation should take.
