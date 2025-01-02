@@ -403,17 +403,15 @@ public class BaseResourceEndpoint extends BaseEndpoint
                 .setRequiredScopes(requiredScopes)
                 .setRequiredSubject(requiredSubject)
                 .setClientCertificate(clientCertificate)
+                .setOptions(options)
                 ;
 
-        return validateAccessToken(api, params, options);
+        return validateAccessToken(api, params);
     }
 
 
     /**
-     * Validate an access token. This method is an alias of {@link
-     * #validateAccessToken(AuthleteApi, AccessTokenValidator.Params, Options)
-     * validateAccessToken}{@code (api, params, null)}.
-     * .
+     * Validate an access token.
      *
      * @param api
      *         Implementation of {@link AuthleteApi} interface.
@@ -432,56 +430,10 @@ public class BaseResourceEndpoint extends BaseEndpoint
     public AccessTokenInfo validateAccessToken(
             AuthleteApi api, Params params) throws WebApplicationException
     {
-        return validateAccessToken(api, params, null);
-    }
-
-
-    /**
-     * Validate an access token.
-     *
-     * <p>
-     * This method internally creates an {@link AccessTokenValidator} instance
-     * and calls its {@link AccessTokenValidator#validate(Params)
-     * validate()} method. Then, this method uses the value returned from the
-     * {@code validate()} method as a response from this method.
-     * </p>
-     *
-     * <p>
-     * When {@code AccessTokenValidator.validate()} method raises a {@link
-     * WebApplicationException}, this method calls {@link
-     * #onError(WebApplicationException) onError()} method with the exception.
-     * The default implementation of {@code onError()} does nothing. You can
-     * override the method as necessary. After calling {@code onError()}
-     * method, this method re-throws the exception. The response contained in
-     * the exception complies with the requirements described in <a href=
-     * "https://tools.ietf.org/html/rfc6750">RFC 6750</a> (The OAuth 2.0
-     * Authorization Framework: Bearer Token Usage).
-     * </p>
-     *
-     * @param api
-     *         Implementation of {@link AuthleteApi} interface.
-     *
-     * @param params
-     *         Parameters needed for access token validation.
-     *
-     * @param options
-     *         Request options for {@code /api/auth/introspection} API.
-     *
-     * @return
-     *         Information about the access token.
-     *
-     * @throws WebApplicationException
-     *         The Access Token is invalid.
-     *
-     * @since 2.82
-     */
-    public AccessTokenInfo validateAccessToken(
-            AuthleteApi api, Params params, Options options) throws WebApplicationException
-    {
         try
         {
             // Validate the access token and obtain the information about it.
-            return new AccessTokenValidator(api).validate(params, options);
+            return new AccessTokenValidator(api).validate(params);
         }
         catch (WebApplicationException e)
         {

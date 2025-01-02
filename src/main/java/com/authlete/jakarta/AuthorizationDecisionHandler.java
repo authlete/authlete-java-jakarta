@@ -60,7 +60,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
      */
     public static class Params implements Serializable
     {
-        private static final long serialVersionUID = 3L;
+        private static final long serialVersionUID = 4L;
 
 
         private String ticket;
@@ -70,6 +70,9 @@ public class AuthorizationDecisionHandler extends BaseHandler
         private String[] requestedClaimsForTx;
         private StringArray[] requestedVerifiedClaimsForTx;
         private boolean oldIdaFormatUsed;
+        private Options authzOptions;
+        private Options authzIssueOptions;
+        private Options authzFailOptions;
 
 
         /**
@@ -431,11 +434,110 @@ public class AuthorizationDecisionHandler extends BaseHandler
 
 
         /**
+         * Get the request options for {@code /api/auth/authorization} API.
+         *
+         * @return
+         *         The request options for {@code /api/auth/authorization} API.
+         *
+         * @since 2.82
+         */
+        public Options getAuthzOptions()
+        {
+            return authzOptions;
+        }
+
+
+        /**
+         * Set the request options for {@code /api/auth/authorization} API.
+         *
+         * @param options
+         *         The request options for {@code /api/auth/authorization} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setAuthzOptions(Options options)
+        {
+            authzOptions = options;
+
+            return this;
+        }
+
+
+        /**
+         * Get the request options for {@code /api/auth/authorization/issue} API.
+         *
+         * @return
+         *         The request options for {@code /api/auth/authorization/issue} API.
+         *
+         * @since 2.82
+         */
+        public Options getAuthzIssueOptions()
+        {
+            return authzIssueOptions;
+        }
+
+
+        /**
+         * Set the request options for {@code /api/auth/authorization/issue} API.
+         *
+         * @param options
+         *         The request options for {@code /api/auth/authorization/issue} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setAuthzIssueOptions(Options options)
+        {
+            authzIssueOptions = options;
+
+            return this;
+        }
+
+
+        /**
+         * Get the request options for {@code /api/auth/authorization/fail} API.
+         *
+         * @return
+         *         The request options for {@code /api/auth/authorization/fail} API.
+         *
+         * @since 2.82
+         */
+        public Options getAuthzFailOptions()
+        {
+            return authzFailOptions;
+        }
+
+
+        /**
+         * Set the request options for {@code /api/auth/authorization/fail} API.
+         *
+         * @param options
+         *         The request options for {@code /api/auth/authorization/fail} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setAuthzFailOptions(Options options)
+        {
+            authzFailOptions = options;
+
+            return this;
+        }
+
+
+        /**
          * Create a {@link Params} instance from an instance of
          * {@link AuthorizationResponse}.
          *
          * @param response
-         *         An response from Authlete's {@code /api/auth/authorization} API.
+         *         An response from Authlete's {@code /api/auth/authorization/issue} API.
          *
          * @return
          *         A new {@code Params} instance built from the response.
@@ -510,7 +612,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
 
     /**
      * Handle an end-user's decision on an authorization request. This method is
-     * an alias of the {@link #handle(Params, Options, Options)} method.
+     * an alias of the {@link #handle(Params)} method.
      *
      * @param ticket
      *         A ticket that was issued by Authlete's {@code /api/auth/authorization} API.
@@ -535,8 +637,6 @@ public class AuthorizationDecisionHandler extends BaseHandler
      *
      * @throws WebApplicationException
      *         An error occurred.
-     *
-     * @since 2.82
      */
     public Response handle(
             String ticket, String[] claimNames, String[] claimLocales, Options authzIssueOpts,
@@ -546,15 +646,16 @@ public class AuthorizationDecisionHandler extends BaseHandler
                 .setTicket(ticket)
                 .setClaimNames(claimNames)
                 .setClaimLocales(claimLocales)
+                .setAuthzIssueOptions(authzFailOpts)
+                .setAuthzFailOptions(authzFailOpts)
                 ;
 
-        return handle(params, authzIssueOpts, authzFailOpts);
+        return handle(params);
     }
 
 
     /**
-     * Handle an end-user's decision on an authorization request. This method is
-     * an alias of {@link #handle(Params, Options, Options) handle}{@code (params, null, null)}.
+     * Handle an end-user's decision on an authorization request.
      *
      * @param params
      *         Parameters necessary to handle the decision.
@@ -570,38 +671,10 @@ public class AuthorizationDecisionHandler extends BaseHandler
      */
     public Response handle(Params params) throws WebApplicationException
     {
-        return handle(params, null, null);
-    }
-
-
-    /**
-     * Handle an end-user's decision on an authorization request.
-     *
-     * @param params
-     *         Parameters necessary to handle the decision.
-     *
-     * @param authzIssueOpts
-     *         Request options for the {@code /api/auth/authorization/issue} API.
-     *
-     * @param authzFailOpts
-     *         Request options for the {@code /api/auth/authorization/fail} API.
-     *
-     * @return
-     *         A response to the client application. Basically, the response
-     *         will trigger redirection to the client's redirection endpoint.
-     *
-     * @throws WebApplicationException
-     *         An error occurred.
-     *
-     * @since 2.82
-     */
-    public Response handle(
-            Params params, Options authzIssueOpts, Options authzFailOpts) throws WebApplicationException
-    {
         try
         {
             // Process the end-user's decision.
-            return process(params, authzIssueOpts, authzFailOpts);
+            return process(params);
         }
         catch (WebApplicationException e)
         {
@@ -618,13 +691,13 @@ public class AuthorizationDecisionHandler extends BaseHandler
     /**
      * Process the end-user's decision.
      */
-    private Response process(Params params, Options authzIssueOpts, Options authzFailOpts)
+    private Response process(Params params)
     {
         // If the end-user did not grant authorization to the client application.
         if (mSpi.isClientAuthorized() == false)
         {
             // The end-user denied the authorization request.
-            return fail(params.getTicket(), Reason.DENIED, authzFailOpts);
+            return fail(params.getTicket(), Reason.DENIED, params.getAuthzFailOptions());
         }
 
         // The subject (= unique identifier) of the end-user.
@@ -634,7 +707,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
         if (subject == null || subject.length() == 0)
         {
             // The end-user is not authenticated.
-            return fail(params.getTicket(), Reason.NOT_AUTHENTICATED, authzFailOpts);
+            return fail(params.getTicket(), Reason.NOT_AUTHENTICATED, params.getAuthzFailOptions());
         }
 
         // the potentially pairwise subject of the end user
@@ -689,7 +762,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
 
         // Authorize the authorization request.
         return authorize(params.getTicket(), subject, authTime, acr, claims,
-                properties, scopes, sub, claimsForTx, verifiedClaimsForTx, authzIssueOpts);
+                properties, scopes, sub, claimsForTx, verifiedClaimsForTx, params.getAuthzIssueOptions());
     }
 
 
@@ -1081,7 +1154,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
      *         {@code verified_claims/claims}.
      *
      * @param options
-     *         Request options.
+     *         Request options for {@code /auth/authorization/issue} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -1123,7 +1196,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
      *         A reason of the failure of the authorization request.
      *
      * @param options
-     *         Request options.
+     *         Request options for {@code /auth/authorization/fail} API.
      *
      * @return
      *         A response that should be returned to the client application.

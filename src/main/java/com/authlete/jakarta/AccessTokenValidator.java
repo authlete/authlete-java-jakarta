@@ -47,7 +47,7 @@ public class AccessTokenValidator extends BaseHandler
      */
     public static class Params implements Serializable
     {
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 2L;
 
 
         private String accessToken;
@@ -57,6 +57,7 @@ public class AccessTokenValidator extends BaseHandler
         private String dpop;
         private String htm;
         private String htu;
+        private Options options;
 
 
         /**
@@ -318,6 +319,39 @@ public class AccessTokenValidator extends BaseHandler
 
             return this;
         }
+
+
+        /**
+         * Get the request options for {@code /api/auth/introspection} API.
+         *
+         * @return
+         *         The request options for {@code /api/auth/introspection} API.
+         *
+         * @since 2.82
+         */
+        public Options getOptions()
+        {
+            return options;
+        }
+
+
+        /**
+         * Set the request options for {@code /api/auth/introspection} API.
+         *
+         * @param options
+         *         The request options for {@code /api/auth/introspection} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setOptions(Options options)
+        {
+            this.options = options;
+
+            return this;
+        }
     }
 
 
@@ -493,8 +527,8 @@ public class AccessTokenValidator extends BaseHandler
 
 
     /**
-     * Validate an access token. This method is an alias of the
-     * {@link #validate(Params, Options)} method.
+     * Validate an access token. This method is an alias of the {@link #validate(Params)}
+     * method.
      *
      * </p>
      * When the given access token is not valid, this method throws a
@@ -538,7 +572,7 @@ public class AccessTokenValidator extends BaseHandler
      *               presented one does not match.
      *         </ol>
      *
-     * @since 2.82
+     * @since 2.27
      */
     public AccessTokenInfo validate(
             String accessToken, String[] requiredScopes,
@@ -550,15 +584,15 @@ public class AccessTokenValidator extends BaseHandler
                 .setRequiredScopes(requiredScopes)
                 .setRequiredSubject(requiredSubject)
                 .setClientCertificate(clientCertificate)
+                .setOptions(options)
                 ;
 
-        return validate(params, options);
+        return validate(params);
     }
 
 
     /**
-     * Validate an access token. This method is an alias of
-     * {@link #validate(Params, Options) validate}{@code (params, null)}.
+     * Validate an access token.
      *
      * @param params
      *         Parameters needed for access token validation.
@@ -573,29 +607,6 @@ public class AccessTokenValidator extends BaseHandler
      */
     public AccessTokenInfo validate(Params params) throws WebApplicationException
     {
-        return validate(params, null);
-    }
-
-
-    /**
-     * Validate an access token.
-     *
-     * @param params
-     *         Parameters needed for access token validation.
-     *
-     * @param options
-     *         Request options for {@code /api/auth/introspection} API.
-     *
-     * @return
-     *         Information about the access token.
-     *
-     * @throws WebApplicationException
-     *         The access token is invalid.
-     *
-     * @since 2.82
-     */
-    public AccessTokenInfo validate(Params params, Options options) throws WebApplicationException
-    {
         if (params == null || params.getAccessToken() == null)
         {
             // Return "400 Bad Request".
@@ -604,7 +615,7 @@ public class AccessTokenValidator extends BaseHandler
 
         try
         {
-            return process(params, options);
+            return process(params);
         }
         catch (WebApplicationException e)
         {
@@ -681,8 +692,7 @@ public class AccessTokenValidator extends BaseHandler
     }
 
 
-
-    private AccessTokenInfo process(Params params, Options options) throws WebApplicationException
+    private AccessTokenInfo process(Params params) throws WebApplicationException
     {
         // Call Authlete's /api/auth/introspection API.
         IntrospectionResponse response = getApiCaller().callIntrospection(
@@ -693,7 +703,7 @@ public class AccessTokenValidator extends BaseHandler
                 params.getDpop(),
                 params.getHtm(),
                 params.getHtu(),
-                options
+                params.getOptions()
         );
 
         // Handle the response from the /auth/introspection API.

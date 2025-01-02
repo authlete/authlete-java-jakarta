@@ -81,31 +81,10 @@ public class BaseIntrospectionEndpoint extends BaseEndpoint
     {
         Params params = new Params()
                 .setParameters(parameters)
+                .setOptions(options)
                 ;
 
         return handle(api, params);
-    }
-
-
-    /**
-     * Handle an introspection request. This method is an alias of {@link
-     * #handle(AuthleteApi, IntrospectionRequestHandler.Params, Options)
-     * handle}{@code (api, params, null)}.
-     *
-     * @param api
-     *         An implementation of {@link AuthleteApi}.
-     *
-     * @param params
-     *         Parameters needed to handle the introspection request.
-     *
-     * @return
-     *         A response that should be returned to the resource server.
-     *
-     * @since 2.63
-     */
-    public Response handle(AuthleteApi api, Params params)
-    {
-        return handle(api, params, null);
     }
 
 
@@ -138,15 +117,12 @@ public class BaseIntrospectionEndpoint extends BaseEndpoint
      * @param params
      *         Parameters needed to handle the introspection request.
      *
-     * @param options
-     *         Request options for the {@code /api/auth/introspection} API.
-     *
      * @return
      *         A response that should be returned to the resource server.
      *
-     * @since 2.82
+     * @since 2.63
      */
-    public Response handle(AuthleteApi api, Params params, Options options)
+    public Response handle(AuthleteApi api, Params params)
     {
         try
         {
@@ -154,7 +130,7 @@ public class BaseIntrospectionEndpoint extends BaseEndpoint
             IntrospectionRequestHandler handler = new IntrospectionRequestHandler(api);
 
             // Delegate the task to the handler.
-            return handler.handle(params, options);
+            return handler.handle(params);
         }
         catch (WebApplicationException e)
         {

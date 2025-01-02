@@ -60,7 +60,7 @@ public class IntrospectionRequestHandler extends BaseHandler
      */
     public static class Params implements Serializable
     {
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 2L;
 
 
         private MultivaluedMap<String, String> parameters;
@@ -73,6 +73,7 @@ public class IntrospectionRequestHandler extends BaseHandler
         private String sharedKeyForSign;
         private String sharedKeyForEncryption;
         private String publicKeyForEncryption;
+        private Options options;
 
 
         /**
@@ -452,6 +453,39 @@ public class IntrospectionRequestHandler extends BaseHandler
 
             return this;
         }
+
+
+        /**
+         * Get the request options for {@code /api/auth/introspection} API.
+         *
+         * @return
+         *         The request options for {@code /api/auth/introspection} API.
+         *
+         * @since 2.82
+         */
+        public Options getOptions()
+        {
+            return options;
+        }
+
+
+        /**
+         * Set the request options for {@code /api/auth/introspection} API.
+         *
+         * @param options
+         *         The request options for {@code /api/auth/introspection} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setOptions(Options options)
+        {
+            this.options = options;
+
+            return this;
+        }
     }
 
 
@@ -491,8 +525,7 @@ public class IntrospectionRequestHandler extends BaseHandler
 
     /**
      * Handle an introspection request (<a href="https://tools.ietf.org/html/rfc7662"
-     * >RFC 7662</a>). This method is an alias of the {@link #handle(Params, Options)}
-     * method.
+     * >RFC 7662</a>). This method is an alias of the {@link #handle(Params)} method.
      *
      * @param parameters
      *         Request parameters of an introspection request.
@@ -514,16 +547,16 @@ public class IntrospectionRequestHandler extends BaseHandler
     {
         Params params = new Params()
                 .setParameters(parameters)
+                .setOptions(options)
                 ;
 
-        return handle(params, options);
+        return handle(params);
     }
 
 
     /**
      * Handle an introspection request (<a href="https://tools.ietf.org/html/rfc7662"
-     * >RFC 7662</a>). This method is an alias of {@link #handle(Params, Options)
-     * handle}{@code (params, null)}.
+     * >RFC 7662</a>).
      *
      * @param params
      *         Parameters needed to handle the introspection request.
@@ -540,32 +573,6 @@ public class IntrospectionRequestHandler extends BaseHandler
      */
     public Response handle(Params params) throws WebApplicationException
     {
-        return handle(params, null);
-    }
-
-
-    /**
-     * Handle an introspection request (<a href="https://tools.ietf.org/html/rfc7662"
-     * >RFC 7662</a>).
-     *
-     * @param params
-     *         Parameters needed to handle the introspection request.
-     *         Must not be {@code null}.
-     *
-     * @param options
-     *         Request options for the {@code /api/auth/introspection/standard} API.
-     *
-     * @return
-     *         A response that should be returned from the endpoint to
-     *         the resource server.
-     *
-     * @throws WebApplicationException
-     *         An error occurred.
-     *
-     * @since 2.82
-     */
-    public Response handle(Params params, Options options) throws WebApplicationException
-    {
         try
         {
             // Process the given parameters.
@@ -580,7 +587,7 @@ public class IntrospectionRequestHandler extends BaseHandler
                 params.getSharedKeyForSign(),
                 params.getSharedKeyForEncryption(),
                 params.getPublicKeyForEncryption(),
-                options
+                params.getOptions()
             );
         }
         catch (WebApplicationException e)

@@ -192,16 +192,34 @@ public class BaseTokenEndpoint extends BaseEndpoint
                 .setParameters(parameters)
                 .setAuthorization(authorization)
                 .setClientCertificatePath(clientCertificatePath)
+                .setTokenOptions(tokenOpts)
+                .setTokenIssueOptions(tokenIssueOpts)
+                .setTokenFailOptions(tokenFailOpts)
                 ;
 
-        return handle(api, spi, params, tokenOpts, tokenIssueOpts, tokenFailOpts);
+        return handle(api, spi, params);
     }
 
 
     /**
-     * Handle a token request. This method is an alias of {@link #handle(AuthleteApi,
-     * TokenRequestHandlerSpi, TokenRequestHandler.Params, Options, Options, Options)
-     * handle}{@code (api, spi, params, null, null, null)}.
+     * Handle a token request.
+     *
+     * <p>
+     * This method internally creates a {@link TokenRequestHandler} instance and
+     * calls its {@link TokenRequestHandler#handle(TokenRequestHandler.Params, Options)}
+     * method. Then, this method uses the value returned from the {@code handle()}
+     * method as a response from this method.
+     * </p>
+     *
+     * <p>
+     * When {@code TokenRequestHandler.handle()} method raises a {@link
+     * WebApplicationException}, this method calls {@link #onError(WebApplicationException)
+     * onError()} method with the exception. The default implementation of {@code
+     * onError()} does nothing. You can override the method as necessary. After
+     * calling {@code onError()} method, this method calls {@code getResponse()}
+     * method of the exception and uses the returned value as a response from this
+     * method.
+     * </p>
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
@@ -220,63 +238,13 @@ public class BaseTokenEndpoint extends BaseEndpoint
     public Response handle(
             AuthleteApi api, TokenRequestHandlerSpi spi, Params params)
     {
-        return handle(api, spi, params, null, null, null);
-    }
-
-
-    /**
-     * Handle a token request.
-     *
-     * <p>
-     * This method internally creates a {@link TokenRequestHandler} instance and
-     * calls its {@link TokenRequestHandler#handle(TokenRequestHandler.Params, Options)}
-     * method. Then, this method uses the value returned from the {@code handle()}
-     * method as a response from this method.
-     * </p>
-     *
-     * <p>
-     * When {@code TokenRequestHandler.handle()} method raises a {@link
-     * WebApplicationException}, this method calls {@link #onError(WebApplicationException) onError()}
-     * method with the exception. The default implementation of {@code onError()}
-     * does nothing. You can override the method as necessary. After calling
-     * {@code onError()} method, this method calls {@code getResponse()} method of
-     * the exception and uses the returned value as a response from this method.
-     * </p>
-     *
-     * @param api
-     *         An implementation of {@link AuthleteApi}.
-     *
-     * @param spi
-     *         An implementation of {@link TokenRequestHandlerSpi}.
-     *
-     * @param params
-     *         Parameters needed to handle the token request.
-     *
-     * @param tokenOpts
-     *         Request options for the {@code /api/auth/token} API.
-     *
-     * @param tokenIssueOpts
-     *         Request options for the {@code /api/auth/token/issue} API.
-     *
-     * @param tokenFailOpts
-     *         Request options for the {@code /api/auth/token/fail} API.
-     *
-     * @return
-     *         A response that should be returned to the client application.
-     *
-     * @since 2.82
-     */
-    public Response handle(
-            AuthleteApi api, TokenRequestHandlerSpi spi, Params params, Options tokenOpts,
-            Options tokenIssueOpts, Options tokenFailOpts)
-    {
         try
         {
             // Create a handler.
             TokenRequestHandler handler = new TokenRequestHandler(api, spi);
 
             // Delegate the task to the handler.
-            return handler.handle(params, tokenOpts, tokenIssueOpts, tokenFailOpts);
+            return handler.handle(params);
         }
         catch (WebApplicationException e)
         {

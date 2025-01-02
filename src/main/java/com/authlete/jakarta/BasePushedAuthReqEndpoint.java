@@ -67,8 +67,7 @@ public class BasePushedAuthReqEndpoint extends BaseEndpoint
 
 
     /**
-     * Handle a pushed authorization request. This method is an alias of the {@link
-     * #handle(AuthleteApi, Params, Options)} method.
+     * Handle a pushed authorization request.
      *
      * @param api
      *            An implementation of {@link AuthleteApi}.
@@ -99,35 +98,16 @@ public class BasePushedAuthReqEndpoint extends BaseEndpoint
                 .setParameters(parameters)
                 .setAuthorization(authorization)
                 .setClientCertificatePath(clientCertificates)
+                .setOptions(options)
                 ;
 
-        return handle(api, params, options);
+        return handle(api, params);
     }
 
 
     /**
      * Handle a PAR request. This method is an alias of the {@link
      * #handle(AuthleteApi, Params, Options) handle}{@code (api, params, null)}.
-     *
-     * @param api
-     *         An implementation of {@link AuthleteApi}.
-     *
-     * @param params
-     *         Parameters needed to handle the PAR request.
-     *
-     * @return
-     *         A response that should be returned to the client application.
-     *
-     * @since 2.70
-     */
-    public Response handle(AuthleteApi api, Params params)
-    {
-        return handle(api, params, null);
-    }
-
-
-    /**
-     * Handle a PAR request.
      *
      * <p>
      * This method internally creates a {@link PushedAuthReqHandler} instance and
@@ -151,15 +131,12 @@ public class BasePushedAuthReqEndpoint extends BaseEndpoint
      * @param params
      *         Parameters needed to handle the PAR request.
      *
-     * @param options
-     *         Request options for the {@code /api/pushed_auth_req} API.
-     *
      * @return
      *         A response that should be returned to the client application.
      *
-     * @since 2.82
+     * @since 2.70
      */
-    public Response handle(AuthleteApi api, Params params, Options options)
+    public Response handle(AuthleteApi api, Params params)
     {
         try
         {
@@ -167,7 +144,7 @@ public class BasePushedAuthReqEndpoint extends BaseEndpoint
             PushedAuthReqHandler handler = new PushedAuthReqHandler(api);
 
             // Delegate the task to the handler.
-            return handler.handle(params, options);
+            return handler.handle(params);
         }
         catch (WebApplicationException e)
         {

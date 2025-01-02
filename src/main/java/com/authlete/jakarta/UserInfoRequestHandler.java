@@ -63,7 +63,7 @@ public class UserInfoRequestHandler extends BaseHandler
      */
     public static class Params implements Serializable
     {
-        private static final long serialVersionUID = 2L;
+        private static final long serialVersionUID = 3L;
 
 
         private String accessToken;
@@ -72,6 +72,8 @@ public class UserInfoRequestHandler extends BaseHandler
         private String htm;
         private String htu;
         private boolean oldIdaFormatUsed;
+        private Options userInfoOptions;
+        private Options userInfoIssueOptions;
 
 
         /**
@@ -381,6 +383,72 @@ public class UserInfoRequestHandler extends BaseHandler
 
             return this;
         }
+
+
+        /**
+         * Get the request options for {@code /api/auth/userinfo} API.
+         *
+         * @return
+         *         The request options for {@code /api/auth/userinfo} API.
+         *
+         * @since 2.82
+         */
+        public Options getUserInfoOptions()
+        {
+            return userInfoOptions;
+        }
+
+
+        /**
+         * Set the request options for {@code /api/auth/userinfo} API.
+         *
+         * @param options
+         *         The request options for {@code /api/auth/userinfo} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setUserInfoOptions(Options options)
+        {
+            userInfoOptions = options;
+
+            return this;
+        }
+
+
+        /**
+         * Get the request options for {@code /api/auth/userinfo/issue} API.
+         *
+         * @return
+         *         The request options for {@code /api/auth/userinfo/issue} API.
+         *
+         * @since 2.82
+         */
+        public Options getUserInfoIssueOptions()
+        {
+            return userInfoIssueOptions;
+        }
+
+
+        /**
+         * Set the request options for {@code /api/auth/userinfo/issue} API.
+         *
+         * @param options
+         *         The request options for {@code /api/auth/userinfo/issue} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setUserInfoIssueOptions(Options options)
+        {
+            userInfoIssueOptions = options;
+
+            return this;
+        }
     }
 
 
@@ -470,15 +538,16 @@ public class UserInfoRequestHandler extends BaseHandler
     {
         Params params = new Params()
                 .setAccessToken(accessToken)
+                .setUserInfoOptions(userInfoOpts)
+                .setUserInfoIssueOptions(userInfoIssueOpts)
                 ;
 
-        return handle(params, userInfoOpts, userInfoIssueOpts);
+        return handle(params);
     }
 
 
     /**
-     * Handle a userinfo request. This method is an alias of {@link #handle(Params, Options, Options)
-     * handle}{@code (params, null, null)}.
+     * Handle a userinfo request.
      *
      * @param params
      *         Parameters needed to handle the userinfo request.
@@ -492,35 +561,6 @@ public class UserInfoRequestHandler extends BaseHandler
      */
     public Response handle(Params params) throws WebApplicationException
     {
-        return handle(params, null, null);
-    }
-
-
-    /**
-     * Handle a userinfo request.
-     *
-     * @param params
-     *         Parameters needed to handle the userinfo request.
-     *
-     * @param userInfoOpts
-     *         Request options for the {@code /api/auth/userinfo} API.
-     *
-     * @param userInfoIssueOpts
-     *         Request options for the {@code /api/auth/userinfo/issue} API.
-     *
-     * @return
-     *         A response that should be returned from the endpoint to the
-     *         client application.
-     *
-     * @throws WebApplicationException
-     *         An error occurred.
-     *
-     * @since 2.82
-     */
-    public Response handle(
-            Params params, Options userInfoOpts, Options userInfoIssueOpts)
-                    throws WebApplicationException
-    {
         // If an access token is not available.
         if (params == null || params.getAccessToken() == null)
         {
@@ -532,7 +572,7 @@ public class UserInfoRequestHandler extends BaseHandler
         try
         {
             // Process the userinfo request.
-            return process(params, userInfoOpts, userInfoIssueOpts);
+            return process(params);
         }
         catch (WebApplicationException e)
         {
@@ -549,7 +589,7 @@ public class UserInfoRequestHandler extends BaseHandler
     /**
      * Process the userinfo request with the access token.
      */
-    private Response process(Params params, Options userInfoOpts, Options userInfoIssueOpts)
+    private Response process(Params params)
     {
         // Call Authlete's /api/auth/userinfo API.
         UserInfoResponse response = getApiCaller().callUserInfo(
@@ -558,7 +598,7 @@ public class UserInfoRequestHandler extends BaseHandler
                 params.getDpop(),
                 params.getHtm(),
                 params.getHtu(),
-                userInfoOpts
+                params.getUserInfoOptions()
         );
 
         // 'action' in the response denotes the next action which
@@ -592,7 +632,7 @@ public class UserInfoRequestHandler extends BaseHandler
 
             case OK:
                 // Return the user information.
-                return getUserInfo(params, response, headers, userInfoIssueOpts);
+                return getUserInfo(params, response, headers, params.getUserInfoIssueOptions());
 
             default:
                 // This never happens.

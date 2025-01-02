@@ -60,7 +60,7 @@ public class PushedAuthReqHandler extends BaseHandler
      */
     public static class Params implements Serializable
     {
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 2L;
 
 
         private MultivaluedMap<String, String> parameters;
@@ -69,6 +69,7 @@ public class PushedAuthReqHandler extends BaseHandler
         private String dpop;
         private String htm;
         private String htu;
+        private Options options;
 
 
         /**
@@ -295,6 +296,39 @@ public class PushedAuthReqHandler extends BaseHandler
 
             return this;
         }
+
+
+        /**
+         * Get the request options for {@code /api/pushed_auth_req} API.
+         *
+         * @return
+         *         The request options for {@code /api/pushed_auth_req} API.
+         *
+         * @since 2.82
+         */
+        public Options getOptions()
+        {
+            return options;
+        }
+
+
+        /**
+         * Set the request options for {@code /api/pushed_auth_req} API.
+         *
+         * @param options
+         *         The request options for {@code /api/pushed_auth_req} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setOptions(Options options)
+        {
+            this.options = options;
+
+            return this;
+        }
     }
 
 
@@ -347,7 +381,7 @@ public class PushedAuthReqHandler extends BaseHandler
 
     /**
      * Handle a pushed authorization request. This method is an alias of the {@link
-     * #handle(Params, Options)} method.
+     * #handle(Params)} method.
      *
      * @param parameters
      *            Request parameters of a pushed authorization request.
@@ -384,15 +418,15 @@ public class PushedAuthReqHandler extends BaseHandler
                 .setParameters(parameters)
                 .setAuthorization(authorization)
                 .setClientCertificatePath(clientCertificatePath)
+                .setOptions(options)
                 ;
 
-        return handle(params, options);
+        return handle(params);
     }
 
 
     /**
-     * Handle a PAR request. This method is an alias of {@link #handle(Params, Options)
-     * handle}{@code (params, null)}.
+     * Handle a PAR request.
      *
      * @param params
      *         Parameters needed to handle the PAR request.
@@ -408,31 +442,6 @@ public class PushedAuthReqHandler extends BaseHandler
      * @since 2.69
      */
     public Response handle(Params params)
-    {
-        return handle(params, null);
-    }
-
-
-    /**
-     * Handle a PAR request.
-     *
-     * @param params
-     *         Parameters needed to handle the PAR request.
-     *         Must not be {@code null}.
-     *
-     * @param options
-     *         Request options for the {@code /api/pushed_auth_req} API.
-     *
-     * @return
-     *         A response that should be returned from the endpoint to the
-     *         client application.
-     *
-     * @throws WebApplicationException
-     *         An error occurred.
-     *
-     * @since 2.82
-     */
-    public Response handle(Params params, Options options)
     {
         // Convert the value of Authorization header (credentials of
         // the client application), if any, into BasicCredentials.
@@ -454,7 +463,7 @@ public class PushedAuthReqHandler extends BaseHandler
                     params.getDpop(),
                     params.getHtm(),
                     params.getHtu(),
-                    options
+                    params.getOptions()
                     );
         }
         catch (WebApplicationException e)

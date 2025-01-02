@@ -109,35 +109,11 @@ public class BaseAuthorizationDecisionEndpoint extends BaseEndpoint
                 .setTicket(ticket)
                 .setClaimNames(claimNames)
                 .setClaimLocales(claimLocales)
+                .setAuthzIssueOptions(authzFailOpts)
+                .setAuthzFailOptions(authzFailOpts)
                 ;
 
-        return handle(api, spi, params, authzIssueOpts, authzFailOpts);
-    }
-
-
-    /**
-     * Handle an authorization decision request. This method is an alias of
-     * {@link #handle(AuthleteApi, AuthorizationDecisionHandlerSpi, Params, Options,
-     * Options) handle}{@code (api, spi, params, null, null)}.
-     *
-     * @param api
-     *         An implementation of {@link AuthleteApi}.
-     *
-     * @param spi
-     *         An implementation of {@link AuthorizationDecisionHandlerSpi}.
-     *
-     * @param params
-     *         Parameters necessary to handle the decision.
-     *
-     * @return
-     *         A response that should be returned to the client application.
-     *
-     * @since 2.26
-     */
-    public Response handle(
-            AuthleteApi api, AuthorizationDecisionHandlerSpi spi, Params params)
-    {
-        return handle(api, spi, params, null, null);
+        return handle(api, spi, params);
     }
 
 
@@ -169,20 +145,13 @@ public class BaseAuthorizationDecisionEndpoint extends BaseEndpoint
      * @param params
      *         Parameters necessary to handle the decision.
      *
-     * @param authzIssueOpts
-     *         Request options for the {@code /api/auth/authorization/issue} API.
-     *
-     * @param authzFailOpts
-     *         Request options for the {@code /api/auth/authorization/fail} API.
-     *
      * @return
      *         A response that should be returned to the client application.
      *
-     * @since 2.82
+     * @since 2.26
      */
     public Response handle(
-            AuthleteApi api, AuthorizationDecisionHandlerSpi spi, Params params,
-            Options authzIssueOpts, Options authzFailOpts)
+            AuthleteApi api, AuthorizationDecisionHandlerSpi spi, Params params)
     {
         try
         {
@@ -190,7 +159,7 @@ public class BaseAuthorizationDecisionEndpoint extends BaseEndpoint
             AuthorizationDecisionHandler handler = new AuthorizationDecisionHandler(api, spi);
 
             // Delegate the task to the handler.
-            return handler.handle(params, authzIssueOpts, authzFailOpts);
+            return handler.handle(params);
         }
         catch (WebApplicationException e)
         {

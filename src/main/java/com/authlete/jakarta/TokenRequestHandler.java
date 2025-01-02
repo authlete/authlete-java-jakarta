@@ -60,7 +60,7 @@ public class TokenRequestHandler extends BaseHandler
      */
     public static class Params implements Serializable
     {
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 2L;
 
 
         private MultivaluedMap<String, String> parameters;
@@ -69,6 +69,9 @@ public class TokenRequestHandler extends BaseHandler
         private String dpop;
         private String htm;
         private String htu;
+        private Options tokenOptions;
+        private Options tokenIssueOptions;
+        private Options tokenFailOptions;
 
 
         /**
@@ -289,6 +292,105 @@ public class TokenRequestHandler extends BaseHandler
 
             return this;
         }
+
+
+        /**
+         * Get the request options for {@code /api/auth/token} API.
+         *
+         * @return
+         *         The request options for {@code /api/auth/token} API.
+         *
+         * @since 2.82
+         */
+        public Options getTokenOptions()
+        {
+            return tokenOptions;
+        }
+
+
+        /**
+         * Set the request options for {@code /api/auth/token} API.
+         *
+         * @param options
+         *         The request options for {@code /api/auth/token} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setTokenOptions(Options options)
+        {
+            tokenOptions = options;
+
+            return this;
+        }
+
+
+        /**
+         * Get the request options for {@code /api/auth/token/issue} API.
+         *
+         * @return
+         *         The request options for {@code /api/auth/token/issue} API.
+         *
+         * @since 2.82
+         */
+        public Options getTokenIssueOptions()
+        {
+            return tokenIssueOptions;
+        }
+
+
+        /**
+         * Set the request options for {@code /api/auth/token/issue} API.
+         *
+         * @param options
+         *         The request options for {@code /api/auth/token/issue} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setTokenIssueOptions(Options options)
+        {
+            tokenIssueOptions = options;
+
+            return this;
+        }
+
+
+        /**
+         * Get the request options for {@code /api/auth/token/fail} API.
+         *
+         * @return
+         *         The request options for {@code /api/auth/token/fail} API.
+         *
+         * @since 2.82
+         */
+        public Options getTokenFailOptions()
+        {
+            return tokenFailOptions;
+        }
+
+
+        /**
+         * Set the request options for {@code /api/auth/token/fail} API.
+         *
+         * @param options
+         *         The request options for {@code /api/auth/token/fail} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setTokenFailOptions(Options options)
+        {
+            tokenFailOptions = options;
+
+            return this;
+        }
     }
 
 
@@ -394,8 +496,9 @@ public class TokenRequestHandler extends BaseHandler
 
 
     /**
-     * Handle a token request. This method is an alias of {@link #handle(MultivaluedMap, String, String[], Options, Options, Options)
-     * handle}{@code (parameters, authorization, clientCertificatePath, null, null, null)}.
+     * Handle a token request. This method is an alias of {@link
+     * #handle(MultivaluedMap, String, String[], Options, Options, Options) handle}{@code
+     * (parameters, authorization, clientCertificatePath, null, null, null)}.
      *
      * @param parameters
      *         Request parameters of a token request.
@@ -430,8 +533,8 @@ public class TokenRequestHandler extends BaseHandler
 
 
     /**
-     * Handle a token request. This method is an alias of the {@link #handle(Params,
-     * Options, Options, Options)} method.
+     * Handle a token request. This method is an alias of the {@link #handle(Params)}
+     * method.
      *
      * @param parameters
      *         Request parameters of a token request.
@@ -475,15 +578,17 @@ public class TokenRequestHandler extends BaseHandler
                 .setParameters(parameters)
                 .setAuthorization(authorization)
                 .setClientCertificatePath(clientCertificatePath)
+                .setTokenOptions(tokenFailOpts)
+                .setTokenIssueOptions(tokenFailOpts)
+                .setTokenFailOptions(tokenFailOpts)
                 ;
 
-        return handle(params, tokenOpts, tokenIssueOpts, tokenFailOpts);
+        return handle(params);
     }
 
 
     /**
-     * Handle a token request. This method is an alias of the {@link #handle(Params,
-     * Options, Options, Options) handle}{@code (params, null, null, null)}.
+     * Handle a token request.
      *
      * @param params
      *         Parameters needed to handle the token request.
@@ -499,39 +604,6 @@ public class TokenRequestHandler extends BaseHandler
      * @since 2.27
      */
     public Response handle(Params params) throws WebApplicationException
-    {
-        return handle(params, null, null, null);
-    }
-
-
-    /**
-     * Handle a token request.
-     *
-     * @param params
-     *         Parameters needed to handle the token request.
-     *         Must not be {@code null}.
-     *
-     * @param tokenOpts
-     *         Request options for the {@code /api/auth/token} API.
-     *
-     * @param tokenIssueOpts
-     *         Request options for the {@code /api/auth/token/issue} API.
-     *
-     * @param tokenFailOpts
-     *         Request options for the {@code /api/auth/token/fail} API.
-     *
-     * @return
-     *         A response that should be returned from the endpoint to the
-     *         client application.
-     *
-     * @throws WebApplicationException
-     *         An error occurred.
-     *
-     * @since 2.82
-     */
-    public Response handle(
-            Params params, Options tokenOpts, Options tokenIssueOpts, Options tokenFailOpts)
-                    throws WebApplicationException
     {
         // Convert the value of Authorization header (credentials of
         // the client application), if any, into BasicCredentials.
@@ -553,9 +625,9 @@ public class TokenRequestHandler extends BaseHandler
                     params.getDpop(),
                     params.getHtm(),
                     params.getHtu(),
-                    tokenOpts,
-                    tokenIssueOpts,
-                    tokenFailOpts
+                    params.getTokenOptions(),
+                    params.getTokenIssueOptions(),
+                    params.getTokenFailOptions()
             );
         }
         catch (WebApplicationException e)
