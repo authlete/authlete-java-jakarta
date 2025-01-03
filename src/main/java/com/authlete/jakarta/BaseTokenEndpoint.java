@@ -72,7 +72,7 @@ public class BaseTokenEndpoint extends BaseEndpoint
     /**
      * Handle a token request. This method is an alias of the {@link #handle(AuthleteApi,
      * TokenRequestHandlerSpi, MultivaluedMap, String, String[], Options) handle}{@code
-     * (api, spi, parameters, authorization, null, tokenOpts, tokenIssueOpts, tokenFailOpts)}.
+     * (api, spi, parameters, authorization, null, tokenOptions, tokenIssueOptions, tokenFailOptions)}.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
@@ -86,13 +86,13 @@ public class BaseTokenEndpoint extends BaseEndpoint
      * @param authorization
      *         The value of {@code Authorization} header of the token request.
      *
-     * @param tokenOpts
+     * @param tokenOptions
      *         Request options for the {@code /api/auth/token} API.
      *
-     * @param tokenIssueOpts
+     * @param tokenIssueOptions
      *         Request options for the {@code /api/auth/token/issue} API.
      *
-     * @param tokenFailOpts
+     * @param tokenFailOptions
      *         Request options for the {@code /api/auth/token/fail} API.
      *
      * @return
@@ -103,10 +103,10 @@ public class BaseTokenEndpoint extends BaseEndpoint
     public Response handle(
             AuthleteApi api, TokenRequestHandlerSpi spi,
             MultivaluedMap<String, String> parameters, String authorization,
-            Options tokenOpts, Options tokenIssueOpts, Options tokenFailOpts)
+            Options tokenOptions, Options tokenIssueOptions, Options tokenFailOptions)
     {
         return handle(
-                api, spi, parameters, authorization, null, tokenOpts, tokenIssueOpts, tokenFailOpts);
+                api, spi, parameters, authorization, null, tokenOptions, tokenIssueOptions, tokenFailOptions);
     }
 
 
@@ -148,7 +148,7 @@ public class BaseTokenEndpoint extends BaseEndpoint
 
     /**
      * Handle a token request. This method is an alias of the {@link #handle(AuthleteApi,
-     * TokenRequestHandlerSpi, TokenRequestHandler.Params, Options, Options, Options)}
+     * TokenRequestHandlerSpi, TokenRequestHandler.Params)}
      * method.
      *
      * @param api
@@ -168,13 +168,13 @@ public class BaseTokenEndpoint extends BaseEndpoint
      *         PEM format. The client's own certificate is the first in this
      *         array. Can be {@code null}.
      *
-     * @param tokenOpts
+     * @param tokenOptions
      *         Request options for the {@code /api/auth/token} API.
      *
-     * @param tokenIssueOpts
+     * @param tokenIssueOptions
      *         Request options for the {@code /api/auth/token/issue} API.
      *
-     * @param tokenFailOpts
+     * @param tokenFailOptions
      *         Request options for the {@code /api/auth/token/fail} API.
      *
      * @return
@@ -185,16 +185,16 @@ public class BaseTokenEndpoint extends BaseEndpoint
     public Response handle(
             AuthleteApi api, TokenRequestHandlerSpi spi,
             MultivaluedMap<String, String> parameters, String authorization,
-            String[] clientCertificatePath, Options tokenOpts, Options tokenIssueOpts,
-            Options tokenFailOpts)
+            String[] clientCertificatePath, Options tokenOptions, Options tokenIssueOptions,
+            Options tokenFailOptions)
     {
         Params params = new Params()
                 .setParameters(parameters)
                 .setAuthorization(authorization)
                 .setClientCertificatePath(clientCertificatePath)
-                .setTokenOptions(tokenOpts)
-                .setTokenIssueOptions(tokenIssueOpts)
-                .setTokenFailOptions(tokenFailOpts)
+                .setTokenOptions(tokenOptions)
+                .setTokenIssueOptions(tokenIssueOptions)
+                .setTokenFailOptions(tokenFailOptions)
                 ;
 
         return handle(api, spi, params);
@@ -206,7 +206,7 @@ public class BaseTokenEndpoint extends BaseEndpoint
      *
      * <p>
      * This method internally creates a {@link TokenRequestHandler} instance and
-     * calls its {@link TokenRequestHandler#handle(TokenRequestHandler.Params, Options)}
+     * calls its {@link TokenRequestHandler#handle(TokenRequestHandler.Params)}
      * method. Then, this method uses the value returned from the {@code handle()}
      * method as a response from this method.
      * </p>

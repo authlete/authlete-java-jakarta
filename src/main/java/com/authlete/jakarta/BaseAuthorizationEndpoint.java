@@ -99,13 +99,13 @@ public class BaseAuthorizationEndpoint extends BaseEndpoint
      * @param parameters
      *         Request parameters of the authorization request.
      *
-     * @param authzOpts
+     * @param authzOptions
      *         Request options for the {@code /api/auth/authorization} API.
      *
-     * @param authzIssueOpts
+     * @param authzIssueOptions
      *         Request options for the {@code /api/auth/authorization/issue} API.
      *
-     * @param authzFailOpts
+     * @param authzFailOptions
      *         Request options for the {@code /api/auth/authorization/fail} API.
      *
      * @return
@@ -115,8 +115,8 @@ public class BaseAuthorizationEndpoint extends BaseEndpoint
      */
     public Response handle(
             AuthleteApi api, AuthorizationRequestHandlerSpi spi,
-            MultivaluedMap<String, String> parameters, Options authzOpts,
-            Options authzIssueOpts, Options authzFailOpts)
+            MultivaluedMap<String, String> parameters, Options authzOptions,
+            Options authzIssueOptions, Options authzFailOptions)
     {
         try
         {
@@ -124,7 +124,7 @@ public class BaseAuthorizationEndpoint extends BaseEndpoint
             AuthorizationRequestHandler handler = new AuthorizationRequestHandler(api, spi);
 
             // Delegate the task to the handler.
-            return handler.handle(parameters, authzOpts, authzIssueOpts, authzFailOpts);
+            return handler.handle(parameters, authzOptions, authzIssueOptions, authzFailOptions);
         }
         catch (WebApplicationException e)
         {

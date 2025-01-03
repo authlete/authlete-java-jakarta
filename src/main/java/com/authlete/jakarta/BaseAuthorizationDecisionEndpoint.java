@@ -89,10 +89,10 @@ public class BaseAuthorizationDecisionEndpoint extends BaseEndpoint
      *         Requested claim locales. Use the value of the {@code claimsLocales}
      *         parameter in a response from Authlete's {@code /api/auth/authorization} API.
      *
-     * @param authzIssueOpts
+     * @param authzIssueOptions
      *         Request options for the {@code /api/auth/authorization/issue} API.
      *
-     * @param authzFailOpts
+     * @param authzFailOptions
      *         Request options for the {@code /api/auth/authorization/fail} API.
      *
      * @return
@@ -102,15 +102,15 @@ public class BaseAuthorizationDecisionEndpoint extends BaseEndpoint
      */
     public Response handle(
             AuthleteApi api, AuthorizationDecisionHandlerSpi spi,
-            String ticket, String[] claimNames, String[] claimLocales, Options authzIssueOpts,
-            Options authzFailOpts)
+            String ticket, String[] claimNames, String[] claimLocales, Options authzIssueOptions,
+            Options authzFailOptions)
     {
         Params params = new Params()
                 .setTicket(ticket)
                 .setClaimNames(claimNames)
                 .setClaimLocales(claimLocales)
-                .setAuthzIssueOptions(authzFailOpts)
-                .setAuthzFailOptions(authzFailOpts)
+                .setAuthzIssueOptions(authzFailOptions)
+                .setAuthzFailOptions(authzFailOptions)
                 ;
 
         return handle(api, spi, params);
@@ -122,9 +122,9 @@ public class BaseAuthorizationDecisionEndpoint extends BaseEndpoint
      *
      * <p>
      * This method internally creates a {@link AuthorizationDecisionHandler} instance and
-     * calls its {@link AuthorizationDecisionHandler#handle(Params, Options, Options)}
-     * method. Then, this method uses the value returned from the {@code handle()} method
-     * as a response from this method.
+     * calls its {@link AuthorizationDecisionHandler#handle(Params)} method. Then,
+     * this method uses the value returned from the {@code handle()} method as a
+     * response from this method.
      * </p>
      *
      * <p>

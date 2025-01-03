@@ -625,10 +625,10 @@ public class AuthorizationDecisionHandler extends BaseHandler
      *         Requested claim locales. Use the value of the {@code claimsLocales}
      *         parameter in a response from Authlete's {@code /api/auth/authorization} API.
      *
-     * @param authzIssueOpts
+     * @param authzIssueOptions
      *         Request options for the {@code /api/auth/authorization/issue} API.
      *
-     * @param authzFailOpts
+     * @param authzFailOptions
      *         Request options for the {@code /api/auth/authorization/fail} API.
      *
      * @return
@@ -639,15 +639,15 @@ public class AuthorizationDecisionHandler extends BaseHandler
      *         An error occurred.
      */
     public Response handle(
-            String ticket, String[] claimNames, String[] claimLocales, Options authzIssueOpts,
-            Options authzFailOpts) throws WebApplicationException
+            String ticket, String[] claimNames, String[] claimLocales, Options authzIssueOptions,
+            Options authzFailOptions) throws WebApplicationException
     {
         Params params = new Params()
                 .setTicket(ticket)
                 .setClaimNames(claimNames)
                 .setClaimLocales(claimLocales)
-                .setAuthzIssueOptions(authzFailOpts)
-                .setAuthzFailOptions(authzFailOpts)
+                .setAuthzIssueOptions(authzFailOptions)
+                .setAuthzFailOptions(authzFailOptions)
                 ;
 
         return handle(params);

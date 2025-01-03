@@ -75,10 +75,10 @@ public class BaseUserInfoEndpoint extends BaseResourceEndpoint
      * @param accessToken
      *         An access token.
      *
-     * @param userInfoOpts
+     * @param userInfoOptions
      *         Request options for the {@code /api/auth/userinfo} API.
      *
-     * @param userInfoIssueOpts
+     * @param userInfoIssueOptions
      *         Request options for the {@code /api/auth/userinfo/issue} API.
      *
      * @return
@@ -88,12 +88,12 @@ public class BaseUserInfoEndpoint extends BaseResourceEndpoint
      */
     public Response handle(
             AuthleteApi api, UserInfoRequestHandlerSpi spi, String accessToken,
-            Options userInfoOpts, Options userInfoIssueOpts)
+            Options userInfoOptions, Options userInfoIssueOptions)
     {
         Params params = new Params()
                 .setAccessToken(accessToken)
-                .setUserInfoOptions(userInfoOpts)
-                .setUserInfoIssueOptions(userInfoIssueOpts)
+                .setUserInfoOptions(userInfoOptions)
+                .setUserInfoIssueOptions(userInfoIssueOptions)
                 ;
 
         return handle(api, spi, params);

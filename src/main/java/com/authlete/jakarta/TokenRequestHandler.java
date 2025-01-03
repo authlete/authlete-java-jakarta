@@ -456,7 +456,7 @@ public class TokenRequestHandler extends BaseHandler
     /**
      * Handle a token request. This method is an alias of {@link
      * #handle(MultivaluedMap, String, String[], Options, Options, Options) handle}{@code
-     * (parameters, authorization, null, tokenOpts, tokenIssueOpts, tokenFailOpts)}.
+     * (parameters, authorization, null, tokenOptions, tokenIssueOptions, tokenFailOptions)}.
      *
      * @param parameters
      *         Request parameters of a token request.
@@ -468,13 +468,13 @@ public class TokenRequestHandler extends BaseHandler
      *         "https://tools.ietf.org/html/rfc2617#section-2">Basic
      *         Authentication</a>.
      *
-     * @param tokenOpts
+     * @param tokenOptions
      *         Request options for the {@code /api/auth/token} API.
      *
-     * @param tokenIssueOpts
+     * @param tokenIssueOptions
      *         Request options for the {@code /api/auth/token/issue} API.
      *
-     * @param tokenFailOpts
+     * @param tokenFailOptions
      *         Request options for the {@code /api/auth/token/fail} API.
      *
      * @return
@@ -488,10 +488,10 @@ public class TokenRequestHandler extends BaseHandler
      */
     public Response handle(
             MultivaluedMap<String, String> parameters, String authorization,
-            Options tokenOpts, Options tokenIssueOpts, Options tokenFailOpts)
+            Options tokenOptions, Options tokenIssueOptions, Options tokenFailOptions)
                     throws WebApplicationException
     {
-        return handle(parameters, authorization, null, tokenOpts, tokenIssueOpts, tokenFailOpts);
+        return handle(parameters, authorization, null, tokenOptions, tokenIssueOptions, tokenFailOptions);
     }
 
 
@@ -551,13 +551,13 @@ public class TokenRequestHandler extends BaseHandler
      *         item in the array is the client's certificate itself. May be {@code null} if
      *         the client did not send a certificate or path.
      *
-     * @param tokenOpts
+     * @param tokenOptions
      *         Request options for the {@code /api/auth/token} API.
      *
-     * @param tokenIssueOpts
+     * @param tokenIssueOptions
      *         Request options for the {@code /api/auth/token/issue} API.
      *
-     * @param tokenFailOpts
+     * @param tokenFailOptions
      *         Request options for the {@code /api/auth/token/fail} API.
      *
      * @return
@@ -571,16 +571,16 @@ public class TokenRequestHandler extends BaseHandler
      */
     public Response handle(
             MultivaluedMap<String, String> parameters, String authorization,
-            String[] clientCertificatePath, Options tokenOpts, Options tokenIssueOpts,
-            Options tokenFailOpts) throws WebApplicationException
+            String[] clientCertificatePath, Options tokenOptions, Options tokenIssueOptions,
+            Options tokenFailOptions) throws WebApplicationException
     {
         Params params = new Params()
                 .setParameters(parameters)
                 .setAuthorization(authorization)
                 .setClientCertificatePath(clientCertificatePath)
-                .setTokenOptions(tokenFailOpts)
-                .setTokenIssueOptions(tokenFailOpts)
-                .setTokenFailOptions(tokenFailOpts)
+                .setTokenOptions(tokenFailOptions)
+                .setTokenIssueOptions(tokenFailOptions)
+                .setTokenFailOptions(tokenFailOptions)
                 ;
 
         return handle(params);
@@ -648,8 +648,8 @@ public class TokenRequestHandler extends BaseHandler
     private Response process(
             MultivaluedMap<String, String> parameters, String clientId,
             String clientSecret, String[] clientCertificatePath,
-            String dpop, String htm, String htu, Options tokenOpts, Options tokenIssueOpts,
-            Options tokenFailOpts)
+            String dpop, String htm, String htu, Options tokenOptions, Options tokenIssueOptions,
+            Options tokenFailOptions)
     {
         // Extra properties to associate with an access token.
         Property[] properties = mSpi.getProperties();
@@ -671,7 +671,7 @@ public class TokenRequestHandler extends BaseHandler
         // Call Authlete's /api/auth/token API.
         TokenResponse response = getApiCaller().callToken(
                 parameters, clientId, clientSecret, properties,
-                clientCertificate, clientCertificatePath, dpop, htm, htu, tokenOpts);
+                clientCertificate, clientCertificatePath, dpop, htm, htu, tokenOptions);
 
         // 'action' in the response denotes the next action which
         // this service implementation should take.
@@ -700,7 +700,7 @@ public class TokenRequestHandler extends BaseHandler
 
             case PASSWORD:
                 // Process the token request whose flow is "Resource Owner Password Credentials".
-                return handlePassword(response, headers, tokenIssueOpts, tokenFailOpts);
+                return handlePassword(response, headers, tokenIssueOptions, tokenFailOptions);
 
             case OK:
                 // 200 OK
@@ -746,8 +746,8 @@ public class TokenRequestHandler extends BaseHandler
      * Process the token request whose flow is "Resource Owner Password Credentials".
      */
     private Response handlePassword(
-            TokenResponse response, Map<String, Object> headers, Options tokenIssueOpts,
-            Options tokenFailOpts)
+            TokenResponse response, Map<String, Object> headers, Options tokenIssueOptions,
+            Options tokenFailOptions)
     {
         // The credentials of the resource owner.
         String username = response.getUsername();
@@ -766,14 +766,14 @@ public class TokenRequestHandler extends BaseHandler
         {
             // Issue an access token and optionally an ID token.
             return getApiCaller().tokenIssue(
-                    ticket, subject, properties, headers, tokenIssueOpts);
+                    ticket, subject, properties, headers, tokenIssueOptions);
         }
         else
         {
             // The credentials are invalid. An access token is not issued.
             throw getApiCaller().tokenFail(
                     ticket, Reason.INVALID_RESOURCE_OWNER_CREDENTIALS, headers,
-                    tokenFailOpts);
+                    tokenFailOptions);
         }
     }
 

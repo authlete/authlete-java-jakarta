@@ -511,16 +511,16 @@ public class UserInfoRequestHandler extends BaseHandler
      * "http://openid.net/specs/openid-connect-core-1_0.html#UserInfo"
      * >UserInfo Endpoint</a> defined in <a href=
      * "http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect
-     * Core 1&#x002E;0</a>. This method is an alias of the {@link
-     * #handle(Params, Options, Options)} method.
+     * Core 1&#x002E;0</a>. This method is an alias of the {@link #handle(Params)}
+     * method.
      *
      * @param accessToken
      *         An access token.
      *
-     * @param userInfoOpts
+     * @param userInfoOptions
      *         Request options for the {@code /api/auth/userinfo} API.
      *
-     * @param userInfoIssueOpts
+     * @param userInfoIssueOptions
      *         Request options for the {@code /api/auth/userinfo/issue} API.
      *
      * @return
@@ -533,13 +533,13 @@ public class UserInfoRequestHandler extends BaseHandler
      * @since 2.82
      */
     public Response handle(
-            String accessToken, Options userInfoOpts, Options userInfoIssueOpts)
+            String accessToken, Options userInfoOptions, Options userInfoIssueOptions)
                     throws WebApplicationException
     {
         Params params = new Params()
                 .setAccessToken(accessToken)
-                .setUserInfoOptions(userInfoOpts)
-                .setUserInfoIssueOptions(userInfoIssueOpts)
+                .setUserInfoOptions(userInfoOptions)
+                .setUserInfoIssueOptions(userInfoIssueOptions)
                 ;
 
         return handle(params);
