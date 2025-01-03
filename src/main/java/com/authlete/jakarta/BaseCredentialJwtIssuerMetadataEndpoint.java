@@ -53,7 +53,7 @@ public class BaseCredentialJwtIssuerMetadataEndpoint extends BaseEndpoint
 {
     /**
      * Handle a request to the JWT issuer metadata endpoint. This method is an alias
-     * of {@link #handle(AuthleteApi, CredentialJwtIssuerMetadataRequest)} method.
+     * of the {@link #handle(AuthleteApi, CredentialJwtIssuerMetadataRequest)} method.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
@@ -70,14 +70,14 @@ public class BaseCredentialJwtIssuerMetadataEndpoint extends BaseEndpoint
 
     /**
      * Handle a request to the JWT issuer metadata endpoint. This method is an alias
-     * of {@link #handle(AuthleteApi, CredentialJwtIssuerMetadataRequest, Options)}
+     * of the {@link #handle(AuthleteApi, CredentialJwtIssuerMetadataRequest, Options)}
      * method.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
      *
      * @param options
-     *         Request options for the {@code /api/vci/jwtissuer} API.
+     *         The request options for the {@code /api/vci/jwtissuer} API.
      *
      * @return
      *         A response that should be returned from the JWT issuer
@@ -93,8 +93,8 @@ public class BaseCredentialJwtIssuerMetadataEndpoint extends BaseEndpoint
 
     /**
      * Handle a request to the JWT issuer metadata endpoint. This method is an alias
-     * of {@link #handle(AuthleteApi, CredentialJwtIssuerMetadataRequest, CredentialJwtIssuerMetadataRequest,
-     * Options)} method.
+     * of {@link #handle(AuthleteApi, CredentialJwtIssuerMetadataRequest, Options)}{@code
+     * handle(api, request, null)}.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
@@ -115,7 +115,7 @@ public class BaseCredentialJwtIssuerMetadataEndpoint extends BaseEndpoint
      * <p>
      * This method internally creates a {@link CredentialJwtIssuerMetadataRequestHandler}
      * instance and calls its {@link
-     * CredentialJwtIssuerMetadataRequestHandler#handle(CredentialJwtIssuerMetadataRequest, Options)}
+     * CredentialJwtIssuerMetadataRequestHandler#handle(CredentialJwtIssuerMetadataRequest, Options) handle()}
      * method. Then, this method uses the value returned from the handler's method
      * as a response from this method.
      * </p>
@@ -133,10 +133,10 @@ public class BaseCredentialJwtIssuerMetadataEndpoint extends BaseEndpoint
      *         An implementation of {@link AuthleteApi}.
      *
      * @param request
-     *         Request parameters for Authlete's {@code /api/vci/jwtissuer} API.
+     *         The request parameters for Authlete's {@code /api/vci/jwtissuer} API.
      *
      * @param options
-     *         Request options for the {@code /api/vci/jwtissuer} API.
+     *         The request options for the {@code /api/vci/jwtissuer} API.
      *
      * @return
      *         A response that should be returned from the JWT issuer

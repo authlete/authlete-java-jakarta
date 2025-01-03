@@ -58,7 +58,7 @@ public class BaseAuthorizationEndpoint extends BaseEndpoint
      *         An implementation of {@link AuthorizationRequestHandlerSpi}.
      *
      * @param parameters
-     *         Request parameters of the authorization request.
+     *         The request parameters of the authorization request.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -77,8 +77,8 @@ public class BaseAuthorizationEndpoint extends BaseEndpoint
      * <p>
      * This method internally creates a {@link AuthorizationRequestHandler} instance and
      * calls its {@link AuthorizationRequestHandler#handle(MultivaluedMap, Options,
-     * Options, Options)} method. Then, this method uses the value returned from
-     * the {@code handle()} method as a response from this method.
+     * Options, Options) handle()} method. Then, this method uses the value returned
+     * from the {@code handle()} method as a response from this method.
      * </p>
      *
      * <p>
@@ -97,16 +97,16 @@ public class BaseAuthorizationEndpoint extends BaseEndpoint
      *         An implementation of {@link AuthorizationRequestHandlerSpi}.
      *
      * @param parameters
-     *         Request parameters of the authorization request.
+     *         The request parameters of the authorization request.
      *
      * @param authzOptions
-     *         Request options for the {@code /api/auth/authorization} API.
+     *         The request options for the {@code /api/auth/authorization} API.
      *
      * @param authzIssueOptions
-     *         Request options for the {@code /api/auth/authorization/issue} API.
+     *         The request options for the {@code /api/auth/authorization/issue} API.
      *
      * @param authzFailOptions
-     *         Request options for the {@code /api/auth/authorization/fail} API.
+     *         The request options for the {@code /api/auth/authorization/fail} API.
      *
      * @return
      *         A response that should be returned to the client application.

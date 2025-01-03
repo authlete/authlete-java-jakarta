@@ -53,7 +53,7 @@ public class BaseTokenEndpoint extends BaseEndpoint
      *         An implementation of {@link TokenRequestHandlerSpi}.
      *
      * @param parameters
-     *         Request parameters of the token request.
+     *         The request parameters of the token request.
      *
      * @param authorization
      *         The value of {@code Authorization} header of the token request.
@@ -81,19 +81,19 @@ public class BaseTokenEndpoint extends BaseEndpoint
      *         An implementation of {@link TokenRequestHandlerSpi}.
      *
      * @param parameters
-     *         Request parameters of the token request.
+     *         The request parameters of the token request.
      *
      * @param authorization
      *         The value of {@code Authorization} header of the token request.
      *
      * @param tokenOptions
-     *         Request options for the {@code /api/auth/token} API.
+     *         The request options for the {@code /api/auth/token} API.
      *
      * @param tokenIssueOptions
-     *         Request options for the {@code /api/auth/token/issue} API.
+     *         The request options for the {@code /api/auth/token/issue} API.
      *
      * @param tokenFailOptions
-     *         Request options for the {@code /api/auth/token/fail} API.
+     *         The request options for the {@code /api/auth/token/fail} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -122,7 +122,7 @@ public class BaseTokenEndpoint extends BaseEndpoint
      *         An implementation of {@link TokenRequestHandlerSpi}.
      *
      * @param parameters
-     *         Request parameters of the token request.
+     *         The request parameters of the token request.
      *
      * @param authorization
      *         The value of {@code Authorization} header of the token request.
@@ -148,8 +148,7 @@ public class BaseTokenEndpoint extends BaseEndpoint
 
     /**
      * Handle a token request. This method is an alias of the {@link #handle(AuthleteApi,
-     * TokenRequestHandlerSpi, TokenRequestHandler.Params)}
-     * method.
+     * TokenRequestHandlerSpi, TokenRequestHandler.Params)} method.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
@@ -158,7 +157,7 @@ public class BaseTokenEndpoint extends BaseEndpoint
      *         An implementation of {@link TokenRequestHandlerSpi}.
      *
      * @param parameters
-     *         Request parameters of the token request.
+     *         The request parameters of the token request.
      *
      * @param authorization
      *         The value of {@code Authorization} header of the token request.
@@ -169,13 +168,13 @@ public class BaseTokenEndpoint extends BaseEndpoint
      *         array. Can be {@code null}.
      *
      * @param tokenOptions
-     *         Request options for the {@code /api/auth/token} API.
+     *         The request options for the {@code /api/auth/token} API.
      *
      * @param tokenIssueOptions
-     *         Request options for the {@code /api/auth/token/issue} API.
+     *         The request options for the {@code /api/auth/token/issue} API.
      *
      * @param tokenFailOptions
-     *         Request options for the {@code /api/auth/token/fail} API.
+     *         The request options for the {@code /api/auth/token/fail} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -206,7 +205,7 @@ public class BaseTokenEndpoint extends BaseEndpoint
      *
      * <p>
      * This method internally creates a {@link TokenRequestHandler} instance and
-     * calls its {@link TokenRequestHandler#handle(TokenRequestHandler.Params)}
+     * calls its {@link TokenRequestHandler#handle(TokenRequestHandler.Params) handle()}
      * method. Then, this method uses the value returned from the {@code handle()}
      * method as a response from this method.
      * </p>

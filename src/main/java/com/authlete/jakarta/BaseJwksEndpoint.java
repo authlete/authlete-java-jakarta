@@ -73,9 +73,9 @@ public class BaseJwksEndpoint extends BaseEndpoint
      *
      * <p>
      * This method internally creates a {@link JwksRequestHandler} instance and
-     * calls its {@link JwksRequestHandler#handle()} method. Then, this method
-     * uses the value returned from the {@code handle()} method as a response
-     * from this method.
+     * calls its {@link JwksRequestHandler#handle(Options) handle()} method. Then,
+     * this method uses the value returned from the {@code handle()} method as a
+     * response from this method.
      * </p>
      *
      * <p>
@@ -92,7 +92,7 @@ public class BaseJwksEndpoint extends BaseEndpoint
      *         An implementation of {@link AuthleteApi}.
      *
      * @param options
-     *         Request options for the {@code /api/service/jwks/get} API.
+     *         The request options for the {@code /api/service/jwks/get} API.
      *
      * @return
      *         A response that should be returned to the client application.

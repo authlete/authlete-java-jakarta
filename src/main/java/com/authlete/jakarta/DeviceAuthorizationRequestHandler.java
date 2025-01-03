@@ -66,12 +66,12 @@ public class DeviceAuthorizationRequestHandler extends BaseHandler
 
 
     /**
-     * Handler for device authorization requests in OAuth 2.0 Device Authorization
-     * Grant (Device Flow). This method is an alias of {@link #handle(MultivaluedMap, String, String[], Options)
+     * Handle device authorization requests in OAuth 2.0 Device Authorization Grant
+     * (Device Flow). This method is an alias of {@link #handle(MultivaluedMap, String, String[], Options)
      * handle}{@code (parameters, authorization, clientCertificatePath, null)}.
      *
      * @param parameters
-     *         Request parameters of a device authorization request.
+     *         The request parameters of a device authorization request.
      *
      * @param authorization
      *         The value of {@code Authorization} header in the device authorization
@@ -101,11 +101,11 @@ public class DeviceAuthorizationRequestHandler extends BaseHandler
 
 
     /**
-     * Handler for device authorization requests in OAuth 2.0 Device Authorization
-     * Grant (Device Flow).
+     * Handle device authorization requests in OAuth 2.0 Device Authorization Grant
+     * (Device Flow).
      *
      * @param parameters
-     *         Request parameters of a device authorization request.
+     *         The request parameters of a device authorization request.
      *
      * @param authorization
      *         The value of {@code Authorization} header in the device authorization
@@ -120,7 +120,7 @@ public class DeviceAuthorizationRequestHandler extends BaseHandler
      *         if the client did not send a certificate or path.
      *
      * @param options
-     *         Request options for the {@code /api/device/authorization} API.
+     *         The request options for the device authorization request.
      *
      * @return
      *         A response that should be returned from the endpoint to the

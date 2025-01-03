@@ -79,7 +79,7 @@ public class AuthorizationRequestHandler extends BaseHandler
      * handle}{@code (parameters, null, null, null)}.
      *
      * @param parameters
-     *         Request parameters of an authorization request.
+     *         The request parameters of an authorization request.
      *
      * @return
      *         A response that should be returned from the endpoint to the client
@@ -100,16 +100,16 @@ public class AuthorizationRequestHandler extends BaseHandler
      * of OAuth 2.0 (<a href="https://tools.ietf.org/html/rfc6749">RFC 6749</a>).
      *
      * @param parameters
-     *         Request parameters of an authorization request.
+     *         The request parameters of an authorization request.
      *
      * @param authzOptions
-     *         Request options for the {@code /api/auth/authorization} API.
+     *         The request options for the {@code /api/auth/authorization} API.
      *
      * @param authzIssueOptions
-     *         Request options for the {@code /api/auth/authorization/issue} API.
+     *         The request options for the {@code /api/auth/authorization/issue} API.
      *
      * @param authzFailOptions
-     *         Request options for the {@code /api/auth/authorization/fail} API.
+     *         The request options for the {@code /api/auth/authorization/fail} API.
      *
      * @return
      *         A response that should be returned from the endpoint to the

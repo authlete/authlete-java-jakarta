@@ -434,10 +434,10 @@ public class AuthorizationDecisionHandler extends BaseHandler
 
 
         /**
-         * Get the request options for {@code /api/auth/authorization} API.
+         * Get the request options for the {@code /api/auth/authorization} API.
          *
          * @return
-         *         The request options for {@code /api/auth/authorization} API.
+         *         The request options for the {@code /api/auth/authorization} API.
          *
          * @since 2.82
          */
@@ -448,10 +448,10 @@ public class AuthorizationDecisionHandler extends BaseHandler
 
 
         /**
-         * Set the request options for {@code /api/auth/authorization} API.
+         * Set the request options for the {@code /api/auth/authorization} API.
          *
          * @param options
-         *         The request options for {@code /api/auth/authorization} API.
+         *         The request options for the {@code /api/auth/authorization} API.
          *
          * @return
          *         {@code this} object.
@@ -467,10 +467,10 @@ public class AuthorizationDecisionHandler extends BaseHandler
 
 
         /**
-         * Get the request options for {@code /api/auth/authorization/issue} API.
+         * Get the request options for the {@code /api/auth/authorization/issue} API.
          *
          * @return
-         *         The request options for {@code /api/auth/authorization/issue} API.
+         *         The request options for the {@code /api/auth/authorization/issue} API.
          *
          * @since 2.82
          */
@@ -481,10 +481,10 @@ public class AuthorizationDecisionHandler extends BaseHandler
 
 
         /**
-         * Set the request options for {@code /api/auth/authorization/issue} API.
+         * Set the request options for the {@code /api/auth/authorization/issue} API.
          *
          * @param options
-         *         The request options for {@code /api/auth/authorization/issue} API.
+         *         The request options for the {@code /api/auth/authorization/issue} API.
          *
          * @return
          *         {@code this} object.
@@ -500,10 +500,10 @@ public class AuthorizationDecisionHandler extends BaseHandler
 
 
         /**
-         * Get the request options for {@code /api/auth/authorization/fail} API.
+         * Get the request options for the {@code /api/auth/authorization/fail} API.
          *
          * @return
-         *         The request options for {@code /api/auth/authorization/fail} API.
+         *         The request options for the {@code /api/auth/authorization/fail} API.
          *
          * @since 2.82
          */
@@ -514,10 +514,10 @@ public class AuthorizationDecisionHandler extends BaseHandler
 
 
         /**
-         * Set the request options for {@code /api/auth/authorization/fail} API.
+         * Set the request options for the {@code /api/auth/authorization/fail} API.
          *
          * @param options
-         *         The request options for {@code /api/auth/authorization/fail} API.
+         *         The request options for the {@code /api/auth/authorization/fail} API.
          *
          * @return
          *         {@code this} object.
@@ -537,7 +537,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
          * {@link AuthorizationResponse}.
          *
          * @param response
-         *         An response from Authlete's {@code /api/auth/authorization/issue} API.
+         *         An response from Authlete's {@code /api/auth/authorization} API.
          *
          * @return
          *         A new {@code Params} instance built from the response.
@@ -626,10 +626,10 @@ public class AuthorizationDecisionHandler extends BaseHandler
      *         parameter in a response from Authlete's {@code /api/auth/authorization} API.
      *
      * @param authzIssueOptions
-     *         Request options for the {@code /api/auth/authorization/issue} API.
+     *         The request options for the {@code /api/auth/authorization/issue} API.
      *
      * @param authzFailOptions
-     *         Request options for the {@code /api/auth/authorization/fail} API.
+     *         The request options for the {@code /api/auth/authorization/fail} API.
      *
      * @return
      *         A response to the client application. Basically, the response
@@ -637,6 +637,8 @@ public class AuthorizationDecisionHandler extends BaseHandler
      *
      * @throws WebApplicationException
      *         An error occurred.
+     *
+     * @since 2.82
      */
     public Response handle(
             String ticket, String[] claimNames, String[] claimLocales, Options authzIssueOptions,
@@ -1154,7 +1156,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
      *         {@code verified_claims/claims}.
      *
      * @param options
-     *         Request options for {@code /auth/authorization/issue} API.
+     *         The request options for the {@code /auth/authorization/issue} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -1196,7 +1198,7 @@ public class AuthorizationDecisionHandler extends BaseHandler
      *         A reason of the failure of the authorization request.
      *
      * @param options
-     *         Request options for {@code /auth/authorization/fail} API.
+     *         The request options for the {@code /auth/authorization/fail} API.
      *
      * @return
      *         A response that should be returned to the client application.

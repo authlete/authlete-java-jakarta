@@ -47,7 +47,7 @@ public class BaseIntrospectionEndpoint extends BaseEndpoint
      *         An implementation of {@link AuthleteApi}.
      *
      * @param parameters
-     *         Request parameters of an introspection request.
+     *         The request parameters of an introspection request.
      *
      * @return
      *         A response that should be returned to the resource server.
@@ -60,16 +60,16 @@ public class BaseIntrospectionEndpoint extends BaseEndpoint
 
     /**
      * Handle an introspection request. This method is an alias of the {@link
-     * #handle(AuthleteApi, IntrospectionRequestHandler.Params, Options)} method.
+     * #handle(AuthleteApi, IntrospectionRequestHandler.Params)} method.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
      *
      * @param parameters
-     *         Request parameters of an introspection request.
+     *         The request parameters of an introspection request.
      *
      * @param options
-     *         Request options for the {@code /api/auth/introspection} API.
+     *         The request options for the {@code /api/auth/introspection} API.
      *
      * @return
      *         A response that should be returned to the resource server.
@@ -94,7 +94,7 @@ public class BaseIntrospectionEndpoint extends BaseEndpoint
      * <p>
      * This method internally creates an {@link IntrospectionRequestHandler}
      * instance and calls its {@link
-     * IntrospectionRequestHandler#handle(IntrospectionRequestHandler.Params, Options)}
+     * IntrospectionRequestHandler#handle(IntrospectionRequestHandler.Params) handle()}
      * method with the {@code params} argument. Then, this
      * method uses the value returned from the {@code handle()} method
      * as a response from this method.

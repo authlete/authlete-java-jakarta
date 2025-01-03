@@ -69,7 +69,7 @@ public class RevocationRequestHandler extends BaseHandler
      * handle}{@code (parameters, authorization, null)}.
      *
      * @param parameters
-     *         Request parameters of a token revocation request.
+     *         The request parameters of a token revocation request.
      *
      * @param authorization
      *         The value of {@code Authorization} header in the token revocation
@@ -97,7 +97,7 @@ public class RevocationRequestHandler extends BaseHandler
      * >RFC 7009</a>).
      *
      * @param parameters
-     *         Request parameters of a token revocation request.
+     *         The request parameters of a token revocation request.
      *
      * @param authorization
      *         The value of {@code Authorization} header in the token revocation
@@ -107,7 +107,7 @@ public class RevocationRequestHandler extends BaseHandler
      *         Authentication</a>.
      *
      * @param options
-     *         Request options for the {@code /api/auth/revocation} API.
+     *         The request options for the {@code /api/auth/revocation} API.
      *
      * @return
      *         A response that should be returned from the endpoint to the

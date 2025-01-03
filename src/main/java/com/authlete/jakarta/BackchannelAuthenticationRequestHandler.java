@@ -88,7 +88,7 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
      * handle}{@code (parameters, authorization, clientCertificatePath, null, null, null)}.
      *
      * @param parameters
-     *         Request parameters of a backchannel authentication request.
+     *         The request parameters of a backchannel authentication request.
      *
      * @param authorization
      *         The value of {@code Authorization} header in the backchannel authentication
@@ -122,7 +122,7 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
      * endpoint of CIBA (Client Initiated Backchannel Authentication).
      *
      * @param parameters
-     *         Request parameters of a backchannel authentication request.
+     *         The request parameters of a backchannel authentication request.
      *
      * @param authorization
      *         The value of {@code Authorization} header in the backchannel authentication
@@ -137,13 +137,13 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
      *         if the client did not send a certificate or path.
      *
      * @param bcAuthOptions
-     *         Request options for the {@code /api/backchannel/authentication} API.
+     *         The request options for the {@code /api/backchannel/authentication} API.
      *
      * @param bcAuthIssueOptions
-     *         Request options for the {@code /api/backchannel/authentication/issue} API.
+     *         The request options for the {@code /api/backchannel/authentication/issue} API.
      *
      * @param bcAuthFailOptions
-     *         Request options for the {@code /api/backchannel/authentication/fail} API.
+     *         The request options for the {@code /api/backchannel/authentication/fail} API.
      *
      * @return
      *         A response that should be returned from the endpoint to the

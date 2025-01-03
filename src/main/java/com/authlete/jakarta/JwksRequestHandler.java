@@ -78,7 +78,7 @@ public class JwksRequestHandler extends BaseHandler
      * of {@link #handle(boolean, Options) handle}{@code (true, options)}.
      *
      * @param options
-     *         Request options for the {@code /api/service/jwks/get} API.
+     *         The request options for the {@code /api/service/jwks/get} API.
      *
      * @return
      *         A response that should be returned from the endpoint to
@@ -123,7 +123,7 @@ public class JwksRequestHandler extends BaseHandler
      *         {@code true} to return the output JSON in pretty format.
      *
      * @param options
-     *         Request options for the {@code /api/service/jwks/get} API.
+     *         The request options for the {@code /api/service/jwks/get} API.
      *
      * @return
      *         A response that should be returned from the endpoint to

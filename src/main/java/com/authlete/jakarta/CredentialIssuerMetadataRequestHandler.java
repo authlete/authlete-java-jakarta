@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Authlete, Inc.
+ * Copyright (C) 2023-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -57,7 +57,7 @@ public class CredentialIssuerMetadataRequestHandler extends BaseHandler
     /**
      * Handle a request to the credential issuer metadata endpoint. This method
      * is an alias of the {@link
-     * #handle(CredentialIssuerMetadataRequest, Options)}{@code (request, null)}.
+     * #handle(CredentialIssuerMetadataRequest, Options) handle}{@code (request, null)}.
      *
      * @param request
      *         A credential issuer metadata request.
@@ -82,7 +82,7 @@ public class CredentialIssuerMetadataRequestHandler extends BaseHandler
      *         A credential issuer metadata request.
      *
      * @param options
-     *         Request options for the {@code /api/vci/metadata} API.
+     *         The request options for the {@code /api/vci/metadata} API.
      *
      * @return
      *         A response that should be returned from the credential issuer

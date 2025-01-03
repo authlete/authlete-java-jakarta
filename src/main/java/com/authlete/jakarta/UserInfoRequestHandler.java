@@ -386,10 +386,10 @@ public class UserInfoRequestHandler extends BaseHandler
 
 
         /**
-         * Get the request options for {@code /api/auth/userinfo} API.
+         * Get the request options for the {@code /api/auth/userinfo} API.
          *
          * @return
-         *         The request options for {@code /api/auth/userinfo} API.
+         *         The request options for the {@code /api/auth/userinfo} API.
          *
          * @since 2.82
          */
@@ -400,10 +400,10 @@ public class UserInfoRequestHandler extends BaseHandler
 
 
         /**
-         * Set the request options for {@code /api/auth/userinfo} API.
+         * Set the request options for the {@code /api/auth/userinfo} API.
          *
          * @param options
-         *         The request options for {@code /api/auth/userinfo} API.
+         *         The request options for the {@code /api/auth/userinfo} API.
          *
          * @return
          *         {@code this} object.
@@ -419,10 +419,10 @@ public class UserInfoRequestHandler extends BaseHandler
 
 
         /**
-         * Get the request options for {@code /api/auth/userinfo/issue} API.
+         * Get the request options for the {@code /api/auth/userinfo/issue} API.
          *
          * @return
-         *         The request options for {@code /api/auth/userinfo/issue} API.
+         *         The request options for the {@code /api/auth/userinfo/issue} API.
          *
          * @since 2.82
          */
@@ -433,10 +433,10 @@ public class UserInfoRequestHandler extends BaseHandler
 
 
         /**
-         * Set the request options for {@code /api/auth/userinfo/issue} API.
+         * Set the request options for the {@code /api/auth/userinfo/issue} API.
          *
          * @param options
-         *         The request options for {@code /api/auth/userinfo/issue} API.
+         *         The request options for the {@code /api/auth/userinfo/issue} API.
          *
          * @return
          *         {@code this} object.
@@ -518,10 +518,10 @@ public class UserInfoRequestHandler extends BaseHandler
      *         An access token.
      *
      * @param userInfoOptions
-     *         Request options for the {@code /api/auth/userinfo} API.
+     *         The request options for the {@code /api/auth/userinfo} API.
      *
      * @param userInfoIssueOptions
-     *         Request options for the {@code /api/auth/userinfo/issue} API.
+     *         The request options for the {@code /api/auth/userinfo/issue} API.
      *
      * @return
      *         A response that should be returned from the endpoint to the
@@ -547,7 +547,11 @@ public class UserInfoRequestHandler extends BaseHandler
 
 
     /**
-     * Handle a userinfo request.
+     * Handle a userinfo request to a <a href=
+     * "http://openid.net/specs/openid-connect-core-1_0.html#UserInfo"
+     * >UserInfo Endpoint</a> defined in <a href=
+     * "http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect
+     * Core 1&#x002E;0</a>.
      *
      * @param params
      *         Parameters needed to handle the userinfo request.

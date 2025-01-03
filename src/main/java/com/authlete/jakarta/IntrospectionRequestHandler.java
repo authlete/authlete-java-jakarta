@@ -456,10 +456,10 @@ public class IntrospectionRequestHandler extends BaseHandler
 
 
         /**
-         * Get the request options for {@code /api/auth/introspection} API.
+         * Get the request options for the {@code /api/auth/introspection} API.
          *
          * @return
-         *         The request options for {@code /api/auth/introspection} API.
+         *         The request options for the {@code /api/auth/introspection} API.
          *
          * @since 2.82
          */
@@ -470,10 +470,10 @@ public class IntrospectionRequestHandler extends BaseHandler
 
 
         /**
-         * Set the request options for {@code /api/auth/introspection} API.
+         * Set the request options for the {@code /api/auth/introspection} API.
          *
          * @param options
-         *         The request options for {@code /api/auth/introspection} API.
+         *         The request options for the {@code /api/auth/introspection} API.
          *
          * @return
          *         {@code this} object.
@@ -507,7 +507,7 @@ public class IntrospectionRequestHandler extends BaseHandler
      * handle}{@code (parameters, null)}.
      *
      * @param parameters
-     *         Request parameters of an introspection request.
+     *         The request parameters of an introspection request.
      *
      * @return
      *         A response that should be returned from the endpoint to
@@ -528,10 +528,10 @@ public class IntrospectionRequestHandler extends BaseHandler
      * >RFC 7662</a>). This method is an alias of the {@link #handle(Params)} method.
      *
      * @param parameters
-     *         Request parameters of an introspection request.
+     *         The request parameters of an introspection request.
      *
      * @param options
-     *         Request options for the {@code /api/auth/introspection/standard} API.
+     *         The request options for the {@code /api/auth/introspection/standard} API.
      *
      * @return
      *         A response that should be returned from the endpoint to

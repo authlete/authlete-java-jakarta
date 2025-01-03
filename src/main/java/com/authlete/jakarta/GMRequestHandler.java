@@ -55,7 +55,7 @@ public class GMRequestHandler extends BaseHandler
 
 
     /**
-     * Handle a grant management request. This method is an alias of the {@link
+     * Handle a grant management request. This method is an alias of {@link
      * #handle(GMRequest, Options) handle}{@code (request, null)}.
      *
      * @param request
@@ -80,7 +80,7 @@ public class GMRequestHandler extends BaseHandler
      *         A grant management request.
      *
      * @param options
-     *         Request options for the {@code /api/gm} API.
+     *         The request options for the {@code /api/gm} API.
      *
      * @return
      *         A response that should be returned from the grant management

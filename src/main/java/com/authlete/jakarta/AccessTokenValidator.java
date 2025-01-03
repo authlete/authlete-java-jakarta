@@ -322,10 +322,10 @@ public class AccessTokenValidator extends BaseHandler
 
 
         /**
-         * Get the request options for {@code /api/auth/introspection} API.
+         * Get the request options for the {@code /api/auth/introspection} API.
          *
          * @return
-         *         The request options for {@code /api/auth/introspection} API.
+         *         The request options for the {@code /api/auth/introspection} API.
          *
          * @since 2.82
          */
@@ -336,10 +336,10 @@ public class AccessTokenValidator extends BaseHandler
 
 
         /**
-         * Set the request options for {@code /api/auth/introspection} API.
+         * Set the request options for the {@code /api/auth/introspection} API.
          *
          * @param options
-         *         The request options for {@code /api/auth/introspection} API.
+         *         The request options for the {@code /api/auth/introspection} API.
          *
          * @return
          *         {@code this} object.
@@ -399,7 +399,7 @@ public class AccessTokenValidator extends BaseHandler
      *         An access token to validate.
      *
      * @param options
-     *         Request options for {@code /api/auth/introspection} API.
+     *         The request options for the {@code /api/auth/introspection} API.
      *
      * @return
      *         Information about the access token.
@@ -459,7 +459,7 @@ public class AccessTokenValidator extends BaseHandler
      *         {@code null} is okay.
      *
      * @param options
-     *         Request options for {@code /api/auth/introspection} API.
+     *         The request options for the {@code /api/auth/introspection} API.
      *
      * @return
      *         Information about the access token.
@@ -555,7 +555,7 @@ public class AccessTokenValidator extends BaseHandler
      *         Can be {@code null} if no certificate is presented.
      *
      * @param options
-     *         Request options for {@code /api/auth/introspection} API.
+     *         The request options for the {@code /api/auth/introspection} API.
      *
      * @return
      *         Information about the access token.
@@ -660,7 +660,7 @@ public class AccessTokenValidator extends BaseHandler
      *         The request parameters to Authlete's {@code /auth/introspection} API.
      *
      * @param options
-     *         Request options for {@code /api/auth/introspection} API.
+     *         The request options for the {@code /api/auth/introspection} API.
      *
      * @return
      *         The response from the Authlete's {@code /auth/introspection} API.

@@ -70,8 +70,7 @@ public class BaseClientRegistrationEndpoint extends BaseEndpoint
      *
      * <p>
      * This method internally creates a {@link ClientRegistrationRequestHandler}
-     * instance and calls its
-     * {@link ClientRegistrationRequestHandler#handleRegister(String, String, Options)}
+     * instance and calls its {@link ClientRegistrationRequestHandler#handleRegister(String, String, Options) handle()}
      * method. Then, this method uses the value returned from the {@code handle()}
      * method as a response from this method.
      * </p>
@@ -96,7 +95,7 @@ public class BaseClientRegistrationEndpoint extends BaseEndpoint
      *         This is optional.
      *
      * @param options
-     *         Request options for the {@code /api/client/registration} API.
+     *         The request options for the {@code /api/client/registration} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -160,7 +159,7 @@ public class BaseClientRegistrationEndpoint extends BaseEndpoint
      *
      * <p>
      * This method internally creates a {@link ClientRegistrationRequestHandler}
-     * instance and calls its {@link ClientRegistrationRequestHandler#handleGet(String, String, Options)}
+     * instance and calls its {@link ClientRegistrationRequestHandler#handleGet(String, String, Options) handle()}
      * method. Then, this method uses the value returned from the {@code handle()}
      * method as a response from this method.
      * </p>
@@ -189,7 +188,7 @@ public class BaseClientRegistrationEndpoint extends BaseEndpoint
      *         This is optional.
      *
      * @param options
-     *         Request options for the {@code /api/client/registration} API.
+     *         The request options for the {@code /api/client/registration} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -258,7 +257,7 @@ public class BaseClientRegistrationEndpoint extends BaseEndpoint
      * <p>
      * This method internally creates a {@link ClientRegistrationRequestHandler}
      * instance and calls its
-     * {@link ClientRegistrationRequestHandler#handleUpdate(String, String, String)}
+     * {@link ClientRegistrationRequestHandler#handleUpdate(String, String, String) handle()}
      * method. Then, this method uses the value returned from the {@code handle()}
      * method as a response from this method.
      * </p>
@@ -290,7 +289,7 @@ public class BaseClientRegistrationEndpoint extends BaseEndpoint
      *         This is optional.
      *
      * @param options
-     *         Request options for the {@code /api/client/registration} API.
+     *         The request options for the {@code /api/client/registration} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -356,7 +355,7 @@ public class BaseClientRegistrationEndpoint extends BaseEndpoint
      * <p>
      * This method internally creates a {@link ClientRegistrationRequestHandler}
      * instance and calls its
-     * {@link ClientRegistrationRequestHandler#handleDelete(String, String)}
+     * {@link ClientRegistrationRequestHandler#handleDelete(String, String) handle()}
      * method. Then, this method uses the value returned from the {@code handle()}
      * method as a response from this method.
      * </p>
@@ -385,7 +384,7 @@ public class BaseClientRegistrationEndpoint extends BaseEndpoint
      *         This is optional.
      *
      * @param options
-     *         Request options for the {@code /api/client/registration} API.
+     *         The request options for the {@code /api/client/registration} API.
      *
      * @return
      *         A response that should be returned to the client application.

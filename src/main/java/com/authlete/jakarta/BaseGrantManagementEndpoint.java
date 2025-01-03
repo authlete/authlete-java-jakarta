@@ -39,7 +39,7 @@ public class BaseGrantManagementEndpoint extends BaseResourceEndpoint
 {
     /**
      * Handle a grant management request. This method is an alias of {@link
-     * #handle(AuthleteApi, HttpServletRequest, String, Options)}{@code
+     * #handle(AuthleteApi, HttpServletRequest, String, Options) handle}{@code
      * (api, req, grantId, null)}.
      *
      * @param api
@@ -86,7 +86,7 @@ public class BaseGrantManagementEndpoint extends BaseResourceEndpoint
      *         endpoint. The last part of the path of the URL.
      *
      * @param options
-     *         Request options for the {@code /api/gm} API.
+     *         The request options for the {@code /api/gm} API.
      *
      * @return
      *         A response that should be returned to the client application.

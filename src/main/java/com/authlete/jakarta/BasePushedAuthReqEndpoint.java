@@ -43,17 +43,17 @@ public class BasePushedAuthReqEndpoint extends BaseEndpoint
      * (api, parameters, authorization, clientCertificates, null)}.
      *
      * @param api
-     *            An implementation of {@link AuthleteApi}.
+     *         An implementation of {@link AuthleteApi}.
      *
      * @param parameters
-     *            Request parameters of the pushed authorization request.
+     *         The request parameters of the pushed authorization request.
      *
      * @param authorization
-     *            The value of {@code Authorization} header of the pushed authorization request.
+     *         The value of {@code Authorization} header of the pushed authorization request.
      *
      * @param clientCertificates
-     *            The certificate path used in mutual TLS authentication, in PEM format. The
-     *            client's own certificate is the first in this array. Can be {@code null}.
+     *         The certificate path used in mutual TLS authentication, in PEM format. The
+     *         client's own certificate is the first in this array. Can be {@code null}.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -67,23 +67,24 @@ public class BasePushedAuthReqEndpoint extends BaseEndpoint
 
 
     /**
-     * Handle a pushed authorization request.
+     * Handle a pushed authorization request. This method is an alias of {@link
+     * #handle(AuthleteApi, Params) handle}{@code (api, params)}.
      *
      * @param api
-     *            An implementation of {@link AuthleteApi}.
+     *         An implementation of {@link AuthleteApi}.
      *
      * @param parameters
-     *            Request parameters of the pushed authorization request.
+     *         The request parameters of the pushed authorization request.
      *
      * @param authorization
-     *            The value of {@code Authorization} header of the pushed authorization request.
+     *         The value of {@code Authorization} header of the pushed authorization request.
      *
      * @param clientCertificates
-     *            The certificate path used in mutual TLS authentication, in PEM format. The
-     *            client's own certificate is the first in this array. Can be {@code null}.
+     *         The certificate path used in mutual TLS authentication, in PEM format. The
+     *         client's own certificate is the first in this array. Can be {@code null}.
      *
      * @param options
-     *         Request options for the {@code /api/pushed_auth_req} API.
+     *         The request options for the {@code /api/pushed_auth_req} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -106,12 +107,11 @@ public class BasePushedAuthReqEndpoint extends BaseEndpoint
 
 
     /**
-     * Handle a PAR request. This method is an alias of the {@link
-     * #handle(AuthleteApi, Params, Options) handle}{@code (api, params, null)}.
+     * Handle a PAR request.
      *
      * <p>
      * This method internally creates a {@link PushedAuthReqHandler} instance and
-     * calls its {@link PushedAuthReqHandler#handle(PushedAuthReqHandler.Params, Options)}
+     * calls its {@link PushedAuthReqHandler#handle(PushedAuthReqHandler.Params) handle()}
      * method. Then, this method uses the value returned from the {@code handle()}
      * method as a response from this method.
      * </p>

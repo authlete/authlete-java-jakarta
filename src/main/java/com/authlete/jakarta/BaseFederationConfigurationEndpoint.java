@@ -60,7 +60,7 @@ public class BaseFederationConfigurationEndpoint extends BaseEndpoint
 {
     /**
      * Handle a request to the entity configuration endpoint. This method is an alias
-     * of {@link #handle(AuthleteApi, FederationConfigurationRequest)} method.
+     * of the {@link #handle(AuthleteApi, FederationConfigurationRequest)} method.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
@@ -77,14 +77,14 @@ public class BaseFederationConfigurationEndpoint extends BaseEndpoint
 
     /**
      * Handle a request to the entity configuration endpoint. This method is an
-     * alias of {@link #handle(AuthleteApi, FederationConfigurationRequest, Options)}
+     * alias of the {@link #handle(AuthleteApi, FederationConfigurationRequest, Options)}
      * method.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
      *
      * @param options
-     *         Request options for the {@code /api/federation/configuration} API.
+     *         The request options for the {@code /api/federation/configuration} API.
      *
      * @return
      *         A response that should be returned from the entity configuration
@@ -107,7 +107,7 @@ public class BaseFederationConfigurationEndpoint extends BaseEndpoint
      *         An implementation of {@link AuthleteApi}.
      *
      * @param request
-     *         Request parameters for Authlete's {@code /api/federation/configuration} API.
+     *         The request parameters for Authlete's {@code /api/federation/configuration} API.
      *
      * @return
      *         A response that should be returned from the entity configuration
@@ -125,7 +125,7 @@ public class BaseFederationConfigurationEndpoint extends BaseEndpoint
      * <p>
      * This method internally creates a {@link FederationConfigurationRequestHandler}
      * instance and calls its {@link
-     * FederationConfigurationRequestHandler#handle(FederationConfigurationRequest, Options)}
+     * FederationConfigurationRequestHandler#handle(FederationConfigurationRequest, Options) handle()}
      * method. Then, this method uses the value returned from the handler's method
      * as a response from this method.
      * </p>
@@ -143,10 +143,10 @@ public class BaseFederationConfigurationEndpoint extends BaseEndpoint
      *         An implementation of {@link AuthleteApi}.
      *
      * @param request
-     *         Request parameters for Authlete's {@code /api/federation/configuration} API.
+     *         The request parameters for Authlete's {@code /api/federation/configuration} API.
      *
      * @param options
-     *         Request options for the {@code /api/federation/configuration} API.
+     *         The request options for the {@code /api/federation/configuration} API.
      *
      * @return
      *         A response that should be returned from the entity configuration

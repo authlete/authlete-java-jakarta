@@ -299,10 +299,10 @@ public class PushedAuthReqHandler extends BaseHandler
 
 
         /**
-         * Get the request options for {@code /api/pushed_auth_req} API.
+         * Get the request options for the {@code /api/pushed_auth_req} API.
          *
          * @return
-         *         The request options for {@code /api/pushed_auth_req} API.
+         *         The request options for the {@code /api/pushed_auth_req} API.
          *
          * @since 2.82
          */
@@ -313,10 +313,10 @@ public class PushedAuthReqHandler extends BaseHandler
 
 
         /**
-         * Set the request options for {@code /api/pushed_auth_req} API.
+         * Set the request options for the {@code /api/pushed_auth_req} API.
          *
          * @param options
-         *         The request options for {@code /api/pushed_auth_req} API.
+         *         The request options for the {@code /api/pushed_auth_req} API.
          *
          * @return
          *         {@code this} object.
@@ -350,19 +350,19 @@ public class PushedAuthReqHandler extends BaseHandler
      * (parameters, authorization, clientCertificatePath, null)}.
      *
      * @param parameters
-     *            Request parameters of a pushed authorization request.
+     *         The request parameters of a pushed authorization request.
      *
      * @param authorization
-     *            The value of {@code Authorization} header in the pushed
-     *            authorization request. A client application may embed its
-     *            pair of client ID and client secret in a pushed authorization
-     *            request using <a href="https://tools.ietf.org/html/rfc2617#section-2"
-     *            >Basic Authentication</a>.
+     *         The value of {@code Authorization} header in the pushed
+     *         authorization request. A client application may embed its
+     *         pair of client ID and client secret in a pushed authorization
+     *         request using <a href="https://tools.ietf.org/html/rfc2617#section-2"
+     *         >Basic Authentication</a>.
      *
      * @param clientCertificatePath
-     *            The path of the client's certificate, each in PEM format.
-     *            The first item in the array is the client's certificate itself.
-     *            May be {@code null} if the client did not send a certificate or path.
+     *         The path of the client's certificate, each in PEM format.
+     *         The first item in the array is the client's certificate itself.
+     *         May be {@code null} if the client did not send a certificate or path.
      *
      * @return
      *         A response that should be returned from the endpoint to the
@@ -384,29 +384,29 @@ public class PushedAuthReqHandler extends BaseHandler
      * #handle(Params)} method.
      *
      * @param parameters
-     *            Request parameters of a pushed authorization request.
+     *         The request parameters of a pushed authorization request.
      *
      * @param authorization
-     *            The value of {@code Authorization} header in the pushed
-     *            authorization request. A client application may embed its
-     *            pair of client ID and client secret in a pushed authorization
-     *            request using <a href="https://tools.ietf.org/html/rfc2617#section-2"
-     *            >Basic Authentication</a>.
+     *         The value of {@code Authorization} header in the pushed
+     *         authorization request. A client application may embed its
+     *         pair of client ID and client secret in a pushed authorization
+     *         request using <a href="https://tools.ietf.org/html/rfc2617#section-2"
+     *         >Basic Authentication</a>.
      *
      * @param clientCertificatePath
-     *            The path of the client's certificate, each in PEM format.
-     *            The first item in the array is the client's certificate itself.
-     *            May be {@code null} if the client did not send a certificate or path.
+     *         The path of the client's certificate, each in PEM format.
+     *         The first item in the array is the client's certificate itself.
+     *         May be {@code null} if the client did not send a certificate or path.
      *
      * @param options
-     *         Request options for the {@code /api/pushed_auth_req} API.
+     *         The request options for the {@code /api/pushed_auth_req} API.
      *
      * @return
      *         A response that should be returned from the endpoint to the
      *         client application.
      *
      * @throws WebApplicationException
-     *             An error occurred.
+     *          An error occurred.
      *
      * @since 2.82
      */

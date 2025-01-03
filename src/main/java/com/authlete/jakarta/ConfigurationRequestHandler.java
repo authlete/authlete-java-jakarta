@@ -108,7 +108,7 @@ public class ConfigurationRequestHandler extends BaseHandler
      * method is an alias of {@link #handle(boolean, Options) handle}{@code (true, options)}.
      *
      * @param options
-     *         Request options to the Authlete API.
+     *         The request options to the Authlete API.
      *
      * @return
      *         A response that should be returned from the endpoint to
@@ -154,7 +154,7 @@ public class ConfigurationRequestHandler extends BaseHandler
      *         {@code true} to return the output JSON in pretty format.
      *
      * @param options
-     *         Request options to the Authlete API.
+     *         The request options to the Authlete API.
      *
      * @return
      *         A response that should be returned from the endpoint to
@@ -196,7 +196,7 @@ public class ConfigurationRequestHandler extends BaseHandler
      * #handle(ServiceConfigurationRequest, Options) handle}{@code (request, null)}.
      *
      * @param request
-     *         Request parameters to the Authlete API.
+     *         The request parameters to the Authlete API.
      *
      * @return
      *         A response that should be returned from the discovery endpoint.
@@ -218,10 +218,10 @@ public class ConfigurationRequestHandler extends BaseHandler
      * API.
      *
      * @param request
-     *         Request parameters to the Authlete API.
+     *         The request parameters to the Authlete API.
      *
      * @param options
-     *         Request options to the Authlete API.
+     *         The request options to the Authlete API.
      *
      * @return
      *         A response that should be returned from the discovery endpoint.

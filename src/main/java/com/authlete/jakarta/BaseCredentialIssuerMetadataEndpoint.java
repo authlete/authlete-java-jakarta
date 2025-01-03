@@ -57,7 +57,7 @@ public class BaseCredentialIssuerMetadataEndpoint extends BaseEndpoint
 {
     /**
      * Handle a request to the credential issuer metadata endpoint. This method is
-     * an alias of the {@link #handle(AuthleteApi, Options)} method.
+     * an alias of {@link #handle(AuthleteApi, Options) handle}{@code (api, (Options)null)}.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
@@ -81,7 +81,7 @@ public class BaseCredentialIssuerMetadataEndpoint extends BaseEndpoint
      *         An implementation of {@link AuthleteApi}.
      *
      * @param options
-     *         Request options for the {@code /api/vci/metadata} API.
+     *         The request options for the {@code /api/vci/metadata} API.
      *
      * @return
      *         A response that should be returned from the credential issuer
@@ -97,14 +97,14 @@ public class BaseCredentialIssuerMetadataEndpoint extends BaseEndpoint
 
     /**
      * Handle a request to the credential issuer metadata endpoint. This method
-     * is an alias of the {@link #handle(AuthleteApi, CredentialIssuerMetadataRequest,
-     * Options)} method.
+     * is an alias of {@link #handle(AuthleteApi, CredentialIssuerMetadataRequest,
+     * Options) handle}{@code (api, request, null)}.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
      *
      * @param request
-     *         Request parameters for Authlete's {@code /api/vci/metadata} API.
+     *         The request parameters for Authlete's {@code /api/vci/metadata} API.
      *
      * @return
      *         A response that should be returned from the credential issuer
@@ -122,7 +122,7 @@ public class BaseCredentialIssuerMetadataEndpoint extends BaseEndpoint
      * <p>
      * This method internally creates a {@link CredentialIssuerMetadataRequestHandler}
      * instance and calls its {@link CredentialIssuerMetadataRequestHandler#handle(CredentialIssuerMetadataRequest,
-     * Options)} method. Then, this method uses the value returned from the handler's
+     * Options) handle()} method. Then, this method uses the value returned from the handler's
      * method as a response from this method.
      * </p>
      *
@@ -139,10 +139,10 @@ public class BaseCredentialIssuerMetadataEndpoint extends BaseEndpoint
      *         An implementation of {@link AuthleteApi}.
      *
      * @param request
-     *         Request parameters for Authlete's {@code /api/vci/metadata} API.
+     *         The request parameters for Authlete's {@code /api/vci/metadata} API.
      *
      * @param options
-     *         Request options for the {@code /api/vci/metadata} API.
+     *         The request options for the {@code /api/vci/metadata} API.
      *
      * @return
      *         A response that should be returned from the credential issuer

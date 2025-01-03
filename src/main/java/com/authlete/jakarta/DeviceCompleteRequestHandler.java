@@ -78,7 +78,7 @@ public class DeviceCompleteRequestHandler extends BaseHandler
     /**
      * Handle the result of end-user authentication and authorization in OAuth
      * 2.0 Device Authorization Grant (Device Flow). This method is an alias of
-     * the {@link #handle(String, String[], Options)} method.
+     * {@link #handle(String, String[], Options) handle}{@code (userCode, claimNames, null)}.
      *
      * @param userCode
      *         The user code that the end-user input.
@@ -113,7 +113,7 @@ public class DeviceCompleteRequestHandler extends BaseHandler
      *         API.
      *
      * @param options
-     *         Request options for the {@code /api/client/registration} API.
+     *         The request options for the {@code /api/client/registration} API.
      *
      * @return
      *         A response that should be returned to the end-user.

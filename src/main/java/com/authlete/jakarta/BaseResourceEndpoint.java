@@ -123,7 +123,7 @@ public class BaseResourceEndpoint extends BaseEndpoint
      *         An access token to validate.
      *
      * @param options
-     *         Request options for {@code /api/auth/introspection} API.
+     *         The request options for the {@code /api/auth/introspection} API.
      *
      * @return
      *         Information about the access token.
@@ -191,7 +191,7 @@ public class BaseResourceEndpoint extends BaseEndpoint
      *         {@code null} is okay.
      *
      * @param options
-     *         Request options for {@code /api/auth/introspection} API.
+     *         The request options for the {@code /api/auth/introspection} API.
      *
      * @return
      *         Information about the access token.
@@ -275,7 +275,7 @@ public class BaseResourceEndpoint extends BaseEndpoint
      *         with the access token. {@code null} is okay.
      *
      * @param options
-     *         Request options for {@code /api/auth/introspection} API.
+     *         The request options for the {@code /api/auth/introspection} API.
      *
      * @return
      *         Information about the access token.
@@ -351,9 +351,8 @@ public class BaseResourceEndpoint extends BaseEndpoint
 
 
     /**
-     * Validate an access token. This method is an alias of {@link
-     * #validateAccessToken(AuthleteApi, AccessTokenValidator.Params, Options)}
-     * method.
+     * Validate an access token. This method is an alias of the {@link
+     * #validateAccessToken(AuthleteApi, AccessTokenValidator.Params)} method.
      *
      * @param api
      *         Implementation of {@link AuthleteApi} interface.
@@ -375,7 +374,7 @@ public class BaseResourceEndpoint extends BaseEndpoint
      *         Can be {@code null} if no certificate is presented.
      *
      * @param options
-     *         Request options for {@code /api/auth/introspection} API.
+     *         The request options for the {@code /api/auth/introspection} API.
      *
      * @return
      *         Information about the access token.

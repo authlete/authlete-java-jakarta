@@ -76,10 +76,10 @@ public class BaseUserInfoEndpoint extends BaseResourceEndpoint
      *         An access token.
      *
      * @param userInfoOptions
-     *         Request options for the {@code /api/auth/userinfo} API.
+     *         The request options for the {@code /api/auth/userinfo} API.
      *
      * @param userInfoIssueOptions
-     *         Request options for the {@code /api/auth/userinfo/issue} API.
+     *         The request options for the {@code /api/auth/userinfo/issue} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -107,7 +107,7 @@ public class BaseUserInfoEndpoint extends BaseResourceEndpoint
      * This method internally creates a {@link UserInfoRequestHandler} instance
      * and calls its
      * {@link UserInfoRequestHandler#handle(UserInfoRequestHandler.Params)
-     * handle(Params)} method. Then, this method uses the value returned from
+     * handle()} method. Then, this method uses the value returned from
      * the {@code handle()} method as a response from this method.
      * </p>
      *

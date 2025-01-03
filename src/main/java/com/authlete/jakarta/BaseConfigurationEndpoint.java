@@ -74,7 +74,7 @@ public class BaseConfigurationEndpoint extends BaseEndpoint
 {
     /**
      * Handle a request for OpenID Provider configuration. This method is an alias
-     * of the {@link #handle(AuthleteApi, Options)} method.
+     * of {@link #handle(AuthleteApi, Options) handle}{@code (api, (Options)null)}.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
@@ -111,7 +111,7 @@ public class BaseConfigurationEndpoint extends BaseEndpoint
      *         An implementation of {@link AuthleteApi}.
      *
      * @param options
-     *         Request options for the {@code /api/service/configuration} API.
+     *         The request options for the {@code /api/service/configuration} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -141,14 +141,15 @@ public class BaseConfigurationEndpoint extends BaseEndpoint
 
     /**
      * Handle a request for OpenID Provider configuration. This method is an alias
-     * of the {@link #handle(AuthleteApi, ServiceConfigurationRequest, Options)}
-     * method.
+     * of {@link #handle(AuthleteApi, ServiceConfigurationRequest, Options) handle}{@code
+     * (api, request, null)}.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
      *
      * @param request
-     *         Request parameters for Authlete's {@code /service/configuration} API.
+     *         The request parameters for Authlete's {@code /service/configuration}
+     *         API.
      *
      * @return
      *         A response that should be returned from the discovery endpoint.
@@ -167,7 +168,7 @@ public class BaseConfigurationEndpoint extends BaseEndpoint
      * <p>
      * This method internally creates a {@link ConfigurationRequestHandler}
      * instance and calls its
-     * {@link ConfigurationRequestHandler#handle(ServiceConfigurationRequest, Options)}
+     * {@link ConfigurationRequestHandler#handle(ServiceConfigurationRequest, Options) handle()}
      * method. Then, this method uses the value returned from the method as a response
      * from this method.
      * </p>
@@ -185,11 +186,11 @@ public class BaseConfigurationEndpoint extends BaseEndpoint
      *         An implementation of {@link AuthleteApi}.
      *
      * @param request
-     *         Request parameters for Authlete's {@code /api/service/configuration}
+     *         The request parameters for Authlete's {@code /api/service/configuration}
      *         API.
      *
      * @param options
-     *         Request options for the {@code /api/service/configuration} API.
+     *         The request options for the {@code /api/service/configuration} API.
      *
      * @return
      *         A response that should be returned from the discovery endpoint.

@@ -91,7 +91,8 @@ public class ClientRegistrationRequestHandler extends BaseHandler
 
     /**
      * Handle a dynamic client registration request. This method is an alias of
-     * {@link #handleRegister(String, String, Options)}{@code (json, authorization, null)}.
+     * {@link #handleRegister(String, String, Options) handleRegister}{@code
+     * (json, authorization, null)}.
      *
      * @param json
      *         The serialized JSON body of the client registration request.
@@ -123,7 +124,7 @@ public class ClientRegistrationRequestHandler extends BaseHandler
      *         This is optional.
      *
      * @param options
-     *         Request options for the {@code /api/client/registration} API.
+     *         The request options for the {@code /api/client/registration} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -156,7 +157,7 @@ public class ClientRegistrationRequestHandler extends BaseHandler
 
     /**
      * Handle a dynamic client management GET request. This method is an alias of
-     * the {@link #handleGet(String, String, Options)}{@code (clientId, authorization, null)}.
+     * the {@link #handleGet(String, String, Options) handleGet}{@code (clientId, authorization, null)}.
      *
      * @param clientId
      *         The client ID as determined by the incoming request.
@@ -188,7 +189,7 @@ public class ClientRegistrationRequestHandler extends BaseHandler
      *         This is optional.
      *
      * @param options
-     *         Request options for the {@code /api/client/registration} API.
+     *         The request options for the {@code /api/client/registration} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -221,7 +222,8 @@ public class ClientRegistrationRequestHandler extends BaseHandler
 
     /**
      * Handle a dynamic client management PUT request. This method is an alias of
-     * {@link #handleUpdate(String, String, String, Options)}{@code (clientId, json, authorization, null)}.
+     * {@link #handleUpdate(String, String, String, Options) handleUpdate}{@code
+     * (clientId, json, authorization, null)}.
      *
      * @param clientId
      *         The client ID as determined by the incoming request.
@@ -259,7 +261,7 @@ public class ClientRegistrationRequestHandler extends BaseHandler
      *         This is optional.
      *
      * @param options
-     *         Request options for the {@code /api/client/registration} API.
+     *         The request options for the {@code /api/client/registration} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -293,7 +295,7 @@ public class ClientRegistrationRequestHandler extends BaseHandler
 
     /**
      * Handle a dynamic client management DELETE request. This method is an alias
-     * of {@link #handleDelete(String, String, Options)}{@code (clientId, authorization, null)}.
+     * of {@link #handleDelete(String, String, Options) handleDelete}{@code (clientId, authorization, null)}.
      *
      * @param clientId
      *         The client ID as determined by the incoming request.
@@ -325,7 +327,7 @@ public class ClientRegistrationRequestHandler extends BaseHandler
      *         This is optional.
      *
      * @param options
-     *         Request options for the {@code /api/client/registration} API.
+     *         The request options for the {@code /api/client/registration} API.
      *
      * @return
      *         A response that should be returned to the client application.

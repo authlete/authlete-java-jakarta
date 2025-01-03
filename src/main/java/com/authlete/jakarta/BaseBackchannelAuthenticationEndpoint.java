@@ -48,7 +48,7 @@ public class BaseBackchannelAuthenticationEndpoint extends BaseEndpoint
      *         An implementation of {@link BackchannelAuthenticationRequestHandlerSpi}.
      *
      * @param parameters
-     *         Request parameters of the backchannel authentication request.
+     *         The request parameters of the backchannel authentication request.
      *
      * @param authorization
      *         The value of {@code Authorization} header of the backchannel authentication
@@ -76,9 +76,9 @@ public class BaseBackchannelAuthenticationEndpoint extends BaseEndpoint
      *
      * <p>
      * This method internally creates a {@link BackchannelAuthenticationRequestHandler}
-     * instance and calls its {@link BackchannelAuthenticationRequestHandler#handle(MultivaluedMap, String, String[])}
-     * method. Then, this method uses the value returned from the {@code handle()}
-     * method as a response from this method.
+     * instance and calls its {@link BackchannelAuthenticationRequestHandler#handle(MultivaluedMap, String, String[])
+     * handle()} method. Then, this method uses the value returned from the {@code
+     * handle()} method as a response from this method.
      * </p>
      *
      * <p>
@@ -97,7 +97,7 @@ public class BaseBackchannelAuthenticationEndpoint extends BaseEndpoint
      *         An implementation of {@link BackchannelAuthenticationRequestHandlerSpi}.
      *
      * @param parameters
-     *         Request parameters of the backchannel authentication request.
+     *         The request parameters of the backchannel authentication request.
      *
      * @param authorization
      *         The value of {@code Authorization} header of the backchannel authentication
@@ -108,13 +108,13 @@ public class BaseBackchannelAuthenticationEndpoint extends BaseEndpoint
      *         client's own certificate is the first in this array. Can be {@code null}.
      *
      * @param bcAuthOptions
-     *         Request options for the {@code /api/backchannel/authentication} API.
+     *         The request options for the {@code /api/backchannel/authentication} API.
      *
      * @param bcAuthIssueOptions
-     *         Request options for the {@code /api/backchannel/authentication/issue} API.
+     *         The request options for the {@code /api/backchannel/authentication/issue} API.
      *
      * @param bcAuthFailOptions
-     *         Request options for the {@code /api/backchannel/authentication/fail} API.
+     *         The request options for the {@code /api/backchannel/authentication/fail} API.
      *
      * @return
      *         A response that should be returned to the client application.

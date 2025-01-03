@@ -115,7 +115,7 @@ public class BackchannelAuthenticationCompleteRequestHandler extends BaseHandler
      *         API.
      *
      * @param options
-     *         Request options for the {@code /api/backchannel/authentication/complete} API.
+     *         The request options for the {@code /api/backchannel/authentication/complete} API.
      *
      * @throws WebApplicationException
      *         An error occurred.
@@ -225,8 +225,8 @@ public class BackchannelAuthenticationCompleteRequestHandler extends BaseHandler
 
 
     /**
-     * Call Authlete's {@code /api/backchannel/authentication/complete} API with an unsuccessful
-     * result.
+     * Call Authlete's {@code /api/backchannel/authentication/complete} API with
+     * an unsuccessful result.
      *
      * @param ticket
      *         A ticket that was issued by Authlete's {@code /api/backchannel/authentication}
@@ -245,7 +245,7 @@ public class BackchannelAuthenticationCompleteRequestHandler extends BaseHandler
      *         The URI of a document which describes the error in detail.
      *
      * @param options
-     *         Request options for the {@code /api/backchannel/authentication/complete} API.
+     *         The request options for the {@code /api/backchannel/authentication/complete} API.
      *
      * @return
      *         A response from Authlete's {@code /api/backchannel/authentication/complete}
@@ -293,7 +293,7 @@ public class BackchannelAuthenticationCompleteRequestHandler extends BaseHandler
      *         Extra properties to associate with an access token.
      *
      * @param options
-     *         Request options for the {@code /api/backchannel/authentication/complete} API.
+     *         The request options for the {@code /api/backchannel/authentication/complete} API.
      *
      * @param scopes
      *         Scopes to associate with an access token. If {@code null} is given,

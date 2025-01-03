@@ -295,10 +295,10 @@ public class TokenRequestHandler extends BaseHandler
 
 
         /**
-         * Get the request options for {@code /api/auth/token} API.
+         * Get the request options for the {@code /api/auth/token} API.
          *
          * @return
-         *         The request options for {@code /api/auth/token} API.
+         *         The request options for the {@code /api/auth/token} API.
          *
          * @since 2.82
          */
@@ -309,10 +309,10 @@ public class TokenRequestHandler extends BaseHandler
 
 
         /**
-         * Set the request options for {@code /api/auth/token} API.
+         * Set the request options for the {@code /api/auth/token} API.
          *
          * @param options
-         *         The request options for {@code /api/auth/token} API.
+         *         The request options for the {@code /api/auth/token} API.
          *
          * @return
          *         {@code this} object.
@@ -328,10 +328,10 @@ public class TokenRequestHandler extends BaseHandler
 
 
         /**
-         * Get the request options for {@code /api/auth/token/issue} API.
+         * Get the request options for the {@code /api/auth/token/issue} API.
          *
          * @return
-         *         The request options for {@code /api/auth/token/issue} API.
+         *         The request options for the {@code /api/auth/token/issue} API.
          *
          * @since 2.82
          */
@@ -342,10 +342,10 @@ public class TokenRequestHandler extends BaseHandler
 
 
         /**
-         * Set the request options for {@code /api/auth/token/issue} API.
+         * Set the request options for the {@code /api/auth/token/issue} API.
          *
          * @param options
-         *         The request options for {@code /api/auth/token/issue} API.
+         *         The request options for the {@code /api/auth/token/issue} API.
          *
          * @return
          *         {@code this} object.
@@ -361,10 +361,10 @@ public class TokenRequestHandler extends BaseHandler
 
 
         /**
-         * Get the request options for {@code /api/auth/token/fail} API.
+         * Get the request options for the {@code /api/auth/token/fail} API.
          *
          * @return
-         *         The request options for {@code /api/auth/token/fail} API.
+         *         The request options for the {@code /api/auth/token/fail} API.
          *
          * @since 2.82
          */
@@ -375,10 +375,10 @@ public class TokenRequestHandler extends BaseHandler
 
 
         /**
-         * Set the request options for {@code /api/auth/token/fail} API.
+         * Set the request options for the {@code /api/auth/token/fail} API.
          *
          * @param options
-         *         The request options for {@code /api/auth/token/fail} API.
+         *         The request options for the {@code /api/auth/token/fail} API.
          *
          * @return
          *         {@code this} object.
@@ -430,7 +430,7 @@ public class TokenRequestHandler extends BaseHandler
      * (parameters, authorization, null, null, null)}.
      *
      * @param parameters
-     *         Request parameters of a token request.
+     *         The request parameters of a token request.
      *
      * @param authorization
      *         The value of {@code Authorization} header in the token request.
@@ -459,7 +459,7 @@ public class TokenRequestHandler extends BaseHandler
      * (parameters, authorization, null, tokenOptions, tokenIssueOptions, tokenFailOptions)}.
      *
      * @param parameters
-     *         Request parameters of a token request.
+     *         The request parameters of a token request.
      *
      * @param authorization
      *         The value of {@code Authorization} header in the token request.
@@ -469,13 +469,13 @@ public class TokenRequestHandler extends BaseHandler
      *         Authentication</a>.
      *
      * @param tokenOptions
-     *         Request options for the {@code /api/auth/token} API.
+     *         The request options for the {@code /api/auth/token} API.
      *
      * @param tokenIssueOptions
-     *         Request options for the {@code /api/auth/token/issue} API.
+     *         The request options for the {@code /api/auth/token/issue} API.
      *
      * @param tokenFailOptions
-     *         Request options for the {@code /api/auth/token/fail} API.
+     *         The request options for the {@code /api/auth/token/fail} API.
      *
      * @return
      *         A response that should be returned from the endpoint to the
@@ -501,7 +501,7 @@ public class TokenRequestHandler extends BaseHandler
      * (parameters, authorization, clientCertificatePath, null, null, null)}.
      *
      * @param parameters
-     *         Request parameters of a token request.
+     *         The request parameters of a token request.
      *
      * @param authorization
      *         The value of {@code Authorization} header in the token request.
@@ -537,7 +537,7 @@ public class TokenRequestHandler extends BaseHandler
      * method.
      *
      * @param parameters
-     *         Request parameters of a token request.
+     *         The request parameters of a token request.
      *
      * @param authorization
      *         The value of {@code Authorization} header in the token request.
@@ -552,13 +552,13 @@ public class TokenRequestHandler extends BaseHandler
      *         the client did not send a certificate or path.
      *
      * @param tokenOptions
-     *         Request options for the {@code /api/auth/token} API.
+     *         The request options for the {@code /api/auth/token} API.
      *
      * @param tokenIssueOptions
-     *         Request options for the {@code /api/auth/token/issue} API.
+     *         The request options for the {@code /api/auth/token/issue} API.
      *
      * @param tokenFailOptions
-     *         Request options for the {@code /api/auth/token/fail} API.
+     *         The request options for the {@code /api/auth/token/fail} API.
      *
      * @return
      *         A response that should be returned from the endpoint to the

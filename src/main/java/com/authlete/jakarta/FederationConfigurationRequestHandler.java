@@ -81,7 +81,7 @@ public class FederationConfigurationRequestHandler extends BaseHandler
      *         An entity configuration request.
      *
      * @param options
-     *         Request options for the {@code /api/federation/configuration} API.
+     *         The request options for the {@code /api/federation/configuration} API.
      *
      * @return
      *         A response that should be returned from the entity configuration

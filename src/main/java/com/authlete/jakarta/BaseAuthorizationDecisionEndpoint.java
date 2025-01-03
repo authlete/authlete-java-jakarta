@@ -90,10 +90,10 @@ public class BaseAuthorizationDecisionEndpoint extends BaseEndpoint
      *         parameter in a response from Authlete's {@code /api/auth/authorization} API.
      *
      * @param authzIssueOptions
-     *         Request options for the {@code /api/auth/authorization/issue} API.
+     *         The request options for the {@code /api/auth/authorization/issue} API.
      *
      * @param authzFailOptions
-     *         Request options for the {@code /api/auth/authorization/fail} API.
+     *         The request options for the {@code /api/auth/authorization/fail} API.
      *
      * @return
      *         A response that should be returned to the client application.
@@ -122,9 +122,9 @@ public class BaseAuthorizationDecisionEndpoint extends BaseEndpoint
      *
      * <p>
      * This method internally creates a {@link AuthorizationDecisionHandler} instance and
-     * calls its {@link AuthorizationDecisionHandler#handle(Params)} method. Then,
-     * this method uses the value returned from the {@code handle()} method as a
-     * response from this method.
+     * calls its {@link AuthorizationDecisionHandler#handle(Params) handle()} method.
+     * Then, this method uses the value returned from the {@code handle()} method
+     * as a response from this method.
      * </p>
      *
      * <p>

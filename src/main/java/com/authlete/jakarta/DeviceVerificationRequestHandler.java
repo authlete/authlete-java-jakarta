@@ -93,7 +93,7 @@ public class DeviceVerificationRequestHandler extends BaseHandler
      * (Device Flow).
      *
      * @param options
-     *         Request options for the {@code /api/device/verification} API.
+     *         The request options for the {@code /api/device/verification} API.
      *
      * @return
      *         A response that should be returned to the end-user.
@@ -106,7 +106,7 @@ public class DeviceVerificationRequestHandler extends BaseHandler
         try
         {
             // Process the given parameters.
-            return process(null);
+            return process(options);
         }
         catch (WebApplicationException e)
         {

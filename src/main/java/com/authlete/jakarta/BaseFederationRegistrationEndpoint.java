@@ -83,13 +83,14 @@ public class BaseFederationRegistrationEndpoint extends BaseEndpoint
 {
     /**
      * Handle a request to the federation registration endpoint. This method is an alias
-     * of {@link #handle(AuthleteApi, FederationRegistrationRequest, Options)} method.
+     * of {@link #handle(AuthleteApi, FederationRegistrationRequest, Options) handle}{@code
+     * (api, request, null)}.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
      *
      * @param request
-     *         Request parameters for Authlete's {@code /api/federation/registration} API.
+     *         The request parameters for Authlete's {@code /api/federation/registration} API.
      *
      * @return
      *         A response that should be returned from the federation
@@ -107,7 +108,7 @@ public class BaseFederationRegistrationEndpoint extends BaseEndpoint
      * <p>
      * This method internally creates a {@link FederationRegistrationRequestHandler}
      * instance and calls its {@link
-     * FederationRegistrationRequestHandler#handle(FederationRegistrationRequest, Options)}
+     * FederationRegistrationRequestHandler#handle(FederationRegistrationRequest, Options) handle()}
      * method. Then, this method uses the value returned from the handler's method
      * as a response from this method.
      * </p>
@@ -125,10 +126,10 @@ public class BaseFederationRegistrationEndpoint extends BaseEndpoint
      *         An implementation of {@link AuthleteApi}.
      *
      * @param request
-     *         Request parameters for Authlete's {@code /api/federation/registration} API.
+     *         The request parameters for Authlete's {@code /api/federation/registration} API.
      *
      * @param options
-     *         Request options for the {@code /api/federation/configuration} API.
+     *         The request options for the {@code /api/federation/registration} API.
      *
      * @return
      *         A response that should be returned from the federation

@@ -68,7 +68,7 @@ public class BaseDeviceCompleteEndpoint extends BaseEndpoint
      *
      * <p>
      * This method internally creates a {@link DeviceCompleteRequestHandler} instance and
-     * calls its {@link DeviceCompleteRequestHandler#handle(String, String[], Options)}
+     * calls its {@link DeviceCompleteRequestHandler#handle(String, String[], Options) handle()}
      * method. Then, this method uses the value returned from the {@code handle()}
      * method as a response from this method.
      * </p>
@@ -96,7 +96,7 @@ public class BaseDeviceCompleteEndpoint extends BaseEndpoint
      *         parameter in a response from Authlete's {@code /api/device/verification} API.
      *
      * @param options
-     *         Request options for the {@code /api/device/authorization/complete} API.
+     *         The request options for the {@code /api/device/authorization/complete} API.
      *
      * @return
      *         A response that should be returned to the end-user.

@@ -45,7 +45,7 @@ public class BaseDeviceAuthorizationEndpoint extends BaseEndpoint
      *         An implementation of {@link DeviceAuthorizationRequestHandlerSpi}.
      *
      * @param parameters
-     *         Request parameters of the device authorization request.
+     *         The request parameters of the device authorization request.
      *
      * @param authorization
      *         The value of {@code Authorization} header of the device authorization
@@ -73,7 +73,7 @@ public class BaseDeviceAuthorizationEndpoint extends BaseEndpoint
      * <p>
      * This method internally creates a {@link DeviceAuthorizationRequestHandler}
      * instance and calls its {@link
-     * DeviceAuthorizationRequestHandler#handle(MultivaluedMap, String, String[], Options)}
+     * DeviceAuthorizationRequestHandler#handle(MultivaluedMap, String, String[], Options) handle()}
      * method. Then, this method uses the value returned from the {@code handle()}
      * method as a response from this method.
      * </p>
@@ -95,7 +95,7 @@ public class BaseDeviceAuthorizationEndpoint extends BaseEndpoint
      *         An implementation of {@link DeviceAuthorizationRequestHandlerSpi}.
      *
      * @param parameters
-     *         Request parameters of the device authorization request.
+     *         The request parameters of the device authorization request.
      *
      * @param authorization
      *         The value of {@code Authorization} header of the device authorization
@@ -107,7 +107,7 @@ public class BaseDeviceAuthorizationEndpoint extends BaseEndpoint
      *         {@code null}.
      *
      * @param options
-     *         Request options for the {@code /api/device/authorization} API.
+     *         The request options for the device authorization request.
      *
      * @return
      *         A response that should be returned to the client application.

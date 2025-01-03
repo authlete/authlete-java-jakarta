@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2023 Authlete, Inc.
+ * Copyright (C) 2023-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -81,7 +81,7 @@ public class CredentialJwtIssuerMetadataRequestHandler extends BaseHandler
      *         A JWT issuer metadata request.
      *
      * @param options
-     *         Request options for the {@code /api/vci/jwtissuer} API.
+     *         The request options for the {@code /api/vci/jwtissuer} API.
      *
      * @return
      *         A response that should be returned from the JWT issuer
