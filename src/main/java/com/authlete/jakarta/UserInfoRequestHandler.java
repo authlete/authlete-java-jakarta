@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2023 Authlete, Inc.
+ * Copyright (C) 2016-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,6 +25,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 import com.authlete.common.assurance.VerifiedClaims;
 import com.authlete.common.assurance.constraint.VerifiedClaimsConstraint;
 import com.authlete.common.assurance.constraint.VerifiedClaimsContainerConstraint;
@@ -62,7 +63,7 @@ public class UserInfoRequestHandler extends BaseHandler
      */
     public static class Params implements Serializable
     {
-        private static final long serialVersionUID = 2L;
+        private static final long serialVersionUID = 3L;
 
 
         private String accessToken;
@@ -71,6 +72,8 @@ public class UserInfoRequestHandler extends BaseHandler
         private String htm;
         private String htu;
         private boolean oldIdaFormatUsed;
+        private Options userInfoOptions;
+        private Options userInfoIssueOptions;
 
 
         /**
@@ -380,6 +383,72 @@ public class UserInfoRequestHandler extends BaseHandler
 
             return this;
         }
+
+
+        /**
+         * Get the request options for the {@code /api/auth/userinfo} API.
+         *
+         * @return
+         *         The request options for the {@code /api/auth/userinfo} API.
+         *
+         * @since 2.82
+         */
+        public Options getUserInfoOptions()
+        {
+            return userInfoOptions;
+        }
+
+
+        /**
+         * Set the request options for the {@code /api/auth/userinfo} API.
+         *
+         * @param options
+         *         The request options for the {@code /api/auth/userinfo} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setUserInfoOptions(Options options)
+        {
+            userInfoOptions = options;
+
+            return this;
+        }
+
+
+        /**
+         * Get the request options for the {@code /api/auth/userinfo/issue} API.
+         *
+         * @return
+         *         The request options for the {@code /api/auth/userinfo/issue} API.
+         *
+         * @since 2.82
+         */
+        public Options getUserInfoIssueOptions()
+        {
+            return userInfoIssueOptions;
+        }
+
+
+        /**
+         * Set the request options for the {@code /api/auth/userinfo/issue} API.
+         *
+         * @param options
+         *         The request options for the {@code /api/auth/userinfo/issue} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setUserInfoIssueOptions(Options options)
+        {
+            userInfoIssueOptions = options;
+
+            return this;
+        }
     }
 
 
@@ -418,7 +487,8 @@ public class UserInfoRequestHandler extends BaseHandler
      * "http://openid.net/specs/openid-connect-core-1_0.html#UserInfo"
      * >UserInfo Endpoint</a> defined in <a href=
      * "http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect
-     * Core 1&#x002E;0</a>.
+     * Core 1&#x002E;0</a>. This method is an alias of {@link #handle(String, Options, Options)
+     * handle}{@code (accessToken, null, null)}.
      *
      * @param accessToken
      *         An access token.
@@ -432,8 +502,44 @@ public class UserInfoRequestHandler extends BaseHandler
      */
     public Response handle(String accessToken) throws WebApplicationException
     {
+        return handle(accessToken, null, null);
+    }
+
+
+    /**
+     * Handle a userinfo request to a <a href=
+     * "http://openid.net/specs/openid-connect-core-1_0.html#UserInfo"
+     * >UserInfo Endpoint</a> defined in <a href=
+     * "http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect
+     * Core 1&#x002E;0</a>. This method is an alias of the {@link #handle(Params)}
+     * method.
+     *
+     * @param accessToken
+     *         An access token.
+     *
+     * @param userInfoOptions
+     *         The request options for the {@code /api/auth/userinfo} API.
+     *
+     * @param userInfoIssueOptions
+     *         The request options for the {@code /api/auth/userinfo/issue} API.
+     *
+     * @return
+     *         A response that should be returned from the endpoint to the
+     *         client application.
+     *
+     * @throws WebApplicationException
+     *         An error occurred.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            String accessToken, Options userInfoOptions, Options userInfoIssueOptions)
+                    throws WebApplicationException
+    {
         Params params = new Params()
                 .setAccessToken(accessToken)
+                .setUserInfoOptions(userInfoOptions)
+                .setUserInfoIssueOptions(userInfoIssueOptions)
                 ;
 
         return handle(params);
@@ -441,7 +547,11 @@ public class UserInfoRequestHandler extends BaseHandler
 
 
     /**
-     * Handle a userinfo request.
+     * Handle a userinfo request to a <a href=
+     * "http://openid.net/specs/openid-connect-core-1_0.html#UserInfo"
+     * >UserInfo Endpoint</a> defined in <a href=
+     * "http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect
+     * Core 1&#x002E;0</a>.
      *
      * @param params
      *         Parameters needed to handle the userinfo request.
@@ -491,7 +601,8 @@ public class UserInfoRequestHandler extends BaseHandler
                 params.getClientCertificate(),
                 params.getDpop(),
                 params.getHtm(),
-                params.getHtu()
+                params.getHtu(),
+                params.getUserInfoOptions()
         );
 
         // 'action' in the response denotes the next action which
@@ -525,7 +636,7 @@ public class UserInfoRequestHandler extends BaseHandler
 
             case OK:
                 // Return the user information.
-                return getUserInfo(params, response, headers);
+                return getUserInfo(params, response, headers, params.getUserInfoIssueOptions());
 
             default:
                 // This never happens.
@@ -554,7 +665,8 @@ public class UserInfoRequestHandler extends BaseHandler
      * Authlete's {@code /api/auth/userinfo/issue} API.
      */
     private Response getUserInfo(
-            Params params, UserInfoResponse response, Map<String, Object> headers)
+            Params params, UserInfoResponse response, Map<String, Object> headers,
+            Options options)
     {
         String subject = response.getSubject();
 
@@ -592,7 +704,7 @@ public class UserInfoRequestHandler extends BaseHandler
             // Generate a JSON or a JWT containing user information
             // by calling Authlete's /api/auth/userinfo/issue API.
             return getApiCaller().userInfoIssue(
-                    response.getToken(), claims, claimsForTx, verifiedClaimsForTx, headers);
+                    response.getToken(), claims, claimsForTx, verifiedClaimsForTx, headers, options);
         }
         catch (WebApplicationException e)
         {

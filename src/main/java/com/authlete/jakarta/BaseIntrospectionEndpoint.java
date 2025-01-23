@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017-2023 Authlete, Inc.
+ * Copyright (C) 2017-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 import com.authlete.jakarta.IntrospectionRequestHandler.Params;
 
 
@@ -39,24 +40,48 @@ import com.authlete.jakarta.IntrospectionRequestHandler.Params;
 public class BaseIntrospectionEndpoint extends BaseEndpoint
 {
     /**
-     * Handle an introspection request.
-     *
-     * This method is an alias of the {@link #handle(AuthleteApi,
-     * IntrospectionRequestHandler.Params)} method.
+     * Handle an introspection request. This method is an alias of {@link
+     * #handle(AuthleteApi, MultivaluedMap, Options) handle}{@code (api, parameters, null)}.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
      *
      * @param parameters
-     *         Request parameters of an introspection request.
+     *         The request parameters of an introspection request.
      *
      * @return
      *         A response that should be returned to the resource server.
      */
     public Response handle(AuthleteApi api, MultivaluedMap<String, String> parameters)
     {
+        return handle(api, parameters, null);
+    }
+
+
+    /**
+     * Handle an introspection request. This method is an alias of the {@link
+     * #handle(AuthleteApi, IntrospectionRequestHandler.Params)} method.
+     *
+     * @param api
+     *         An implementation of {@link AuthleteApi}.
+     *
+     * @param parameters
+     *         The request parameters of an introspection request.
+     *
+     * @param options
+     *         The request options for the {@code /api/auth/introspection} API.
+     *
+     * @return
+     *         A response that should be returned to the resource server.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            AuthleteApi api, MultivaluedMap<String, String> parameters, Options options)
+    {
         Params params = new Params()
                 .setParameters(parameters)
+                .setOptions(options)
                 ;
 
         return handle(api, params);
@@ -68,8 +93,9 @@ public class BaseIntrospectionEndpoint extends BaseEndpoint
      *
      * <p>
      * This method internally creates an {@link IntrospectionRequestHandler}
-     * instance and calls its {@link IntrospectionRequestHandler#handle(IntrospectionRequestHandler.Params)
-     * handle()} method with the {@code params} argument. Then, this
+     * instance and calls its {@link
+     * IntrospectionRequestHandler#handle(IntrospectionRequestHandler.Params) handle()}
+     * method with the {@code params} argument. Then, this
      * method uses the value returned from the {@code handle()} method
      * as a response from this method.
      * </p>

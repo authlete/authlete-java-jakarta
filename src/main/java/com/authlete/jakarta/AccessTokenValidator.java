@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2023 Authlete, Inc.
+ * Copyright (C) 2016-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -24,6 +24,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 import com.authlete.common.dto.IntrospectionRequest;
 import com.authlete.common.dto.IntrospectionResponse;
 import com.authlete.common.dto.IntrospectionResponse.Action;
@@ -46,7 +47,7 @@ public class AccessTokenValidator extends BaseHandler
      */
     public static class Params implements Serializable
     {
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 2L;
 
 
         private String accessToken;
@@ -56,6 +57,7 @@ public class AccessTokenValidator extends BaseHandler
         private String dpop;
         private String htm;
         private String htu;
+        private Options options;
 
 
         /**
@@ -317,6 +319,39 @@ public class AccessTokenValidator extends BaseHandler
 
             return this;
         }
+
+
+        /**
+         * Get the request options for the {@code /api/auth/introspection} API.
+         *
+         * @return
+         *         The request options for the {@code /api/auth/introspection} API.
+         *
+         * @since 2.82
+         */
+        public Options getOptions()
+        {
+            return options;
+        }
+
+
+        /**
+         * Set the request options for the {@code /api/auth/introspection} API.
+         *
+         * @param options
+         *         The request options for the {@code /api/auth/introspection} API.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.82
+         */
+        public Params setOptions(Options options)
+        {
+            this.options = options;
+
+            return this;
+        }
     }
 
 
@@ -337,16 +372,8 @@ public class AccessTokenValidator extends BaseHandler
 
 
     /**
-     * Validate an access token. This method is an alias of the
-     * {@link #validate(Params)} method.
-     *
-     * </p>
-     * When the given access token is not valid, this method throws a
-     * {@link WebApplicationException}. The response contained in the
-     * exception complies with the requirements described in <a href=
-     * "http://tools.ietf.org/html/rfc6750">RFC 6750</a> (The OAuth
-     * 2.0 Authorization Framework: Bearer Token Usage).
-     * </p>
+     * Validate an access token. This method is an alias of
+     * {@link #validate(String, Options) validate}{@code (accessToken, (Options)null)}.
      *
      * @param accessToken
      *         An access token to validate.
@@ -360,25 +387,38 @@ public class AccessTokenValidator extends BaseHandler
      */
     public AccessTokenInfo validate(String accessToken) throws WebApplicationException
     {
-        Params params = new Params()
-                .setAccessToken(accessToken)
-                ;
-
-        return validate(params);
+        return validate(accessToken, (Options)null);
     }
 
 
     /**
-     * Validate an access token. This method is an alias of the
-     * {@link #validate(Params)} method.
+     * Validate an access token. This method is an alias of {@link
+     * #validate(String, String[], Options) validate}{@code (accessToken, null, options)}.
      *
-     * </p>
-     * When the given access token is not valid, this method throws a
-     * {@link WebApplicationException}. The response contained in the
-     * exception complies with the requirements described in <a href=
-     * "http://tools.ietf.org/html/rfc6750">RFC 6750</a> (The OAuth
-     * 2.0 Authorization Framework: Bearer Token Usage).
-     * </p>
+     * @param accessToken
+     *         An access token to validate.
+     *
+     * @param options
+     *         The request options for the {@code /api/auth/introspection} API.
+     *
+     * @return
+     *         Information about the access token.
+     *
+     * @throws WebApplicationException
+     *         The access token is invalid. To be concrete, the access
+     *         token does not exist or it has expired.
+     *
+     * @since 2.82
+     */
+    public AccessTokenInfo validate(String accessToken, Options options) throws WebApplicationException
+    {
+        return validate(accessToken, null, options);
+    }
+
+
+    /**
+     * Validate an access token. This method is an alias of
+     * {@link #validate(String, String[], Options) validate}{@code (accessToken, requiredScopes, null)}.
      *
      * @param accessToken
      *         An access token to validate.
@@ -402,26 +442,50 @@ public class AccessTokenValidator extends BaseHandler
     public AccessTokenInfo validate(
             String accessToken, String[] requiredScopes) throws WebApplicationException
     {
-        Params params = new Params()
-                .setAccessToken(accessToken)
-                .setRequiredScopes(requiredScopes)
-                ;
-
-        return validate(params);
+        return validate(accessToken, requiredScopes, null);
     }
 
 
     /**
-     * Validate an access token. This method is an alias of the
-     * {@link #validate(Params)} method.
+     * Validate an access token. This method is an alias of
+     * {@link #validate(String, String[], String, String, Options) validate}{@code
+     * (accessToken, requiredScopes, null, null, options)}.
      *
-     * </p>
-     * When the given access token is not valid, this method throws a
-     * {@link WebApplicationException}. The response contained in the
-     * exception complies with the requirements described in <a href=
-     * "http://tools.ietf.org/html/rfc6750">RFC 6750</a> (The OAuth
-     * 2.0 Authorization Framework: Bearer Token Usage).
-     * </p>
+     * @param accessToken
+     *         An access token to validate.
+     *
+     * @param requiredScopes
+     *         Scopes that must be associated with the access token.
+     *         {@code null} is okay.
+     *
+     * @param options
+     *         The request options for the {@code /api/auth/introspection} API.
+     *
+     * @return
+     *         Information about the access token.
+     *
+     * @throws WebApplicationException
+     *         The access token is invalid. To be concrete, one or more of
+     *         the following conditions meet.
+     *         <ol>
+     *           <li>The access token does not exist.
+     *           <li>The access token has expired.
+     *           <li>The access token does not cover the required scopes.
+     *         </ol>
+     *
+     * @since 2.82
+     */
+    public AccessTokenInfo validate(
+            String accessToken, String[] requiredScopes, Options options) throws WebApplicationException
+    {
+        return validate(accessToken, requiredScopes, null, null, options);
+    }
+
+
+    /**
+     * Validate an access token. This method is an alias of
+     * {@link #validate(String, String[], String, String, Options) validate}{@code
+     * (accessToken, requiredScopes, requiredSubject, clientCertificate, null)}.
      *
      * @param accessToken
      *         An access token to validate.
@@ -458,11 +522,69 @@ public class AccessTokenValidator extends BaseHandler
             String accessToken, String[] requiredScopes,
             String requiredSubject, String clientCertificate) throws WebApplicationException
     {
+        return validate(accessToken, requiredScopes, requiredSubject, clientCertificate, null);
+    }
+
+
+    /**
+     * Validate an access token. This method is an alias of the {@link #validate(Params)}
+     * method.
+     *
+     * </p>
+     * When the given access token is not valid, this method throws a
+     * {@link WebApplicationException}. The response contained in the
+     * exception complies with the requirements described in <a href=
+     * "http://tools.ietf.org/html/rfc6750">RFC 6750</a> (The OAuth
+     * 2.0 Authorization Framework: Bearer Token Usage).
+     * </p>
+     *
+     * @param accessToken
+     *         An access token to validate.
+     *
+     * @param requiredScopes
+     *         Scopes that must be associated with the access token.
+     *         {@code null} is okay.
+     *
+     * @param requiredSubject
+     *         Subject (= user's unique identifier) that must be associated
+     *         with the access token. {@code null} is okay.
+     *
+     * @param clientCertificate
+     *         TLS Certificate of the client presented during a call to
+     *         the resource server, used with TLS-bound access tokens.
+     *         Can be {@code null} if no certificate is presented.
+     *
+     * @param options
+     *         The request options for the {@code /api/auth/introspection} API.
+     *
+     * @return
+     *         Information about the access token.
+     *
+     * @throws WebApplicationException
+     *         The access token is invalid. To be concrete, one or more of
+     *         the following conditions meet.
+     *         <ol>
+     *           <li>The access token does not exist.
+     *           <li>The access token has expired.
+     *           <li>The access token does not cover the required scopes.
+     *           <li>The access token is not associated with the required subject.
+     *           <li>The access token is bound to a client certificate, but the
+     *               presented one does not match.
+     *         </ol>
+     *
+     * @since 2.27
+     */
+    public AccessTokenInfo validate(
+            String accessToken, String[] requiredScopes,
+            String requiredSubject, String clientCertificate, Options options)
+                    throws WebApplicationException
+    {
         Params params = new Params()
                 .setAccessToken(accessToken)
                 .setRequiredScopes(requiredScopes)
                 .setRequiredSubject(requiredSubject)
                 .setClientCertificate(clientCertificate)
+                .setOptions(options)
                 ;
 
         return validate(params);
@@ -508,7 +630,8 @@ public class AccessTokenValidator extends BaseHandler
 
 
     /**
-     * Validate an access token.
+     * Validate an access token. This method is an alias of the
+     * {@link #validate(IntrospectionRequest, Options) validate}{@code (request, null)}.
      *
      * @param request
      *         The request parameters to Authlete's {@code /auth/introspection} API.
@@ -526,9 +649,36 @@ public class AccessTokenValidator extends BaseHandler
      */
     public IntrospectionResponse validate(IntrospectionRequest request) throws WebApplicationException
     {
+        return validate(request, null);
+    }
+
+
+    /**
+     * Validate an access token.
+     *
+     * @param request
+     *         The request parameters to Authlete's {@code /auth/introspection} API.
+     *
+     * @param options
+     *         The request options for the {@code /api/auth/introspection} API.
+     *
+     * @return
+     *         The response from the Authlete's {@code /auth/introspection} API.
+     *
+     * @throws WebApplicationException
+     *         The access token is invalid or something unexpected happened.
+     *         This exception is raised when the {@code action} response parameter
+     *         in the response from the {@code /auth/introspection} API is not
+     *         {@link IntrospectionResponse.Action#OK OK}.
+     *
+     * @since 2.82
+     */
+    public IntrospectionResponse validate(
+            IntrospectionRequest request, Options options) throws WebApplicationException
+    {
         try
         {
-            return process(request);
+            return process(request, options);
         }
         catch (WebApplicationException e)
         {
@@ -552,7 +702,8 @@ public class AccessTokenValidator extends BaseHandler
                 params.getClientCertificate(),
                 params.getDpop(),
                 params.getHtm(),
-                params.getHtu()
+                params.getHtu(),
+                params.getOptions()
         );
 
         // Handle the response from the /auth/introspection API.
@@ -563,10 +714,11 @@ public class AccessTokenValidator extends BaseHandler
     }
 
 
-    private IntrospectionResponse process(IntrospectionRequest request) throws WebApplicationException
+    private IntrospectionResponse process(
+            IntrospectionRequest request, Options options) throws WebApplicationException
     {
         // Call Authlete's /api/auth/introspection API.
-        IntrospectionResponse response = getApiCaller().callIntrospection(request);
+        IntrospectionResponse response = getApiCaller().callIntrospection(request, options);
 
         // Handle the response from the /auth/introspection API.
         handleIntrospectionResponse(response);

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2022 Authlete, Inc.
+ * Copyright (C) 2016-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 import com.authlete.jakarta.TokenRequestHandler.Params;
 import com.authlete.jakarta.spi.TokenRequestHandlerSpi;
 
@@ -41,10 +42,9 @@ import com.authlete.jakarta.spi.TokenRequestHandlerSpi;
 public class BaseTokenEndpoint extends BaseEndpoint
 {
     /**
-     * Handle a token request.
-     *
-     * This method is an alias of the {@link #handle(AuthleteApi,
-     * TokenRequestHandlerSpi, TokenRequestHandler.Params)} method.
+     * Handle a token request. This method is an alias of {@link #handle(AuthleteApi,
+     * TokenRequestHandlerSpi, MultivaluedMap, String, Options, Options, Options)
+     * handle}{@code (api, spi, parameters, authorization, null, null, null)}.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
@@ -53,7 +53,7 @@ public class BaseTokenEndpoint extends BaseEndpoint
      *         An implementation of {@link TokenRequestHandlerSpi}.
      *
      * @param parameters
-     *         Request parameters of the token request.
+     *         The request parameters of the token request.
      *
      * @param authorization
      *         The value of {@code Authorization} header of the token request.
@@ -65,20 +65,14 @@ public class BaseTokenEndpoint extends BaseEndpoint
             AuthleteApi api, TokenRequestHandlerSpi spi,
             MultivaluedMap<String, String> parameters, String authorization)
     {
-        Params params = new Params()
-                .setParameters(parameters)
-                .setAuthorization(authorization)
-                ;
-
-        return handle(api, spi, params);
+        return handle(api, spi, parameters, authorization, null, null, null);
     }
 
 
     /**
-     * Handle a token request.
-     *
-     * This method is an alias of the {@link #handle(AuthleteApi,
-     * TokenRequestHandlerSpi, TokenRequestHandler.Params)} method.
+     * Handle a token request. This method is an alias of the {@link #handle(AuthleteApi,
+     * TokenRequestHandlerSpi, MultivaluedMap, String, String[], Options) handle}{@code
+     * (api, spi, parameters, authorization, null, tokenOptions, tokenIssueOptions, tokenFailOptions)}.
      *
      * @param api
      *         An implementation of {@link AuthleteApi}.
@@ -87,7 +81,48 @@ public class BaseTokenEndpoint extends BaseEndpoint
      *         An implementation of {@link TokenRequestHandlerSpi}.
      *
      * @param parameters
-     *         Request parameters of the token request.
+     *         The request parameters of the token request.
+     *
+     * @param authorization
+     *         The value of {@code Authorization} header of the token request.
+     *
+     * @param tokenOptions
+     *         The request options for the {@code /api/auth/token} API.
+     *
+     * @param tokenIssueOptions
+     *         The request options for the {@code /api/auth/token/issue} API.
+     *
+     * @param tokenFailOptions
+     *         The request options for the {@code /api/auth/token/fail} API.
+     *
+     * @return
+     *         A response that should be returned to the client application.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            AuthleteApi api, TokenRequestHandlerSpi spi,
+            MultivaluedMap<String, String> parameters, String authorization,
+            Options tokenOptions, Options tokenIssueOptions, Options tokenFailOptions)
+    {
+        return handle(
+                api, spi, parameters, authorization, null, tokenOptions, tokenIssueOptions, tokenFailOptions);
+    }
+
+
+    /**
+     * Handle a token request. This method is an alias of the {@link #handle(AuthleteApi,
+     * TokenRequestHandlerSpi, MultivaluedMap, String, String[], Options, Options, Options)
+     * handle}{@code (api, spi, parameters, authorization, clientCertificatePath, null, null, null)}.
+     *
+     * @param api
+     *         An implementation of {@link AuthleteApi}.
+     *
+     * @param spi
+     *         An implementation of {@link TokenRequestHandlerSpi}.
+     *
+     * @param parameters
+     *         The request parameters of the token request.
      *
      * @param authorization
      *         The value of {@code Authorization} header of the token request.
@@ -106,10 +141,59 @@ public class BaseTokenEndpoint extends BaseEndpoint
             AuthleteApi api, TokenRequestHandlerSpi spi,
             MultivaluedMap<String, String> parameters, String authorization, String[] clientCertificatePath)
     {
+        return handle(
+                api, spi, parameters, authorization, clientCertificatePath, null, null, null);
+    }
+
+
+    /**
+     * Handle a token request. This method is an alias of the {@link #handle(AuthleteApi,
+     * TokenRequestHandlerSpi, TokenRequestHandler.Params)} method.
+     *
+     * @param api
+     *         An implementation of {@link AuthleteApi}.
+     *
+     * @param spi
+     *         An implementation of {@link TokenRequestHandlerSpi}.
+     *
+     * @param parameters
+     *         The request parameters of the token request.
+     *
+     * @param authorization
+     *         The value of {@code Authorization} header of the token request.
+     *
+     * @param clientCertificatePath
+     *         The certificate path used in mutual TLS authentication, each in
+     *         PEM format. The client's own certificate is the first in this
+     *         array. Can be {@code null}.
+     *
+     * @param tokenOptions
+     *         The request options for the {@code /api/auth/token} API.
+     *
+     * @param tokenIssueOptions
+     *         The request options for the {@code /api/auth/token/issue} API.
+     *
+     * @param tokenFailOptions
+     *         The request options for the {@code /api/auth/token/fail} API.
+     *
+     * @return
+     *         A response that should be returned to the client application.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            AuthleteApi api, TokenRequestHandlerSpi spi,
+            MultivaluedMap<String, String> parameters, String authorization,
+            String[] clientCertificatePath, Options tokenOptions, Options tokenIssueOptions,
+            Options tokenFailOptions)
+    {
         Params params = new Params()
                 .setParameters(parameters)
                 .setAuthorization(authorization)
                 .setClientCertificatePath(clientCertificatePath)
+                .setTokenOptions(tokenOptions)
+                .setTokenIssueOptions(tokenIssueOptions)
+                .setTokenFailOptions(tokenFailOptions)
                 ;
 
         return handle(api, spi, params);
@@ -121,18 +205,19 @@ public class BaseTokenEndpoint extends BaseEndpoint
      *
      * <p>
      * This method internally creates a {@link TokenRequestHandler} instance and
-     * calls its {@link TokenRequestHandler#handle(TokenRequestHandler.Params)
-     * handle(Params)} method. Then, this method uses the value returned from
-     * the {@code handle()} method as a response from this method.
+     * calls its {@link TokenRequestHandler#handle(TokenRequestHandler.Params) handle()}
+     * method. Then, this method uses the value returned from the {@code handle()}
+     * method as a response from this method.
      * </p>
      *
      * <p>
      * When {@code TokenRequestHandler.handle()} method raises a {@link
      * WebApplicationException}, this method calls {@link #onError(WebApplicationException)
-     * onError()} method with the exception. The default implementation of {@code onError()}
-     * does nothing. You can override the method as necessary. After calling
-     * {@code onError()} method, this method calls {@code getResponse()} method of
-     * the exception and uses the returned value as a response from this method.
+     * onError()} method with the exception. The default implementation of {@code
+     * onError()} does nothing. You can override the method as necessary. After
+     * calling {@code onError()} method, this method calls {@code getResponse()}
+     * method of the exception and uses the returned value as a response from this
+     * method.
      * </p>
      *
      * @param api
