@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2016-2023 Authlete, Inc.
+ * Copyright (C) 2016-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,6 +18,7 @@ package com.authlete.jakarta;
 
 
 import java.io.Serializable;
+import java.net.URI;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -25,9 +26,12 @@ import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.Status;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 import com.authlete.common.assurance.VerifiedClaims;
 import com.authlete.common.assurance.constraint.VerifiedClaimsConstraint;
 import com.authlete.common.assurance.constraint.VerifiedClaimsContainerConstraint;
+import com.authlete.common.dto.Pair;
+import com.authlete.common.dto.Service;
 import com.authlete.common.dto.StringArray;
 import com.authlete.common.dto.UserInfoResponse;
 import com.authlete.common.dto.UserInfoResponse.Action;
@@ -62,7 +66,7 @@ public class UserInfoRequestHandler extends BaseHandler
      */
     public static class Params implements Serializable
     {
-        private static final long serialVersionUID = 2L;
+        private static final long serialVersionUID = 3L;
 
 
         private String accessToken;
@@ -71,6 +75,10 @@ public class UserInfoRequestHandler extends BaseHandler
         private String htm;
         private String htu;
         private boolean oldIdaFormatUsed;
+        private URI targetUri;
+        private Pair[] headers;
+        private boolean requestBodyContained;
+        private boolean dpopNonceRequired;
 
 
         /**
@@ -380,6 +388,239 @@ public class UserInfoRequestHandler extends BaseHandler
 
             return this;
         }
+
+
+        /**
+         * Get the full URI of the userinfo request, including the query part,
+         * if any.
+         *
+         * <p>
+         * This parameter is used as the value of the {@code @target-uri} derived
+         * component for HTTP message signatures (<a href=
+         * "https://www.rfc-editor.org/rfc/rfc9421.html#section-2.2.2">RFC 9421
+         * HTTP Message Signatures, Section 2.2.2. Target URI</a>). Additionally,
+         * other derived components such as {@code @authority}, {@code @scheme},
+         * {@code @path}, {@code @query} and {@code @query-param} are computed
+         * from this parameter.
+         * </p>
+         *
+         * <p>
+         * When this parameter is omitted, the value of the {@code htu} parameter
+         * is used. The {@code htu} parameter represents the URL of the userinfo
+         * endpoint, which usually serves as the target URI of the userinfo request.
+         * The only exception is when the access token is specified as a query
+         * parameter, as defined in <a href=
+         * "https://www.rfc-editor.org/rfc/rfc6750.html#section-2.3">RFC 6750
+         * Section 2.3</a>. However, RFC 6750 states that this method <i>"SHOULD
+         * NOT be used"</i> unless other methods are not viable.
+         * </p>
+         *
+         * <p>
+         * If neither this {@code targetUri} parameter nor the {@code htu}
+         * parameter is specified, the {@code userInfoEndpoint} property of the
+         * {@link Service} is used as a fallback.
+         * </p>
+         *
+         * @return
+         *         The full URI of the userinfo request.
+         *
+         * @since 2.80
+         */
+        public URI getTargetUri()
+        {
+            return targetUri;
+        }
+
+
+        /**
+         * Set the full URI of the userinfo request, including the query part,
+         * if any.
+         *
+         * <p>
+         * This parameter is used as the value of the {@code @target-uri} derived
+         * component for HTTP message signatures (<a href=
+         * "https://www.rfc-editor.org/rfc/rfc9421.html#section-2.2.2">RFC 9421
+         * HTTP Message Signatures, Section 2.2.2. Target URI</a>). Additionally,
+         * other derived components such as {@code @authority}, {@code @scheme},
+         * {@code @path}, {@code @query} and {@code @query-param} are computed
+         * from this parameter.
+         * </p>
+         *
+         * <p>
+         * When this parameter is omitted, the value of the {@code htu} parameter
+         * is used. The {@code htu} parameter represents the URL of the userinfo
+         * endpoint, which usually serves as the target URI of the userinfo request.
+         * The only exception is when the access token is specified as a query
+         * parameter, as defined in <a href=
+         * "https://www.rfc-editor.org/rfc/rfc6750.html#section-2.3">RFC 6750
+         * Section 2.3</a>. However, RFC 6750 states that this method <i>"SHOULD
+         * NOT be used"</i> unless other methods are not viable.
+         * </p>
+         *
+         * <p>
+         * If neither this {@code targetUri} parameter nor the {@code htu}
+         * parameter is specified, the {@code userInfoEndpoint} property of the
+         * {@link Service} is used as a fallback.
+         * </p>
+         *
+         * @param targetUri
+         *         The full URI of the userinfo request.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.80
+         */
+        public Params setTargetUri(URI targetUri)
+        {
+            this.targetUri = targetUri;
+
+            return this;
+        }
+
+
+        /**
+         * Get the HTTP headers included in the userinfo request. They are used
+         * to compute component values, which will be part of the signature base
+         * for HTTP message signatures.
+         *
+         * @return
+         *         HTTP header fields of the userinfo request.
+         *
+         * @since 2.80
+         */
+        public Pair[] getHeaders()
+        {
+            return headers;
+        }
+
+
+        /**
+         * Set the HTTP headers included in the userinfo request. They are used
+         * to compute component values, which will be part of the signature base
+         * for HTTP message signatures.
+         *
+         * @param headers
+         *         HTTP header fields of the userinfo request.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.80
+         */
+        public Params setHeaders(Pair[] headers)
+        {
+            this.headers = headers;
+
+            return this;
+        }
+
+
+        /**
+         * Get the flag indicating whether the userinfo request contains a request
+         * body.
+         *
+         * <p>
+         * When the userinfo request must comply with the HTTP message signing
+         * requirements defined in the FAPI 2.0 Message Signing specification, the
+         * {@code "content-digest"} component identifier must be included in the
+         * signature base of the HTTP message signature (see <a href=
+         * "https://www.rfc-editor.org/rfc/rfc9421.html">RFC 9421 HTTP Message
+         * Signatures</a>) if the userinfo request contains a request body.
+         * </p>
+         *
+         * <p>
+         * When this {@code requestBodyContained} parameter is true, Authlete
+         * checks whether {@code "content-digest"} is included in the signature
+         * base, if the FAPI profile applies to the userinfo request.
+         * </p>
+         *
+         * @return
+         *         {@code true} if the userinfo request contains a request body.
+         *
+         * @since 2.80
+         */
+        public boolean isRequestBodyContained()
+        {
+            return requestBodyContained;
+        }
+
+
+        /**
+         * Set the flag indicating whether the userinfo request contains a request
+         * body.
+         *
+         * <p>
+         * When the userinfo request must comply with the HTTP message signing
+         * requirements defined in the FAPI 2.0 Message Signing specification, the
+         * {@code "content-digest"} component identifier must be included in the
+         * signature base of the HTTP message signature (see <a href=
+         * "https://www.rfc-editor.org/rfc/rfc9421.html">RFC 9421 HTTP Message
+         * Signatures</a>) if the userinfo request contains a request body.
+         * </p>
+         *
+         * <p>
+         * When this {@code requestBodyContained} parameter is true, Authlete
+         * checks whether {@code "content-digest"} is included in the signature
+         * base, if the FAPI profile applies to the userinfo request.
+         * </p>
+         *
+         * @param contained
+         *         {@code true} to indicate that the userinfo request contains
+         *         a request body.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.80
+         */
+        public Params setRequestBodyContained(boolean contained)
+        {
+            this.requestBodyContained = contained;
+
+            return this;
+        }
+
+
+        /**
+         * Get the flag indicating whether to check if the DPoP proof JWT
+         * includes the expected {@code nonce} value.
+         *
+         * @return
+         *         {@code true} to have the {@code /auth/userinfo} API check
+         *         whether the DPoP proof JWT includes the expected
+         *         {@code nonce} value, even if the service's
+         *         {@code dpopNonceRequired} property is false.
+         *
+         * @since 2.80
+         */
+        public boolean isDpopNonceRequired()
+        {
+            return dpopNonceRequired;
+        }
+
+
+        /**
+         * Set the flag indicating whether to check if the DPoP proof JWT
+         * includes the expected {@code nonce} value.
+         *
+         * @param dpopNonceRequired
+         *         {@code true} to have the {@code /auth/userinfo} API check
+         *         whether the DPoP proof JWT includes the expected
+         *         {@code nonce} value, even if the service's
+         *         {@code dpopNonceRequired} property is false.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.80
+         */
+        public Params setDpopNonceRequired(boolean dpopNonceRequired)
+        {
+            this.dpopNonceRequired = dpopNonceRequired;
+
+            return this;
+        }
     }
 
 
@@ -418,7 +659,8 @@ public class UserInfoRequestHandler extends BaseHandler
      * "http://openid.net/specs/openid-connect-core-1_0.html#UserInfo"
      * >UserInfo Endpoint</a> defined in <a href=
      * "http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect
-     * Core 1&#x002E;0</a>.
+     * Core 1&#x002E;0</a>. This method is an alias of {@link #handle(String, Options, Options)
+     * handle}{@code (accessToken, null, null)}.
      *
      * @param accessToken
      *         An access token.
@@ -432,16 +674,53 @@ public class UserInfoRequestHandler extends BaseHandler
      */
     public Response handle(String accessToken) throws WebApplicationException
     {
-        Params params = new Params()
-                .setAccessToken(accessToken)
-                ;
-
-        return handle(params);
+        return handle(accessToken, null, null);
     }
 
 
     /**
-     * Handle a userinfo request.
+     * Handle a userinfo request to a <a href=
+     * "http://openid.net/specs/openid-connect-core-1_0.html#UserInfo"
+     * >UserInfo Endpoint</a> defined in <a href=
+     * "http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect
+     * Core 1&#x002E;0</a>. This method is an alias of the {@link #handle(Params, Options, Options)}
+     * method.
+     *
+     * @param accessToken
+     *         An access token.
+     *
+     * @param userInfoOptions
+     *         The request options for the {@code /api/auth/userinfo} API.
+     *
+     * @param userInfoIssueOptions
+     *         The request options for the {@code /api/auth/userinfo/issue} API.
+     *
+     * @return
+     *         A response that should be returned from the endpoint to the
+     *         client application.
+     *
+     * @throws WebApplicationException
+     *         An error occurred.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            String accessToken, Options userInfoOptions, Options userInfoIssueOptions)
+                    throws WebApplicationException
+    {
+        Params params = new Params().setAccessToken(accessToken);
+
+        return handle(params, userInfoOptions, userInfoIssueOptions);
+    }
+
+
+    /**
+     * Handle a userinfo request to a <a href=
+     * "http://openid.net/specs/openid-connect-core-1_0.html#UserInfo"
+     * >UserInfo Endpoint</a> defined in <a href=
+     * "http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect
+     * Core 1&#x002E;0</a>. This method is an alias of {@link #handle(Params, Options, Options) handle}{@code
+     * (params, null, null)}.
      *
      * @param params
      *         Parameters needed to handle the userinfo request.
@@ -455,6 +734,39 @@ public class UserInfoRequestHandler extends BaseHandler
      */
     public Response handle(Params params) throws WebApplicationException
     {
+        return handle(params, null, null);
+    }
+
+
+    /**
+     * Handle a userinfo request to a <a href=
+     * "http://openid.net/specs/openid-connect-core-1_0.html#UserInfo"
+     * >UserInfo Endpoint</a> defined in <a href=
+     * "http://openid.net/specs/openid-connect-core-1_0.html">OpenID Connect
+     * Core 1&#x002E;0</a>.
+     *
+     * @param params
+     *         Parameters needed to handle the userinfo request.
+     *
+     * @param userInfoOptions
+     *         The request options for the {@code /api/auth/userinfo} API.
+     *
+     * @param userInfoIssueOptions
+     *         The request options for the {@code /api/auth/userinfo/issue} API.
+     *
+     * @return
+     *         A response that should be returned from the endpoint to the
+     *         client application.
+     *
+     * @throws WebApplicationException
+     *         An error occurred.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            Params params, Options userInfoOptions, Options userInfoIssueOptions)
+                    throws WebApplicationException
+    {
         // If an access token is not available.
         if (params == null || params.getAccessToken() == null)
         {
@@ -466,7 +778,7 @@ public class UserInfoRequestHandler extends BaseHandler
         try
         {
             // Process the userinfo request.
-            return process(params);
+            return process(params, userInfoOptions, userInfoIssueOptions);
         }
         catch (WebApplicationException e)
         {
@@ -483,16 +795,11 @@ public class UserInfoRequestHandler extends BaseHandler
     /**
      * Process the userinfo request with the access token.
      */
-    private Response process(Params params)
+    private Response process(
+            Params params, Options userInfoOptions, Options userInfoIssueOptions)
     {
         // Call Authlete's /api/auth/userinfo API.
-        UserInfoResponse response = getApiCaller().callUserInfo(
-                params.getAccessToken(),
-                params.getClientCertificate(),
-                params.getDpop(),
-                params.getHtm(),
-                params.getHtu()
-        );
+        UserInfoResponse response = getApiCaller().callUserInfo(params, userInfoOptions);
 
         // 'action' in the response denotes the next action which
         // this service implementation should take.
@@ -525,7 +832,7 @@ public class UserInfoRequestHandler extends BaseHandler
 
             case OK:
                 // Return the user information.
-                return getUserInfo(params, response, headers);
+                return getUserInfo(params, response, headers, userInfoOptions);
 
             default:
                 // This never happens.
@@ -554,7 +861,8 @@ public class UserInfoRequestHandler extends BaseHandler
      * Authlete's {@code /api/auth/userinfo/issue} API.
      */
     private Response getUserInfo(
-            Params params, UserInfoResponse response, Map<String, Object> headers)
+            Params params, UserInfoResponse response, Map<String, Object> headers,
+            Options options)
     {
         String subject = response.getSubject();
 
@@ -592,7 +900,7 @@ public class UserInfoRequestHandler extends BaseHandler
             // Generate a JSON or a JWT containing user information
             // by calling Authlete's /api/auth/userinfo/issue API.
             return getApiCaller().userInfoIssue(
-                    response.getToken(), claims, claimsForTx, verifiedClaimsForTx, headers);
+                    response.getToken(), claims, claimsForTx, verifiedClaimsForTx, headers, options);
         }
         catch (WebApplicationException e)
         {

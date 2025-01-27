@@ -4,7 +4,7 @@
 
     <groupId>com.authlete</groupId>
     <artifactId>authlete-java-jakarta</artifactId>
-    <version>2.85</version>
+    <version>2.85-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Authlete library for JAX-RS (Java)</description>
@@ -28,7 +28,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <authlete-java-common.version>4.1</authlete-java-common.version>
+        <authlete-java-common.version>4.16</authlete-java-common.version>
         <gson.version>2.10.1</gson.version>
         <nimbus.version>9.31</nimbus.version>
         <jakarta.api.version>3.1.0</jakarta.api.version>
@@ -37,13 +37,14 @@
         <jakarta.xml.version>4.0.1</jakarta.xml.version>
         <git.connection>scm:git:git@github.com:authlete/authlete-java-jakarta.git</git.connection>
         <git.url>git@github.com:authlete/authlete-java-jakarta.git</git.url>
+        <http-field-parser.version>1.0</http-field-parser.version>
     </properties>
 
     <scm>
         <connection>${git.connection}</connection>
         <developerConnection>${git.connection}</developerConnection>
         <url>${git.url}</url>
-        <tag>authlete-java-jakarta-2.85</tag>
+        <tag>authlete-java-jakarta-2.71</tag>
     </scm>
 
     <dependencies>
@@ -78,10 +79,17 @@
             <artifactId>gson</artifactId>
             <version>${gson.version}</version>
         </dependency>
+
         <dependency>
             <groupId>com.nimbusds</groupId>
             <artifactId>nimbus-jose-jwt</artifactId>
             <version>${nimbus.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.authlete.http</groupId>
+            <artifactId>http-field-parser</artifactId>
+            <version>${http-field-parser.version}</version>
         </dependency>
 
         <!-- Test Dependencies -->
@@ -91,6 +99,7 @@
             <version>5.10.2</version>
             <scope>test</scope>
         </dependency>
+
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-junit-jupiter</artifactId>
@@ -219,17 +228,6 @@
 
     <build>
         <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
-                <configuration>
-                    <source>11</source>
-                    <target>11</target>
-                    <fork>true</fork>
-                </configuration>
-            </plugin>
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

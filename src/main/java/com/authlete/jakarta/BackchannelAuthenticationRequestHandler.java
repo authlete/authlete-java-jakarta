@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019 Authlete, Inc.
+ * Copyright (C) 2019-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +17,17 @@
 package com.authlete.jakarta;
 
 
-import java.util.Arrays;
+import java.io.Serializable;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 import com.authlete.common.dto.BackchannelAuthenticationFailRequest.Reason;
 import com.authlete.common.dto.BackchannelAuthenticationIssueResponse;
 import com.authlete.common.dto.BackchannelAuthenticationResponse;
 import com.authlete.common.types.User;
 import com.authlete.common.types.UserIdentificationHintType;
-import com.authlete.common.web.BasicCredentials;
 import com.authlete.jakarta.spi.BackchannelAuthenticationRequestHandlerSpi;
 
 
@@ -36,11 +36,12 @@ import com.authlete.jakarta.spi.BackchannelAuthenticationRequestHandlerSpi;
  * endpoint of CIBA (Client Initiated Backchannel Authentication).
  *
  * <p>
- * In an implementation of backchannel authentication endpoint, call {@link #handle(MultivaluedMap, String, String[])
- * handle()} method and use the response as the response from the endpoint to the
- * client application. The {@code handle()} method calls Authlete's {@code /api/backchannel/authentication}
- * API, receives a response from the API, and dispatches processing according to
- * the {@code action} parameter in the response.
+ * In an implementation of the backchannel authentication endpoint, call
+ * [@link #handle(Params)} method and use the response as the response
+ * from the endpoint to the client application. The {@code handle()}
+ * method calls Authlete's {@code /backchannel/authentication} API,
+ * receives a response from the API, and dispatches processing according
+ * to the {@code action} parameter in the response.
  * </p>
  *
  * @since 2.13
@@ -49,6 +50,207 @@ import com.authlete.jakarta.spi.BackchannelAuthenticationRequestHandlerSpi;
  */
 public class BackchannelAuthenticationRequestHandler extends BaseHandler
 {
+    /**
+     * Parameters passed to the
+     * {@link BackchannelAuthenticationRequestHandler#handle(Params)}
+     * method.
+     *
+     * @since 2.79
+     */
+    public static class Params implements Serializable
+    {
+        private static final long serialVersionUID = 1L;
+
+
+        private MultivaluedMap<String, String> parameters;
+        private String authorization;
+        private String[] clientCertificatePath;
+        private String clientAttestation;
+        private String clientAttestationPop;
+
+
+        /**
+         * Get the request parameters of the backchannel authentication request.
+         *
+         * @return
+         *         The request parameters.
+         */
+        public MultivaluedMap<String, String> getParameters()
+        {
+            return parameters;
+        }
+
+
+        /**
+         * Set the request parameters of the backchannel authentication request.
+         *
+         * @param parameters
+         *         The request parameters.
+         *
+         * @return
+         *         {@code this} object.
+         */
+        public Params setParameters(MultivaluedMap<String, String> parameters)
+        {
+            this.parameters = parameters;
+
+            return this;
+        }
+
+
+        /**
+         * Get the value of the {@code Authorization} header in the backchannel
+         * authentication request. A pair of client ID and client secret is
+         * embedded there when the client authentication method is
+         * {@code client_secret_basic}.
+         *
+         * @return
+         *         The value of the {@code Authorization} header.
+         */
+        public String getAuthorization()
+        {
+            return authorization;
+        }
+
+
+        /**
+         * Set the value of the {@code Authorization} header in the backchannel
+         * authentication request. A pair of client ID and client secret is
+         * embedded there when the client authentication method is
+         * {@code client_secret_basic}.
+         *
+         * @param authorization
+         *         The value of the {@code Authorization} header.
+         *
+         * @return
+         *         {@code this} object.
+         */
+        public Params setAuthorization(String authorization)
+        {
+            this.authorization = authorization;
+
+            return this;
+        }
+
+
+        /**
+         * Get the path of the client's certificate, each in PEM format.
+         * The first item in the array is the client's certificate itself.
+         *
+         * @return
+         *         The path of the client's certificate.
+         *
+         * @see <a href="https://www.rfc-editor.org/rfc/rfc8705.html"
+         *      >RFC 8705: OAuth 2.0 Mutual-TLS Client Authentication and
+         *       Certificate-Bound Access Tokens</a>
+         */
+        public String[] getClientCertificatePath()
+        {
+            return clientCertificatePath;
+        }
+
+
+        /**
+         * Set the path of the client's certificate, each in PEM format.
+         * The first item in the array is the client's certificate itself.
+         *
+         * @param path
+         *         The path of the client's certificate.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @see <a href="https://www.rfc-editor.org/rfc/rfc8705.html"
+         *      >RFC 8705: OAuth 2.0 Mutual-TLS Client Authentication and
+         *       Certificate-Bound Access Tokens</a>
+         */
+        public Params setClientCertificatePath(String[] path)
+        {
+            this.clientCertificatePath = path;
+
+            return this;
+        }
+
+
+        /**
+         * Get the value of the {@code OAuth-Client-Attestation} HTTP header.
+         *
+         * @return
+         *         The value of the {@code OAuth-Client-Attestation} HTTP header.
+         *
+         * @since Authlete 3.0
+         *
+         * @see <a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-attestation-based-client-auth/"
+         *      >OAuth 2.0 Attestation-Based Client Authentication</a>
+         */
+        public String getClientAttestation()
+        {
+            return clientAttestation;
+        }
+
+
+        /**
+         * Set the value of the {@code OAuth-Client-Attestation} HTTP header.
+         *
+         * @param jwt
+         *         The value of the {@code OAuth-Client-Attestation} HTTP header.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since Authlete 3.0
+         *
+         * @see <a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-attestation-based-client-auth/"
+         *      >OAuth 2.0 Attestation-Based Client Authentication</a>
+         */
+        public Params setClientAttestation(String jwt)
+        {
+            this.clientAttestation = jwt;
+
+            return this;
+        }
+
+
+        /**
+         * Get the value of the {@code OAuth-Client-Attestation-PoP} HTTP header.
+         *
+         * @return
+         *         The value of the {@code OAuth-Client-Attestation-PoP} HTTP header.
+         *
+         * @since Authlete 3.0
+         *
+         * @see <a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-attestation-based-client-auth/"
+         *      >OAuth 2.0 Attestation-Based Client Authentication</a>
+         */
+        public String getClientAttestationPop()
+        {
+            return clientAttestationPop;
+        }
+
+
+        /**
+         * Set the value of the {@code OAuth-Client-Attestation-PoP} HTTP header.
+         *
+         * @param jwt
+         *         The value of the {@code OAuth-Client-Attestation-PoP} HTTP header.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since Authlete 3.0
+         *
+         * @see <a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-attestation-based-client-auth/"
+         *      >OAuth 2.0 Attestation-Based Client Authentication</a>
+         */
+        public Params setClientAttestationPop(String jwt)
+        {
+            this.clientAttestationPop = jwt;
+
+            return this;
+        }
+    }
+
+
     /**
      * The value for {@code WWW-Authenticate} header on 401 Unauthorized.
      */
@@ -81,16 +283,18 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
 
     /**
      * Handle a backchannel authentication request to a backchannel authentication
-     * endpoint of CIBA (Client Initiated Backchannel Authentication).
+     * endpoint of CIBA (Client Initiated Backchannel Authentication). This method
+     * is an alias of {@link #handle(MultivaluedMap, String, String[], Options, Options, Options)
+     * handle}{@code (parameters, authorization, clientCertificatePath, null, null, null)}.
      *
      * @param parameters
-     *         Request parameters of a backchannel authentication request.
+     *         The request parameters of a backchannel authentication request.
      *
      * @param authorization
      *         The value of {@code Authorization} header in the backchannel authentication
      *         request. A client application may embed its pair of client ID and
      *         client secret in a backchannel authentication request using <a href=
-     *         "https://tools.ietf.org/html/rfc2617#section-2">Basic
+     *         "https://www.rfc-editor.org/rfc/rfc2617.html#section-2">Basic
      *         Authentication</a>.
      *
      * @param clientCertificatePath
@@ -109,19 +313,120 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
             MultivaluedMap<String, String> parameters, String authorization,
             String[] clientCertificatePath) throws WebApplicationException
     {
-        // Convert the value of Authorization header (credentials of
-        // the client application), if any, into BasicCredentials.
-        BasicCredentials credentials = BasicCredentials.parse(authorization);
+        return handle(parameters, authorization, clientCertificatePath, null, null, null);
+    }
 
-        // The credentials of the client application extracted from
-        // 'Authorization' header. These may be null.
-        String clientId     = credentials == null ? null : credentials.getUserId();
-        String clientSecret = credentials == null ? null : credentials.getPassword();
+
+    /**
+     * Handle a backchannel authentication request to a backchannel authentication
+     * endpoint of CIBA (Client Initiated Backchannel Authentication). This method
+     * is an alias of the {@link #handle(Params)} method.
+     *
+     * @param parameters
+     *         The request parameters of a backchannel authentication request.
+     *
+     * @param authorization
+     *         The value of {@code Authorization} header in the backchannel authentication
+     *         request. A client application may embed its pair of client ID and
+     *         client secret in a backchannel authentication request using <a href=
+     *         "https://tools.ietf.org/html/rfc2617#section-2">Basic
+     *         Authentication</a>.
+     *
+     * @param clientCertificatePath
+     *         The path of the client's certificate, each in PEM format. The first
+     *         item in the array is the client's certificate itself. May be {@code null}
+     *         if the client did not send a certificate or path.
+     *
+     * @param bcAuthOptions
+     *         The request options for the {@code /api/backchannel/authentication} API.
+     *
+     * @param bcAuthIssueOptions
+     *         The request options for the {@code /api/backchannel/authentication/issue} API.
+     *
+     * @param bcAuthFailOptions
+     *         The request options for the {@code /api/backchannel/authentication/fail} API.
+     *
+     * @return
+     *         A response that should be returned from the endpoint to the
+     *         client application.
+     *
+     * @throws WebApplicationException
+     *         An error occurred.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            MultivaluedMap<String, String> parameters, String authorization,
+            String[] clientCertificatePath, Options bcAuthOptions, Options bcAuthIssueOptions,
+            Options bcAuthFailOptions) throws WebApplicationException
+    {
+        Params params = new Params()
+                .setParameters(parameters)
+                .setAuthorization(authorization)
+                .setClientCertificatePath(clientCertificatePath)
+                ;
+
+        return handle(params, bcAuthOptions, bcAuthIssueOptions, bcAuthFailOptions);
+    }
+
+
+    /**
+     * Handle a backchannel authentication request to a backchannel authentication
+     * endpoint of CIBA (Client Initiated Backchannel Authentication). This method
+     * is an alias of {@link #handle(Params, Options, Options, Options) handle}{@code
+     * (params, null, null, null)}.
+     *
+     * @param params
+     *         Parameters for Authlete's {@code /backchannel/authentication} API.
+     *
+     * @return
+     *         A response that should be returned from the endpoint to the
+     *         client application.
+     *
+     * @since 2.79
+     */
+    public Response handle(Params params)
+    {
+        return handle(params, null, null, null);
+    }
+
+
+    /**
+     * Handle a backchannel authentication request to a backchannel authentication
+     * endpoint of CIBA (Client Initiated Backchannel Authentication).
+     *
+     * @param params
+     *         Parameters for Authlete's {@code /backchannel/authentication} API.
+     *
+     * @param bcAuthOptions
+     *         The request options for the {@code /api/backchannel/authentication} API.
+     *
+     * @param bcAuthIssueOptions
+     *         The request options for the {@code /api/backchannel/authentication/issue} API.
+     *
+     * @param bcAuthFailOptions
+     *         The request options for the {@code /api/backchannel/authentication/fail} API.
+     *
+     * @return
+     *         A response that should be returned from the endpoint to the
+     *         client application.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            Params params, Options bcAuthOptions, Options bcAuthIssueOptions, Options bcAuthFailOptions)
+    {
+        // The credential of the client application extracted from the
+        // Authorization header. If available, the first element is the
+        // client ID and the second element is the client secret.
+        String[] credential = HandlerUtility
+                .extractClientCredentialFromAuthorization(params.getAuthorization());
 
         try
         {
             // Process the given parameters.
-            return process(parameters, clientId, clientSecret, clientCertificatePath);
+            return process(
+                    params, credential[0], credential[1], bcAuthOptions, bcAuthIssueOptions, bcAuthFailOptions);
         }
         catch (WebApplicationException e)
         {
@@ -136,27 +441,24 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
 
 
     private Response process(
-            MultivaluedMap<String, String> parameters, String clientId,
-            String clientSecret, String[] clientCertificatePath)
+            Params params, String clientId, String clientSecret, Options bcAuthOptions,
+            Options bcAuthIssueOptions, Options bcAuthFailOptions)
     {
-        // TODO: Duplicate code.
-        String clientCertificate = null;
-        if (clientCertificatePath != null && clientCertificatePath.length > 0)
-        {
-            // The first one is the client's certificate.
-            clientCertificate = clientCertificatePath[0];
+        // The client certificate.
+        String clientCertificate = HandlerUtility
+                .extractClientCertificate(params.getClientCertificatePath());
 
-            // if we have more in the path, pass them along separately without the first one
-            if (clientCertificatePath.length > 1)
-            {
-                clientCertificatePath = Arrays.copyOfRange(
-                        clientCertificatePath, 1, clientCertificatePath.length);
-            }
-        }
+        // The second and subsequent elements in the client certificate path.
+        String[] clientCertificatePath = HandlerUtility
+                .extractSubsequenceFromClientCertificatePath(params.getClientCertificatePath());
 
         // Call Authlete's /api/backchannel/authentication API.
         BackchannelAuthenticationResponse response =
-                getApiCaller().callBackchannelAuthentication(parameters, clientId, clientSecret, clientCertificate, clientCertificatePath);
+                getApiCaller().callBackchannelAuthentication(
+                        params.getParameters(), clientId, clientSecret,
+                        clientCertificate, clientCertificatePath,
+                        params.getClientAttestation(), params.getClientAttestationPop(),
+                        bcAuthOptions);
 
         // 'action' in the response denotes the next action which
         // this service implementation should take.
@@ -183,7 +485,7 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
 
             case USER_IDENTIFICATION:
                 // Process user identification.
-                return handleUserIdentification(response);
+                return handleUserIdentification(response, bcAuthIssueOptions, bcAuthFailOptions);
 
             default:
                 // This never happens.
@@ -192,26 +494,27 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
     }
 
 
-    private Response handleUserIdentification(BackchannelAuthenticationResponse baRes)
+    private Response handleUserIdentification(
+            BackchannelAuthenticationResponse baRes, Options bcAuthIssueOptions, Options bcAuthFailOptions)
     {
         // Identify a user based on the hint contained in the backchannel authentication
         // request.
-        User user = identifyUserByHint(baRes);
+        User user = identifyUserByHint(baRes, bcAuthFailOptions);
 
         // Check the expiration of the login hint token if necessary.
-        checkExpirationOfLoginHintToken(baRes);
+        checkExpirationOfLoginHintToken(baRes, bcAuthFailOptions);
 
         // Check the user code contained in the backchannel authentication request
         // if necessary.
-        checkUserCode(baRes, user);
+        checkUserCode(baRes, user, bcAuthFailOptions);
 
         // Check the binding message in the backchannel authentication request
         // if necessary.
-        checkBindingMessage(baRes);
+        checkBindingMessage(baRes, bcAuthFailOptions);
 
         // Issue an 'auth_req_id'.
         BackchannelAuthenticationIssueResponse baiRes =
-                getApiCaller().callBackchannelAuthenticationIssue(baRes.getTicket());
+                getApiCaller().callBackchannelAuthenticationIssue(baRes.getTicket(), bcAuthIssueOptions);
 
         // 'action' in the response denotes the next action which this service
         // implementation should take.
@@ -244,7 +547,7 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
     }
 
 
-    private User identifyUserByHint(BackchannelAuthenticationResponse baRes)
+    private User identifyUserByHint(BackchannelAuthenticationResponse baRes, Options bcAuthFailOptions)
     {
         // Get a user by the hint.
         User user = mSpi.getUserByHint(baRes.getHintType(), baRes.getHint(), baRes.getSub());
@@ -261,11 +564,13 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
         }
 
         // Can't identify a user by the hint.
-        throw getApiCaller().backchannelAuthenticationFail(baRes.getTicket(), Reason.UNKNOWN_USER_ID);
+        throw getApiCaller().backchannelAuthenticationFail(
+                baRes.getTicket(), Reason.UNKNOWN_USER_ID, bcAuthFailOptions);
     }
 
 
-    private void checkExpirationOfLoginHintToken(BackchannelAuthenticationResponse baRes)
+    private void checkExpirationOfLoginHintToken(
+            BackchannelAuthenticationResponse baRes, Options bcAuthFailOptions)
     {
         if (baRes.getHintType() != UserIdentificationHintType.LOGIN_HINT_TOKEN)
         {
@@ -284,11 +589,13 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
         }
 
         // The login hint token has expired.
-        throw getApiCaller().backchannelAuthenticationFail(baRes.getTicket(), Reason.EXPIRED_LOGIN_HINT_TOKEN);
+        throw getApiCaller().backchannelAuthenticationFail(
+                baRes.getTicket(), Reason.EXPIRED_LOGIN_HINT_TOKEN, bcAuthFailOptions);
     }
 
 
-    private void checkUserCode(BackchannelAuthenticationResponse baRes, User user)
+    private void checkUserCode(
+            BackchannelAuthenticationResponse baRes, User user, Options bcAuthFailOptions)
     {
         if (mSpi.shouldCheckUserCode(user, baRes) == false)
         {
@@ -306,11 +613,13 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
         }
 
         // The user code is invalid.
-        throw getApiCaller().backchannelAuthenticationFail(baRes.getTicket(), Reason.INVALID_USER_CODE);
+        throw getApiCaller().backchannelAuthenticationFail(
+                baRes.getTicket(), Reason.INVALID_USER_CODE, bcAuthFailOptions);
     }
 
 
-    private void checkBindingMessage(BackchannelAuthenticationResponse baRes)
+    private void checkBindingMessage(
+            BackchannelAuthenticationResponse baRes, Options bcAuthFailOptions)
     {
         // The binding message in the backchannel authentication request.
         String bindingMessage = baRes.getBindingMessage();
@@ -328,7 +637,8 @@ public class BackchannelAuthenticationRequestHandler extends BaseHandler
         }
 
         // The binding message is invalid.
-        throw getApiCaller().backchannelAuthenticationFail(baRes.getTicket(), Reason.INVALID_BINDING_MESSAGE);
+        throw getApiCaller().backchannelAuthenticationFail(
+                baRes.getTicket(), Reason.INVALID_BINDING_MESSAGE, bcAuthFailOptions);
     }
 
 

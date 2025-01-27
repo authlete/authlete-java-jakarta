@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2019-2023 Authlete, Inc.
+ * Copyright (C) 2019-2025 Authlete, Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,16 +18,15 @@ package com.authlete.jakarta;
 
 
 import java.io.Serializable;
-import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import jakarta.ws.rs.WebApplicationException;
 import jakarta.ws.rs.core.MultivaluedMap;
 import jakarta.ws.rs.core.Response;
 import com.authlete.common.api.AuthleteApi;
+import com.authlete.common.api.Options;
 import com.authlete.common.dto.PushedAuthReqResponse;
 import com.authlete.common.dto.PushedAuthReqResponse.Action;
-import com.authlete.common.web.BasicCredentials;
 
 
 /**
@@ -35,15 +34,15 @@ import com.authlete.common.web.BasicCredentials;
  *
  * <p>
  * In an implementation of the pushed authorization request endpoint, call
- * {@link #handle(MultivaluedMap, String, String[]) handle()} method and use
- * the response as the response from the endpoint to the client application.
- * The {@code handle()} method calls Authlete's
- * {@code /api/pushed_auth_req} API, receives a response from the API, and
- * dispatches processing according to the {@code action} parameter in the response.
+ * {@link #handle(Params)} method and use the response as the response from
+ * the endpoint to the client application. The {@code handle()} method calls
+ * Authlete's {@code /pushed_auth_req} API, receives a response from the API,
+ * and dispatches processing according to the {@code action} parameter in the
+ * response.
  * </p>
  *
- * @see <a href="https://tools.ietf.org/html/draft-lodderstedt-oauth-par"
- *      >OAuth 2.0 Pushed Authorization Requests</a>
+ * @see <a href="https://www.rfc-editor.org/rfc/rfc9126.html"
+ *      >RFC 9126: OAuth 2.0 Pushed Authorization Requests</a>
  *
  * @since 2.21
  *
@@ -59,7 +58,7 @@ public class PushedAuthReqHandler extends BaseHandler
      */
     public static class Params implements Serializable
     {
-        private static final long serialVersionUID = 1L;
+        private static final long serialVersionUID = 3L;
 
 
         private MultivaluedMap<String, String> parameters;
@@ -68,6 +67,8 @@ public class PushedAuthReqHandler extends BaseHandler
         private String dpop;
         private String htm;
         private String htu;
+        private String clientAttestation;
+        private String clientAttestationPop;
 
 
         /**
@@ -140,7 +141,7 @@ public class PushedAuthReqHandler extends BaseHandler
          *         The path of the client's certificate.
          *
          * @see <a href="https://www.rfc-editor.org/rfc/rfc8705.html"
-         *      >RFC 8705 : OAuth 2.0 Mutual-TLS Client Authentication and
+         *      >RFC 8705: OAuth 2.0 Mutual-TLS Client Authentication and
          *       Certificate-Bound Access Tokens</a>
          */
         public String[] getClientCertificatePath()
@@ -160,7 +161,7 @@ public class PushedAuthReqHandler extends BaseHandler
          *         {@code this} object.
          *
          * @see <a href="https://www.rfc-editor.org/rfc/rfc8705.html"
-         *      >RFC 8705 : OAuth 2.0 Mutual-TLS Client Authentication and
+         *      >RFC 8705: OAuth 2.0 Mutual-TLS Client Authentication and
          *       Certificate-Bound Access Tokens</a>
          */
         public Params setClientCertificatePath(String[] path)
@@ -294,6 +295,88 @@ public class PushedAuthReqHandler extends BaseHandler
 
             return this;
         }
+
+
+        /**
+         * Get the value of the {@code OAuth-Client-Attestation} HTTP header.
+         *
+         * @return
+         *         The value of the {@code OAuth-Client-Attestation} HTTP header.
+         *
+         * @since 2.79
+         * @since Authlete 3.0
+         *
+         * @see <a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-attestation-based-client-auth/"
+         *      >OAuth 2.0 Attestation-Based Client Authentication</a>
+         */
+        public String getClientAttestation()
+        {
+            return clientAttestation;
+        }
+
+
+        /**
+         * Set the value of the {@code OAuth-Client-Attestation} HTTP header.
+         *
+         * @param jwt
+         *         The value of the {@code OAuth-Client-Attestation} HTTP header.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.79
+         * @since Authlete 3.0
+         *
+         * @see <a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-attestation-based-client-auth/"
+         *      >OAuth 2.0 Attestation-Based Client Authentication</a>
+         */
+        public Params setClientAttestation(String jwt)
+        {
+            this.clientAttestation = jwt;
+
+            return this;
+        }
+
+
+        /**
+         * Get the value of the {@code OAuth-Client-Attestation-PoP} HTTP header.
+         *
+         * @return
+         *         The value of the {@code OAuth-Client-Attestation-PoP} HTTP header.
+         *
+         * @since 2.79
+         * @since Authlete 3.0
+         *
+         * @see <a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-attestation-based-client-auth/"
+         *      >OAuth 2.0 Attestation-Based Client Authentication</a>
+         */
+        public String getClientAttestationPop()
+        {
+            return clientAttestationPop;
+        }
+
+
+        /**
+         * Set the value of the {@code OAuth-Client-Attestation-PoP} HTTP header.
+         *
+         * @param jwt
+         *         The value of the {@code OAuth-Client-Attestation-PoP} HTTP header.
+         *
+         * @return
+         *         {@code this} object.
+         *
+         * @since 2.79
+         * @since Authlete 3.0
+         *
+         * @see <a href="https://datatracker.ietf.org/doc/draft-ietf-oauth-attestation-based-client-auth/"
+         *      >OAuth 2.0 Attestation-Based Client Authentication</a>
+         */
+        public Params setClientAttestationPop(String jwt)
+        {
+            this.clientAttestationPop = jwt;
+
+            return this;
+        }
     }
 
 
@@ -310,16 +393,19 @@ public class PushedAuthReqHandler extends BaseHandler
 
 
     /**
-     * Handle a pushed authorization request.
+     * Handle a pushed authorization request. This method is an alias
+     * of {@link #handle(MultivaluedMap, String, String[], Options) handle}{@code
+     * (parameters, authorization, clientCertificatePath, null)}.
      *
      * @param parameters
-     *            Request parameters of a pushed authorization request.
+     *            The request parameters of a pushed authorization request.
      *
      * @param authorization
      *            The value of {@code Authorization} header in the pushed
      *            authorization request. A client application may embed its
      *            pair of client ID and client secret in a pushed authorization
-     *            request using <a href="https://tools.ietf.org/html/rfc2617#section-2"
+     *            request using <a href=
+     *            "https://www.rfc-editor.org/rfc/rfc2617.html#section-2"
      *            >Basic Authentication</a>.
      *
      * @param clientCertificatePath
@@ -338,13 +424,52 @@ public class PushedAuthReqHandler extends BaseHandler
             MultivaluedMap<String, String> parameters, String authorization,
             String[] clientCertificatePath) throws WebApplicationException
     {
+        return handle(parameters, authorization, clientCertificatePath, null);
+    }
+
+
+    /**
+     * Handle a pushed authorization request.
+     *
+     * @param parameters
+     *            Request parameters of a pushed authorization request.
+     *
+     * @param authorization
+     *            The value of {@code Authorization} header in the pushed
+     *            authorization request. A client application may embed its
+     *            pair of client ID and client secret in a pushed authorization
+     *            request using <a href=
+     *            "https://www.rfc-editor.org/rfc/rfc2617.html#section-2"
+     *            >Basic Authentication</a>.
+     *
+     * @param clientCertificatePath
+     *            The path of the client's certificate, each in PEM format.
+     *            The first item in the array is the client's certificate itself.
+     *            May be {@code null} if the client did not send a certificate or path.
+     *
+     * @param options
+     *         The request options for the {@code /api/pushed_auth_req} API.
+     *
+     * @return
+     *         A response that should be returned from the endpoint to the
+     *         client application.
+     *
+     * @throws WebApplicationException
+     *             An error occurred.
+     *
+     * @since 2.82
+     */
+    public Response handle(
+            MultivaluedMap<String, String> parameters, String authorization,
+            String[] clientCertificatePath, Options options) throws WebApplicationException
+    {
         Params params = new Params()
                 .setParameters(parameters)
                 .setAuthorization(authorization)
                 .setClientCertificatePath(clientCertificatePath)
                 ;
 
-        return handle(params);
+        return handle(params, options);
     }
 
 
@@ -366,27 +491,41 @@ public class PushedAuthReqHandler extends BaseHandler
      */
     public Response handle(Params params)
     {
-        // Convert the value of Authorization header (credentials of
-        // the client application), if any, into BasicCredentials.
-        BasicCredentials credentials = BasicCredentials.parse(params.getAuthorization());
+        return handle(params, null);
+    }
 
-        // The credentials of the client application extracted from
-        // 'Authorization' header. These may be null.
-        String clientId     = credentials == null ? null : credentials.getUserId();
-        String clientSecret = credentials == null ? null : credentials.getPassword();
+
+    /**
+     * Handle a PAR request.
+     *
+     * @param params
+     *         Parameters needed to handle the PAR request.
+     *         Must not be {@code null}.
+     *
+     * @param options
+     *         The request options for the {@code /api/pushed_auth_req} API.
+     *
+     * @return
+     *         A response that should be returned from the endpoint to the
+     *         client application.
+     *
+     * @throws WebApplicationException
+     *         An error occurred.
+     *
+     * @since 2.82
+     */
+    public Response handle(Params params, Options options)
+    {
+        // The credential of the client application extracted from the
+        // Authorization header. If available, the first element is the
+        // client ID and the second element is the client secret.
+        String[] credential = HandlerUtility
+                .extractClientCredentialFromAuthorization(params.getAuthorization());
 
         try
         {
             // Process the given parameters.
-            return process(
-                    params.getParameters(),
-                    clientId,
-                    clientSecret,
-                    params.getClientCertificatePath(),
-                    params.getDpop(),
-                    params.getHtm(),
-                    params.getHtu()
-                    );
+            return process(params, credential[0], credential[1], options);
         }
         catch (WebApplicationException e)
         {
@@ -404,27 +543,22 @@ public class PushedAuthReqHandler extends BaseHandler
      * Process the parameters of the pushed authorization request.
      */
     private Response process(
-            MultivaluedMap<String, String> parameters, String clientId,
-            String clientSecret, String[] clientCertificatePath,
-            String dpop, String htm, String htu)
+            Params params, String clientId, String clientSecret, Options options)
     {
-        String clientCertificate = null;
-        if (clientCertificatePath != null && clientCertificatePath.length > 0)
-        {
-            // The first one is the client's certificate.
-            clientCertificate = clientCertificatePath[0];
+        // The client certificate.
+        String clientCertificate = HandlerUtility
+                .extractClientCertificate(params.getClientCertificatePath());
 
-            // if we have more in the path, pass them along separately without the first one
-            if (clientCertificatePath.length > 1)
-            {
-                clientCertificatePath = Arrays.copyOfRange(
-                        clientCertificatePath, 1, clientCertificatePath.length);
-            }
-        }
+        // The second and subsequent elements in the client certificate path.
+        String[] clientCertificatePath = HandlerUtility
+                .extractSubsequenceFromClientCertificatePath(params.getClientCertificatePath());
 
         PushedAuthReqResponse response = getApiCaller().callPushedAuthReq(
-                parameters, clientId, clientSecret,
-                clientCertificate, clientCertificatePath, dpop, htm, htu);
+                params.getParameters(), clientId, clientSecret,
+                clientCertificate, clientCertificatePath,
+                params.getDpop(), params.getHtm(), params.getHtu(),
+                params.getClientAttestation(), params.getClientAttestationPop(),
+                options);
 
         // 'action' in the response denotes the next action which
         // this service implementation should take.

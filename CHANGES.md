@@ -1,6 +1,90 @@
 CHANGES
 =======
 
+2.84 (2025-01-24)
+-----------------
+
+- Remove `TestRequest` object, and replace it with mocks.
+
+
+2.82 (2025-01-12)
+-----------------
+
+- Added request options to some request handler classes, some base endpoint classes, and some API implementation classes. 
+
+
+2.81 (2024-10-20)
+-----------------
+
+- New types
+    * `RequestUrlResolver` class
+
+- `pom.xml`
+    * Added a new dependency, `com.authlete.http:http-field-parser:1.0`.
+    * Removed the duplicate `org.apache.maven.plugins:maven-compiler-plugin` dependency.
+
+
+2.80 (2024-10-02)
+-----------------
+
+- `AuthleteApiCaller` class
+    * Change the `callUserInfo(String, String, String, String, String)`
+      method to `callUserInfo(UserInfoRequestHandler.Params)`.
+
+- `BaseEndpoint` class
+    * Added the `extractHeadersAsPairs(HttpServletRequest)` method.
+
+- `UserInfoRequestHandler.Params` class
+    * Added the `getTargetUri()` method.
+    * Added the `setTargetUri(URI)` method.
+    * Added the `getHeaders()` method.
+    * Added the `setHeaders(Pair[])` method.
+    * Added the `isRequestBodyContained()` method.
+    * Added the `setRequestBodyContained(boolean)` method.
+    * Added the `isDpopNonceRequired()` method.
+    * Added the `setDpopNonceRequired(boolean)` method.
+
+
+2.79 (2024-06-24)
+-----------------
+
+- `BackchannelAuthenticationRequestHandler` class
+    * Added the `handle(Params)` method.
+
+- `BaseBackchannelAuthenticationEndpoint` class
+    * Added the `handle(AuthleteApi, BackchannelAuthenticationRequestHandlerSpi, Params)` method.
+
+- `BaseDeviceAuthorizationEndpoint` class
+    * Added the `handle(AuthleteApi, Params)` method.
+
+- `BaseRevocationEndpoint` class
+    * Added the `handle(AuthleteApi, Params)` method.
+
+- `DeviceAuthorizationRequestHandler` class
+    * Added the `handle(Params)` method.
+
+- `PushedAuthReqHandler.Params` class
+    * Added the `getClientAttestation()` method.
+    * Added the `setClientAttestation(String)` method.
+    * Added the `getClientAttestationPop()` method.
+    * Added the `setClientAttestationPop(String)` method.
+
+- `RevocationRequestHandler` class
+    * Added the `handle(Params)` method.
+
+- `TokenRequestHandler.Params` class
+    * Added the `getClientAttestation()` method.
+    * Added the `setClientAttestation(String)` method.
+    * Added the `getClientAttestationPop()` method.
+    * Added the `setClientAttestationPop(String)` method.
+
+- New types
+    * `BackchannelAuthenticationRequestHandler.Params` class
+    * `DeviceAuthorizationRequestHandler.Params` class
+    * `HandlerUtility` class
+    * `RevocationRequestHandler.Params` class
+
+
 2.74 (2024-05-14)
 -----------------
 

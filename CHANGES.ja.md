@@ -1,6 +1,101 @@
 変更点
 ======
 
+2.84 (2025-01-24)
+-----------------
+
+- `TestRequest` オブジェクトを削除し、モックに置換。
+
+
+2.82 (2025-01-12)
+-----------------
+
+- いくつかのリクエストハンドラークラス群、ベースエンドポイントクラス群、API 実装クラス群にリクエストオプションを追加。
+
+
+2.81 (2024-10-20)
+-----------------
+
+- 新しい型
+    * `RequestUrlResolver` クラス
+
+- `pom.xml`
+    * `com.authlete.http:http-field-parser:1.0` を追加。
+    * 重複していた `org.apache.maven.plugins:maven-compiler-plugin` を削除。
+
+
+2.81 (2024-10-20)
+-----------------
+
+- 新しい型
+    * `RequestUrlResolver` クラス
+
+- `pom.xml`
+    * `com.authlete.http:http-field-parser:1.0` を追加。
+    * 重複していた `org.apache.maven.plugins:maven-compiler-plugin` を削除。
+
+
+2.80 (2024-10-02)
+-----------------
+
+- `AuthleteApiCaller` クラス
+    * `callUserInfo(String, String, String, String, String)` メソッドを
+      `callUserInfo(UserInfoRequestHandler.Params)` へ変更。
+
+- `BaseEndpoint` クラス
+    * `extractHeadersAsPairs(HttpServletRequest)` メソッドを追加。
+
+- `UserInfoRequestHandler.Params` クラス
+    * `getTargetUri()` メソッドを追加。
+    * `setTargetUri(URI)` メソッドを追加。
+    * `getHeaders()` メソッドを追加。
+    * `setHeaders(Pair[])` メソッドを追加。
+    * `isRequestBodyContained()` メソッドを追加。
+    * `setRequestBodyContained(boolean)` メソッドを追加。
+    * `isDpopNonceRequired()` メソッドを追加。
+    * `setDpopNonceRequired(boolean)` メソッドを追加。
+
+
+2.79 (2024-06-24)
+-----------------
+
+- `BackchannelAuthenticationRequestHandler` クラス
+    * `handle(Params)` メソッドを追加。
+
+- `BaseBackchannelAuthenticationEndpoint` クラス
+    * `handle(AuthleteApi, BackchannelAuthenticationRequestHandlerSpi, Params)` メソッドを追加。
+
+- `BaseDeviceAuthorizationEndpoint` クラス
+    * `handle(AuthleteApi, Params)` メソッドを追加。
+
+- `BaseRevocationEndpoint` クラス
+    * `handle(AuthleteApi, Params)` メソッドを追加。
+
+- `DeviceAuthorizationRequestHandler` クラス
+    * `handle(Params)` メソッドを追加。
+
+- `PushedAuthReqHandler.Params` クラス
+    * `getClientAttestation()` メソッドを追加。
+    * `setClientAttestation(String)` メソッドを追加。
+    * `getClientAttestationPop()` メソッドを追加。
+    * `setClientAttestationPop(String)` メソッドを追加。
+
+- `RevocationRequestHandler` クラス
+    * `handle(Params)` メソッドを追加。
+
+- `TokenRequestHandler.Params` クラス
+    * `getClientAttestation()` メソッドを追加。
+    * `setClientAttestation(String)` メソッドを追加。
+    * `getClientAttestationPop()` メソッドを追加。
+    * `setClientAttestationPop(String)` メソッドを追加。
+
+- 新しい型
+    * `BackchannelAuthenticationRequestHandler.Params` クラス
+    * `DeviceAuthorizationRequestHandler.Params` クラス
+    * `HandlerUtility` クラス
+    * `RevocationRequestHandler.Params` クラス
+
+
 2.74 (2024-05-14)
 -----------------
 
