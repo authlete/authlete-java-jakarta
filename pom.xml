@@ -4,7 +4,7 @@
 
     <groupId>com.authlete</groupId>
     <artifactId>authlete-java-jakarta</artifactId>
-    <version>2.91-SNAPSHOT</version>
+    <version>2.90-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>${project.groupId}:${project.artifactId}</name>
     <description>Authlete library for JAX-RS (Java)</description>
@@ -29,9 +29,9 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <central-publishing-maven-plugin.version>0.8.0</central-publishing-maven-plugin.version>
-        <authlete-java-common.version>4.17</authlete-java-common.version>
+        <authlete-java-common.version>4.23</authlete-java-common.version>
         <gson.version>2.10.1</gson.version>
-        <nimbus.version>9.31</nimbus.version>
+        <nimbus.version>10.0.2</nimbus.version>
         <jakarta.api.version>3.1.0</jakarta.api.version>
         <jakarta.servlet.version>6.0.0</jakarta.servlet.version>
         <jakarta.annotation.version>2.1.1</jakarta.annotation.version>
@@ -45,7 +45,7 @@
         <connection>${git.connection}</connection>
         <developerConnection>${git.connection}</developerConnection>
         <url>${git.url}</url>
-        <tag>authlete-java-jakarta-2.71</tag>
+        <tag>authlete-java-jakarta-2.88</tag>
     </scm>
 
     <dependencies>
@@ -152,15 +152,15 @@
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-site-plugin</artifactId>
                         <configuration>
-                            <reportPlugins>
-                                <plugin>
-                                    <groupId>org.apache.maven.plugins</groupId>
-                                    <artifactId>maven-javadoc-plugin</artifactId>
-                                    <configuration>
-                                        <additionalparam>-Xdoclint:-html</additionalparam>
-                                    </configuration>
-                                </plugin>
-                            </reportPlugins>
+<!--                            <reportPlugins>-->
+<!--                                <plugin>-->
+<!--                                    <groupId>org.apache.maven.plugins</groupId>-->
+<!--                                    <artifactId>maven-javadoc-plugin</artifactId>-->
+<!--                                    <configuration>-->
+<!--                                        <additionalparam>-Xdoclint:-html</additionalparam>-->
+<!--                                    </configuration>-->
+<!--                                </plugin>-->
+<!--                            </reportPlugins>-->
                         </configuration>
                     </plugin>
                 </plugins>

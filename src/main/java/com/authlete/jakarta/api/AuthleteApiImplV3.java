@@ -117,6 +117,8 @@ public class AuthleteApiImplV3 extends AuthleteApiJaxrsImpl
     private static final String ID_TOKEN_REISSUE_API_PATH                     = "/api/%d/idtoken/reissue";
     private static final String TOKEN_CREATE_BATCH_API_PATH                   = "/api/%d/auth/token/create/batch";
     private static final String TOKEN_CREATE_BATCH_STATUS_API_PATH            = "/api/%d/auth/token/create/batch/status/%s";
+    private static final String NATIVE_SSO_API_PATH                           = "/api/%d/nativesso";
+    private static final String NATIVE_SSO_LOGOUT_API_PATH                    = "/api/%d/nativesso/logout";
 
 
     private final String mAuth;
@@ -647,7 +649,7 @@ public class AuthleteApiImplV3 extends AuthleteApiJaxrsImpl
 
 
     /**
-     * Call <code>/api/{serviceId}/service/get</i></code> API.
+     * Call <code>/api/{serviceId}/service/get</code> API.
      */
     @Override
     public Service getService(long apiKey, Options options) throws AuthleteApiException
@@ -1621,6 +1623,30 @@ public class AuthleteApiImplV3 extends AuthleteApiJaxrsImpl
                 new GetApiCaller<TokenCreateBatchStatusResponse>(
                         TokenCreateBatchStatusResponse.class,
                         TOKEN_CREATE_BATCH_STATUS_API_PATH, mServiceId, requestId)
+                .setOptions(options));
+    }
+
+
+    @Override
+    public NativeSsoResponse nativeSso(
+            NativeSsoRequest request, Options options) throws AuthleteApiException
+    {
+        return executeApiCall(
+                new PostApiCaller<NativeSsoResponse>(
+                        NativeSsoResponse.class, request,
+                        NATIVE_SSO_API_PATH, mServiceId)
+                .setOptions(options));
+    }
+
+
+    @Override
+    public NativeSsoLogoutResponse nativeSsoLogout(
+            NativeSsoLogoutRequest request, Options options) throws AuthleteApiException
+    {
+        return executeApiCall(
+                new PostApiCaller<NativeSsoLogoutResponse>(
+                        NativeSsoLogoutResponse.class, request,
+                        NATIVE_SSO_LOGOUT_API_PATH, mServiceId)
                 .setOptions(options));
     }
 }

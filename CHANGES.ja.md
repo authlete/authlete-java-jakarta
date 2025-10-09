@@ -1,7 +1,88 @@
 変更点
 ======
 
-2.88 (2025-02-13)
+2.88 (2025-10-07)
+-----------------
+
+- `pom.xml`
+    * authlete-java-common のバージョンを 4.20 から 4.23 へ更新。
+    * nimbus-jose-jwt のバージョンを 9.37.2 から 10.0.2 へ更新。
+
+- `AuthleteApiJaxrsImpl` クラス
+    * Authlete API 呼び出しから HTTP レスポンスヘッダーを抽出する機能を追加。
+    * `callGetApi()` と `callPostApi()` メソッドがレスポンスヘッダーをキャプチャし、
+      `setResponseHeaders()` メソッドを使用して `ApiResponse` オブジェクトに設定するように変更。
+    * これにより、API レスポンスから `Request-Id` などのヘッダーへのアクセスが可能に。
+
+2.87 (2025-05-03)
+-----------------
+
+- `AuthleteApiImpl` クラス
+    * authlete-java-common のバージョン 4.20 で `AuthleteApi`
+      インターフェースに追加された
+      `nativeSsoLogout(NativeSsoLogoutRequest, Options)`
+      メソッドのダミー実装を追加。 `/nativesso/logout` API は Authlete 2.x
+      では利用できない。
+
+- `AuthleteApiImplV3` クラス
+    * authlete-java-common のバージョン 4.20 で `AuthleteApi`
+      インターフェースに追加された
+      `nativeSsoLogout(NativeSsoLogoutRequest, Options)` メソッドを実装。
+
+- `pom.xml`
+    * authlete-java-common のバージョンを 4.19 から 4.20 へ更新。
+
+
+2.86 (2025-05-02)
+-----------------
+
+- `AuthleteApiCaller` クラス
+    * `/auth/authorization/issue` API を呼ぶためのメソッド群に `sessionId`
+      パラメータを追加。
+
+- `AuthleteApiImpl` クラス
+    * authlete-java-common のバージョン 4.18 で `AuthleteApi`
+      インターフェースに追加された `nativeSso(NativeSsoRequest, Options)`
+      メソッドのダミー実装を追加。 `/nativesso` API は Authlete 2.x
+      では利用できない。
+
+- `AuthleteApiImplV3` クラス
+    * authlete-java-common のバージョン 4.18 で `AuthleteApi`
+      インターフェースに追加された `nativeSso(NativeSsoRequest, Options)`
+      メソッドを実装。
+
+- `AuthorizationDecisionHandler` クラス
+    * `/auth/authorization/issue` API の `sessionId`
+      リクエストパラメータをサポート。
+
+- `AuthorizationDecisionHandlerSpi` インターフェース
+    * `getSessionId()` メソッドを追加。
+
+- `AuthorizationDecisionHandlerSpiAdapter` クラス
+    * `getSessionId()` メソッドの空実装を追加。
+
+- `TokenRequestHandler` クラス
+    * `TokenResponse.NATIVE_SSO` アクションをサポート。
+
+- `TokenRequestHandlerSpi` インターフェース
+    * 破壊的変更: `tokenExchange(TokenResponse)` メソッドのメソッドシグネチャを
+      `tokenExchange(TokenResponse, Map<String, Object>)` へ変更。
+    * 破壊的変更: `jwtBearer(TokenResponse)` メソッドのメソッドシグネチャを
+      `jwtBearer(TokenResponse, Map<String, Object>)` へ変更。
+    * `nativeSso(TokenResponse, Map<String, Object>)` メソッドを追加。
+
+- `TokenRequestHandlerSpiAdapter` クラス
+    * 破壊的変更: `tokenExchange(TokenResponse)` メソッドのメソッドシグネチャを
+      `tokenExchange(TokenResponse, Map<String, Object>)` へ変更。
+    * 破壊的変更: `jwtBearer(TokenResponse)` メソッドのメソッドシグネチャを
+      `jwtBearer(TokenResponse, Map<String, Object>)` へ変更。
+    * `nativeSso(TokenResponse, Map<String, Object>)` メソッドの空実装を追加。
+
+- `pom.xml`
+    * authlete-java-common のバージョンを 4.17 から 4.19 へ更新。
+
+
+2.85 (2025-02-13)
 -----------------
 
 - `com.authlete.common` のバージョンを 4.16 から 4.17 更新。
