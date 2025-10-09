@@ -28,6 +28,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <central-publishing-maven-plugin.version>0.8.0</central-publishing-maven-plugin.version>
         <authlete-java-common.version>4.17</authlete-java-common.version>
         <gson.version>2.10.1</gson.version>
         <nimbus.version>9.31</nimbus.version>
@@ -187,25 +188,24 @@
             <distributionManagement>
                 <snapshotRepository>
                     <id>authlete</id>
-                    <url>https://oss.sonatype.org/content/repositories/snapshots</url>
+                    <url>https://s01.oss.sonatype.org/content/repositories/snapshots/</url>
                 </snapshotRepository>
 
                 <repository>
                     <id>authlete</id>
-                    <url>https://oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+                    <url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
                 </repository>
             </distributionManagement>
             <build>
                 <plugins>
                     <plugin>
-                        <groupId>org.sonatype.plugins</groupId>
-                        <artifactId>nexus-staging-maven-plugin</artifactId>
-                        <version>1.6.4</version>
+                        <groupId>org.sonatype.central</groupId>
+                        <artifactId>central-publishing-maven-plugin</artifactId>
+                        <version>${central-publishing-maven-plugin.version}</version>
                         <extensions>true</extensions>
                         <configuration>
-                            <serverId>authlete</serverId>
-                            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-                            <autoReleaseAfterClose>true</autoReleaseAfterClose>
+                            <publishingServerId>authlete</publishingServerId>
+                            <autoPublish>true</autoPublish>
                         </configuration>
                     </plugin>
                 </plugins>
