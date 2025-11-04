@@ -1,6 +1,20 @@
 変更点
 ======
 
+2.89 (2025-11-04)
+-----------------
+
+- `pom.xml`
+    * authlete-java-common のバージョンを 4.23 から 4.27 へ更新。
+    * nimbus-jose-jwt のバージョンを 10.0.2 から 10.5 へ更新。
+
+- `AuthleteApiImpl` クラス
+    * `credentialNonce(CredentialNonceRequest, Options)` メソッドを実装。
+
+- `AuthleteApiImplV3` クラス
+    * `credentialNonce(CredentialNonceRequest, Options)` メソッドを実装。
+
+
 2.88 (2025-10-07)
 -----------------
 
