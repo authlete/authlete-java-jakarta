@@ -1,6 +1,20 @@
 CHANGES
 =======
 
+2.90 (2025-12-29)
+-----------------
+
+- `pom.xml`
+    * Updated the version of authlete-java-common from 4.27 to 4.33.
+
+- `AuthleteApiCaller` class
+    * Added the `callCredentialNonce(CredentialNonceRequest, Options)` method.
+
+- New types
+    * `BaseCredentialNonceEndpoint` class
+    * `CredentialNonceRequestHandler` class
+
+
 2.89 (2025-11-04)
 -----------------
 
