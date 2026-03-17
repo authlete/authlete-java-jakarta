@@ -23,6 +23,7 @@ import static jakarta.ws.rs.core.HttpHeaders.CONTENT_TYPE;
 import static jakarta.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import java.text.ParseException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -430,10 +431,17 @@ public abstract class AuthleteApiJaxrsImpl implements AuthleteApi
         setCustomRequestHeaders(builder, options);
 
         Response httpResponse = builder.get();
+
+        if (httpResponse.getStatusInfo().getFamily() != Response.Status.Family.SUCCESSFUL)
+        {
+            throw new WebApplicationException(httpResponse);
+        }
+
         TResponse apiResponseObject = httpResponse.readEntity(responseClass);
 
-        if (apiResponseObject instanceof ApiResponse) {
-            ((ApiResponse) apiResponseObject).setResponseHeaders(httpResponse.getStringHeaders());
+        if (apiResponseObject instanceof ApiResponse)
+        {
+            ((ApiResponse) apiResponseObject).setResponseHeaders(new HashMap<>(httpResponse.getStringHeaders()));
         }
 
         return apiResponseObject;
@@ -467,11 +475,18 @@ public abstract class AuthleteApiJaxrsImpl implements AuthleteApi
 
         Response httpResponse = builder.post(Entity.entity(request, JSON_UTF8_TYPE));
 
+        if (httpResponse.getStatusInfo().getFamily() != Response.Status.Family.SUCCESSFUL)
+        {
+            throw new WebApplicationException(httpResponse);
+        }
+
         TResponse apiResponseObject = httpResponse.readEntity(responseClass);
 
-        if (apiResponseObject instanceof ApiResponse) {
-            ((ApiResponse) apiResponseObject).setResponseHeaders(httpResponse.getStringHeaders());
+        if (apiResponseObject instanceof ApiResponse)
+        {
+            ((ApiResponse) apiResponseObject).setResponseHeaders(new HashMap<>(httpResponse.getStringHeaders()));
         }
+
         return apiResponseObject;
     }
 
